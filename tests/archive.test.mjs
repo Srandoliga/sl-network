@@ -50,3 +50,12 @@ test('bestRecord a formátování', () => {
   assert.equal(formatRecord({ w: 15, l: 4, t: 1 }), '15-4-1');
   assert.equal(formatPct(0.775), '.775');
 });
+
+import { resultLabel } from '../src/lib/archive.js';
+
+test('resultLabel ukáže konečné umístění i fázi play-off (ACL 2024/25 = 3. místo)', () => {
+  const acl = teamSeasons(seasons, 'acl-rokycany').find((r) => r.season === '2024/25');
+  assert.equal(resultLabel(acl.stage, acl.finalRank), '3. místo · semifinále');
+  assert.equal(resultLabel('champion', 1), '1. místo · šampion');
+  assert.equal(resultLabel('out', 9), '9. místo · mimo play-off');
+});

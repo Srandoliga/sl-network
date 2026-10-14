@@ -83,3 +83,16 @@ export function bestRecord(season) {
 export const formatRecord = ({ w, l, t }) => `${w}-${l}-${t}`;
 export const formatPct = (p) => p.toFixed(3).replace(/^0/, '');
 export const formatPoints = (n) => new Intl.NumberFormat('cs-CZ').format(n);
+
+const STAGE_SUFFIX = {
+  champion: 'šampion',
+  final: 'finále',
+  semifinal: 'semifinále',
+  quarterfinal: 'čtvrtfinále',
+  out: 'mimo play-off',
+};
+
+/** Výsledek sezony pro profil týmu: skutečné konečné umístění + kam tým došel v play-off. */
+export function resultLabel(stage, finalRank) {
+  return `${finalRank}. místo · ${STAGE_SUFFIX[stage]}`;
+}
