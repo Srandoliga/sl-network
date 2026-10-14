@@ -1,0 +1,76 @@
+---
+// Logo týmu: obrázek z public/obrazky/tymy/<id>.webp, jinak kreslená SVG ikona (typ a barva v src/data/teams.json).
+interface Props { team: { id: string; name: string; short: string; color: string; icon: string }; decorative?: boolean }
+import { teamLogo } from '../lib/data.js';
+import { asset } from '../lib/assets';
+const { team, decorative = true } = Astro.props;
+const logo = teamLogo(team.id);
+const c = team.color;
+const uid = `${team.id}-${Math.random().toString(36).slice(2, 7)}`;
+---
+{logo ? <img class="team-logo" src={asset(logo)} alt={decorative ? '' : team.name} width="256" height="256" loading="lazy" decoding="async" /> :
+<svg viewBox="0 0 64 64" role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : team.name} aria-hidden={decorative ? 'true' : undefined}>
+  {team.icon === 'letter-a' && (
+    <g>
+      <defs>
+        <linearGradient id={`a-${uid}`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b79cff" /><stop offset="1" stop-color={c} /></linearGradient>
+      </defs>
+      <circle cx="32" cy="33" r="23" fill="none" stroke={`url(#a-${uid})`} stroke-width="5" />
+      <path d="M33 6 L50 56 h-9.5 l-3.2-9.5 H26.8 L23.6 56 H14 Z M29.4 38.5 h6 L32.4 29 Z" fill={`url(#a-${uid})`} stroke="#0c0e12" stroke-width="1.5" stroke-linejoin="round" />
+      <path d="M36 38.5 h20 l-5 -4 M56 38.5 l-5 4" fill="none" stroke={`url(#a-${uid})`} stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  )}
+  {team.icon === 'flame' && (
+    <g>
+      <defs>
+        <linearGradient id={`f-${uid}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b4a" /><stop offset="1" stop-color={c} /></linearGradient>
+        <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd25a" /><stop offset="1" stop-color="#f59e0b" /></linearGradient>
+      </defs>
+      <path d="M36 4c2 9 14 14 17 26 4 15-7 28-21 28S8 47 10 34c1-8 6-12 9-15-1 6 1 10 4 12-2-12 4-21 13-27z" fill={`url(#f-${uid})`} />
+      <path d="M44 14c3 2 6 6 6 10-3-3-6-4-9-4" fill="#ff8a5c" />
+      <path d="M33 26c2 7 11 10 11 19 0 7-6 12-12 12s-12-5-12-11c0-5 3-8 5-10 0 3 1 5 3 6-1-7 1-12 5-16z" fill={`url(#g-${uid})`} />
+      <path d="M31 40c1 4 6 5 6 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 1 1 2 2 2 0-3 0-5 0-7z" fill="#fff4c2" />
+    </g>
+  )}
+  {team.icon === 'beer' && (
+    <g>
+      <defs>
+        <linearGradient id={`b-${uid}`} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d97706" /><stop offset=".4" stop-color={c} /><stop offset="1" stop-color="#b45309" /></linearGradient>
+      </defs>
+      <path d="M44 24h5a6 6 0 0 1 6 6v10a6 6 0 0 1-6 6h-5" fill="none" stroke="#e5e7eb" stroke-width="4" />
+      <path d="M13 20h32l-2.5 36a3 3 0 0 1-3 2.8H18.5a3 3 0 0 1-3-2.8z" fill={`url(#b-${uid})`} stroke="#e5e7eb" stroke-width="2" />
+      <path d="M19 28v24M26 28v25M33 28v25M39 28v24" stroke="#fde68a" stroke-opacity=".35" stroke-width="2" />
+      <circle cx="22" cy="44" r="1.4" fill="#fff7d6" /><circle cx="30" cy="36" r="1.1" fill="#fff7d6" /><circle cx="36" cy="47" r="1.2" fill="#fff7d6" />
+      <path d="M10 20c-1-6 4-10 9-8 2-5 9-6 12-2 4-3 11-1 12 4 4 0 5 5 3 7-2 2-4 1-5 0v6c0 2-3 2-3 0v-4c-2 1-5 1-6-1-2 2-6 2-8 0-2 2-6 2-8 0-2 2-5 1-6-2z" fill="#fafafa" />
+    </g>
+  )}
+  {team.icon === 'star' && (
+    <g>
+      <path d="M4 30h22M6 37h20M9 44h17M12 51h12" stroke={c} stroke-width="4" stroke-linecap="round" />
+      <path d="M40 6l6.4 13.9 15.2 1.8-11.2 10.4 3 15-13.4-7.5-13.4 7.5 3-15-11.2-10.4 15.2-1.8z" fill="#f8fafc" stroke="#0c0e12" stroke-width="2.5" stroke-linejoin="round" />
+      <path d="M40 14l3.8 8.3 9 1-6.6 6.2 1.8 9L40 34" fill={c} opacity=".85" />
+    </g>
+  )}
+  {team.icon === 'mustache' && (
+    <g>
+      <rect x="4" y="4" width="56" height="56" rx="8" fill={c} opacity=".22" />
+      <path d="M14 60c2-10 9-14 18-14s16 4 18 14z" fill={c} />
+      <ellipse cx="32" cy="31" rx="15" ry="17" fill="#f1c193" />
+      <path d="M16 28c-1-12 7-19 16-19 10 0 17 7 16 19-2-5-5-8-9-9-4 3-11 4-17 2-3 2-5 4-6 7z" fill="#f2c94c" />
+      <circle cx="26" cy="30" r="2" fill="#2b1a10" /><circle cx="38" cy="30" r="2" fill="#2b1a10" />
+      <path d="M32 37c-4-4-11-3-14 2 1 4 5 5 8 3 2-1 4-2 6-2 2 0 4 1 6 2 3 2 7 1 8-3-3-5-10-6-14-2z" fill="#8a4b1f" />
+      <path d="M17 39c-2 1-3 4-1 6M47 39c2 1 3 4 1 6" fill="none" stroke="#8a4b1f" stroke-width="2.5" stroke-linecap="round" />
+    </g>
+  )}
+  {team.icon === 'monogram' && (
+    <g>
+      <defs>
+        <linearGradient id={`m-${uid}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color={c} stop-opacity=".35" /><stop offset="1" stop-color={c} stop-opacity=".1" /></linearGradient>
+      </defs>
+      <path d="M32 5l22 8v17c0 14-9 24-22 29C19 54 10 44 10 30V13z" fill={`url(#m-${uid})`} stroke={c} stroke-width="3" stroke-linejoin="round" />
+      <path d="M32 11l16 6v13c0 10-6 18-16 22" fill="none" stroke={c} stroke-opacity=".35" stroke-width="1.5" />
+      <text x="32" y="38" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size={team.short.length > 2 ? 17 : 21} fill="#f2f3f5" letter-spacing=".5">{team.short}</text>
+    </g>
+  )}
+</svg>
+}

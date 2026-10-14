@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../lib/paths';
+---
+<Base title="Stránka nenalezena" canonical={false}>
+  <p class="kicker">404</p>
+  <h1 class="page-title">Tohle nepotvrdil ani jeden zdroj.</h1>
+  <p class="page-lead">Stránka neexistuje nebo se přesunula.</p>
+  <p style="margin-top:24px"><a class="button" href={u('')}>Zpět na úvod</a></p>
+</Base>

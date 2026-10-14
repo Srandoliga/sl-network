@@ -1,0 +1,51 @@
+---
+// Ilustrace „Dvě dynastie“: dva nejúspěšnější týmy podle dat (dres, vlajka s logem) a pohár.
+// Číslo na dresu = počet titulů týmu. Vše se dopočítá ze src/data/seasons.json.
+import TeamIcon from './TeamIcon.astro';
+import Trophy from './Trophy.astro';
+import { seasons, teamById } from '../lib/data.js';
+import { titleCounts } from '../lib/history.js';
+const leaders = titleCounts(seasons).slice(0, 2).map((t) => ({ team: teamById(t.team), titles: t.titles }));
+const jersey = 'M30 0h15q15 28 30 0h15q5 45 30 55l-2 95H2L0 55q25-10 30-55z';
+---
+<div class="art" aria-hidden="true">
+  {leaders.map(({ team }, i) => team && (
+    <div class={`art__banner art__banner--${i}`} style={`--team:${team.color}`}><TeamIcon team={team} /></div>
+  ))}
+  <div class="art__cup"><Trophy /></div>
+  <div class="art__jerseys">
+    {leaders.map(({ team, titles }, i) => team && (
+      <svg class="art__jersey" viewBox="0 0 120 150" style={`--team:${team.color}`}>
+        <path d={jersey} class={i === 0 ? 'j-light' : 'j-dark'} />
+        <path d="M45 0q15 28 30 0M30 0q-5 45-30 55M90 0q5 45 30 55" fill="none" stroke="var(--team)" stroke-width="5" />
+        <text x="60" y="72" text-anchor="middle" class="j-name">{team.short}</text>
+        <text x="60" y="128" text-anchor="middle" class="j-num">{titles}</text>
+      </svg>
+    ))}
+  </div>
+</div>
+<style>
+  .art {
+    position: relative; width: 100%; height: 100%; min-height: 260px; aspect-ratio: 4 / 3; overflow: hidden;
+    background:
+      radial-gradient(60% 70% at 15% 30%, color-mix(in srgb, #8b5cf6 30%, transparent), transparent 70%),
+      radial-gradient(60% 70% at 85% 30%, color-mix(in srgb, #ef4444 30%, transparent), transparent 70%),
+      linear-gradient(#141821, #0b0d10);
+  }
+  .art__banner {
+    position: absolute; top: 0; width: 20%; max-width: 120px; height: 52%; display: grid; place-items: start center; padding-top: 8%;
+    background: color-mix(in srgb, var(--team) 32%, #0b0d10);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%);
+  }
+  .art__banner--0 { left: 8%; }
+  .art__banner--1 { right: 8%; }
+  .art__banner :global(svg), .art__banner :global(.team-logo) { width: 62%; height: auto; }
+  .art__cup { position: absolute; left: 50%; top: 12%; width: 18%; max-width: 110px; transform: translateX(-50%); filter: drop-shadow(0 0 18px rgba(224, 180, 76, .35)); }
+  .art__cup :global(svg), .art__cup :global(.team-logo) { width: 100%; height: auto; }
+  .art__jerseys { position: absolute; inset: auto 0 -6% 0; display: flex; justify-content: center; gap: 6%; }
+  .art__jersey { width: 34%; max-width: 210px; height: auto; filter: drop-shadow(0 8px 16px rgba(0, 0, 0, .5)); }
+  .j-dark { fill: color-mix(in srgb, var(--team) 22%, #101218); }
+  .j-light { fill: #eceae4; }
+  .j-name { font-family: var(--font-display); font-weight: 800; font-size: 22px; fill: var(--team); letter-spacing: .04em; }
+  .j-num { font-family: var(--font-display); font-weight: 800; font-size: 52px; fill: var(--team); }
+</style>

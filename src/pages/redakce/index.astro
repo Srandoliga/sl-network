@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import StaffCard from '../../components/StaffCard.astro';
+import { staff } from '../../lib/data.js';
+---
+<Base title="Redakce" description="Fiktivní redakce SL Network: Vrána, Benson a Brooks.">
+  <h1 class="page-title">Redakce</h1>
+  <p class="page-lead">Tři novináři, kteří neexistují, ale názor mají na všechno. Postavy i jejich citace jsou fikce.</p>
+  <div class="stack" style="margin-top:24px">
+    {staff.map((person) => <StaffCard person={person} />)}
+  </div>
+</Base>

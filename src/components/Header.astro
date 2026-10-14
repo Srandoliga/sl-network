@@ -1,0 +1,26 @@
+---
+import { NAV, SITE } from '../lib/site.js';
+import { u } from '../lib/paths';
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '' ? path === u('') : path.startsWith(u(href)));
+---
+<header class="site-header">
+  <div class="container masthead">
+    <a class="brand" href={u('')} aria-label={`${SITE.name} – úvodní stránka`}>
+      <span class="brand__word"><span class="brand__sl">SL</span> Network<span class="brand__dot" aria-hidden="true"></span></span>
+      <span class="brand__sub">{SITE.league} <span aria-hidden="true">/</span> {SITE.seasonLabel}</span>
+    </a>
+    <p class="masthead__tagline">{SITE.tagline[0]}<br />{SITE.tagline[1]}</p>
+    <p class="masthead__season"><span class="masthead__year">{SITE.season.replace('/', ' / ')}</span><br />{SITE.chapter}</p>
+  </div>
+  <nav class="nav" aria-label="Hlavní navigace">
+    <div class="container nav__inner">
+      <ul class="nav__list">
+        {NAV.map((item) => (
+          <li><a class="nav__link" href={u(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+      <a class="nav__aside" href={u('sablony/')}>Do Messengeru <span aria-hidden="true">→</span></a>
+    </div>
+  </nav>
+</header>

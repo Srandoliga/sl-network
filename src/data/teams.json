@@ -1,0 +1,122 @@
+[
+  {
+    "id": "acl-rokycany",
+    "name": "ACL Rokycany",
+    "short": "ACL",
+    "status": "active",
+    "verified": true,
+    "color": "#8b5cf6",
+    "icon": "letter-a",
+    "story": "Dvojnásobný šampion. Tituly v sezonách 2023/24 a 2025/26 – vždy rok poté, co pohár zvedli Little Barns Fireballs. Do Sezony V vstupuje jako obhájce."
+  },
+  {
+    "id": "little-barns-fireballs",
+    "name": "Little Barns Fireballs",
+    "short": "LBF",
+    "status": "active",
+    "verified": true,
+    "color": "#ef4444",
+    "icon": "flame",
+    "story": "První šampion v historii ligy (2022/23) a znovu v sezoně 2024/25. Dva tituly, nulová porážka ve finále. Vzorec lichých sezon nechává redakce bez komentáře. Zatím."
+  },
+  {
+    "id": "pilsen-beers",
+    "name": "Pilsen Beers",
+    "short": "PIL",
+    "status": "active",
+    "verified": true,
+    "color": "#f59e0b",
+    "icon": "beer",
+    "story": "Dvě finále za sebou (2023/24 a 2024/25), dvakrát jen krok od titulu. Nejčastější finalista bez trofeje. Sezona V může být ta, kdy se pěna konečně usadí."
+  },
+  {
+    "id": "chlumcany-jzd",
+    "name": "Chlumčany JZD",
+    "short": "JZD",
+    "status": "active",
+    "verified": true,
+    "color": "#38bdf8",
+    "icon": "star",
+    "story": "Úřadující finalista. V sezoně 2025/26 došli až do finále, kde nestačili na ACL Rokycany. Plán sklizně na Sezonu V: o jeden zápas víc."
+  },
+  {
+    "id": "los-mustachios",
+    "name": "Los Mustachios",
+    "short": "MUS",
+    "status": "active",
+    "verified": true,
+    "color": "#22c55e",
+    "icon": "mustache",
+    "story": "Ve finále zatím nebyli. Knír je ale připravený a redakce si příběh nechává otevřený."
+  },
+  {
+    "id": "kutlaks-amateurs",
+    "name": "Kutlak’s Amateurs",
+    "short": "KUT",
+    "status": "active",
+    "verified": true,
+    "color": "#14b8a6",
+    "icon": "monogram",
+    "story": "Účastník vůbec prvního finále (2022/23), kde podlehli Little Barns Fireballs. Amatéři jen podle názvu."
+  },
+  {
+    "id": "abukuafi-vzdejto",
+    "name": "AbuKuafi Vzdejto",
+    "short": "ABU",
+    "status": "active",
+    "verified": true,
+    "color": "#0891b2",
+    "icon": "monogram",
+    "story": "Ve finále zatím nebyli. Název slibuje kapitulaci, sezona teprve ukáže, jestli jen jako taktiku."
+  },
+  {
+    "id": "tachovsky-gadzo",
+    "name": "Tachovsky gadzo",
+    "short": "TAC",
+    "status": "active",
+    "verified": true,
+    "color": "#e11d74",
+    "icon": "monogram",
+    "story": "Ve finále zatím nebyli. Redakce čeká na první velký titulek z Tachova."
+  },
+  {
+    "id": "novy-tym-1",
+    "name": "Nový tým 1",
+    "short": "N1",
+    "status": "new",
+    "verified": false,
+    "color": "#94a3b8",
+    "icon": "monogram",
+    "story": "Nováček Sezony V. Název a příběh doplníme, jakmile je majitel potvrdí."
+  },
+  {
+    "id": "novy-tym-2",
+    "name": "Nový tým 2",
+    "short": "N2",
+    "status": "new",
+    "verified": false,
+    "color": "#94a3b8",
+    "icon": "monogram",
+    "story": "Nováček Sezony V. Název a příběh doplníme, jakmile je majitel potvrdí."
+  },
+  {
+    "id": "prestice-mighty-ducks",
+    "name": "Přeštice Mighty Ducks",
+    "short": "PMD",
+    "status": "former",
+    "verified": true,
+    "color": "#64748b",
+    "icon": "monogram",
+    "story": "Součást historie ligy. V Sezoně V už nehrají."
+  },
+  {
+    "id": "irish-airballers",
+    "name": "Irish Airballers",
+    "short": "IRA",
+    "status": "former",
+    "verified": true,
+    "color": "#64748b",
+    "icon": "monogram",
+    "story": "Součást historie ligy. V Sezoně V už nehrají."
+  }
+]

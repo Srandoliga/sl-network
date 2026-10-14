@@ -1,0 +1,8 @@
+---
+// Ilustrovaný portrét redaktora: public/obrazky/redakce/<avatar>.webp (poměr 4:5).
+import { asset } from '../lib/assets';
+interface Props { id: string; name?: string; eager?: boolean }
+const { id, name, eager = false } = Astro.props;
+---
+<img class="staff-avatar" src={asset(`obrazky/redakce/${id}.webp`)} alt={name ? `Ilustrovaný portrét: ${name}` : ''}
+  width="240" height="300" loading={eager ? 'eager' : 'lazy'} decoding="async" />

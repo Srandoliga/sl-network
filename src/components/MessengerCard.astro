@@ -1,0 +1,106 @@
+---
+// Šablona pro Messenger: formát 4:5 (1080×1350 při exportu). Velikosti v cqw, aby šablona vypadala stejně na mobilu i desktopu.
+import StaffAvatar from './StaffAvatar.astro';
+import Trophy from './Trophy.astro';
+import TeamIcon from './TeamIcon.astro';
+import { staffById, seasons, teamById } from '../lib/data.js';
+import { titleCounts } from '../lib/history.js';
+import { SITE } from '../lib/site.js';
+import { splitHeadline } from '../lib/articles.js';
+interface Props { template: any }
+const { template: t } = Astro.props;
+const person = staffById(t.author);
+const head = splitHeadline(t.headline);
+const leaders = titleCounts(seasons).slice(0, 2).map((x) => teamById(x.team));
+---
+<div class="mc-wrap">
+  <article class={`mc mc--${t.id}`} aria-label={`Šablona ${t.name}`}>
+    <header class="mc__brand">
+      <span class="mc__word"><span class="mc__sl">SL</span> Network<span class="mc__dot"></span></span>
+      <span class="mc__season">{SITE.league} <span>/</span> {SITE.seasonLabel}</span>
+    </header>
+    <div class="mc__bar"><span class="mc__label">{t.kicker}</span>{t.demo && <span class="mc__demo">DEMO</span>}</div>
+    {t.demo && <span class="mc__stamp" aria-hidden="true">DEMO</span>}
+    <h2 class="mc__headline">{head.lead}{head.rest && <em>{head.rest}</em>}</h2>
+    <p class="mc__text">{t.text}</p>
+
+    {t.id === 'breaking' && (
+      <div class="mc__art">
+        {leaders.map((team) => team && <span class="mc__team" style={`--team:${team.color}`}><TeamIcon team={team} /></span>)}
+        <span class="mc__trophies">{seasons.map(() => <Trophy />)}</span>
+      </div>
+    )}
+    {t.id === 'draft' && (
+      <ul class="mc__facts">
+        {t.facts.map((f: any) => <li><span class="mc__fact-value">{f.value}</span><span class="mc__fact-label">{f.label}</span></li>)}
+      </ul>
+    )}
+    {t.id === 'draft' && <p class="mc__date">{t.dateLabel}</p>}
+    {t.id === 'weekly' && (
+      <ul class="mc__results">
+        {t.results.map((r: any) => <li><span>{r.home}</span><b>{r.homeScore}</b><i>:</i><b>{r.awayScore}</b><span>{r.away}</span></li>)}
+      </ul>
+    )}
+
+    {person && (
+      <footer class="mc__author">
+        <span class="mc__avatar"><StaffAvatar id={person.avatar} /></span>
+        <span><b>{person.shortName}</b><br />{person.role}</span>
+      </footer>
+    )}
+  </article>
+</div>
+<style>
+  .mc-wrap { container-type: inline-size; width: 100%; max-width: 540px; margin-inline: auto; }
+  .mc {
+    aspect-ratio: 4 / 5; display: flex; flex-direction: column; gap: 2.4cqw; padding: 5.5cqw; overflow: hidden; position: relative;
+    background:
+      radial-gradient(90% 60% at 0% 100%, rgba(139, 92, 246, .3), transparent 60%),
+      radial-gradient(90% 60% at 100% 100%, rgba(239, 68, 68, .32), transparent 60%),
+      #0b0d10;
+    border: 1px solid var(--border); color: #f3f4f6;
+  }
+  .mc__brand { display: flex; flex-direction: column; line-height: 1; padding-bottom: 3cqw; border-bottom: 1px solid #262b33; }
+  .mc__word { font-family: var(--font-display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 7cqw; display: flex; align-items: center; gap: 1.5cqw; }
+  .mc__sl { color: var(--red); }
+  .mc__dot { width: 1.5cqw; height: 1.5cqw; background: var(--red); align-self: flex-start; margin-top: 1.4cqw; }
+  .mc__season { font-family: var(--font-display); font-weight: 600; color: #858d99; letter-spacing: .4em; font-size: 2.4cqw; margin-top: 1.4cqw; text-transform: uppercase; }
+  .mc__season span { color: var(--red); }
+  .mc__bar { display: flex; gap: 2cqw; align-items: center; }
+  .mc__label, .mc__demo {
+    background: var(--red); color: #fff; font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
+    font-size: 4cqw; padding: .8cqw 3cqw; 
+  }
+  .mc__demo { background: #facc15; color: #111; }
+  .mc__headline { margin: 0; font-family: var(--font-serif); font-weight: 700; font-size: 9cqw; line-height: 1.02; letter-spacing: -.025em; }
+  .mc__headline em { display: block; font-weight: 400; font-style: italic; color: #c4c9d1; }
+  .mc__text { margin: 0; font-size: 3.6cqw; line-height: 1.35; color: #c9ced6; }
+  .mc__art { margin-top: auto; display: flex; justify-content: center; align-items: center; gap: 4cqw; flex-wrap: wrap; }
+  .mc__team { width: 17cqw; height: 17cqw; display: grid; place-items: center; border-radius: 3cqw; background: color-mix(in srgb, var(--team) 15%, #0b0d10); border: 1px solid color-mix(in srgb, var(--team) 45%, transparent); }
+  .mc__team :global(svg), .mc__team :global(.team-logo) { width: 11cqw; height: 11cqw; }
+  .mc__trophies { display: flex; gap: 2cqw; width: 100%; justify-content: center; }
+  .mc__trophies :global(svg), .mc__trophies :global(.team-logo) { width: 6cqw; height: 7.1cqw; }
+  .mc__facts { list-style: none; margin: auto 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5cqw; }
+  .mc__facts li { border: 1px solid #262b33; border-radius: 2cqw; padding: 2.4cqw 1cqw; text-align: center; background: #13161b; }
+  .mc__fact-value { display: block; font-family: var(--font-display); font-weight: 800; font-size: 11cqw; line-height: 1; color: var(--red-strong); }
+  .mc__fact-label { display: block; line-height: 1.25; margin-top: 1cqw; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .08em; font-size: 3cqw; color: #c9ced6; }
+  .mc__date { margin: 0; text-align: center; font-family: var(--font-display); letter-spacing: .2em; text-transform: uppercase; font-size: 3.4cqw; color: #8b939f; }
+  .mc__results { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.2cqw; }
+  .mc__results li { display: grid; grid-template-columns: 1fr auto auto auto 1fr; gap: 2cqw; align-items: center; background: #13161b; border: 1px solid #262b33; border-radius: 1.5cqw; padding: .6cqw 3cqw; font-size: 3.4cqw; }
+  .mc__results li span:last-child { text-align: right; }
+  .mc__results b { font-family: var(--font-display); font-size: 4.4cqw; }
+  .mc__results i { color: #8b939f; font-style: normal; }
+  .mc__author { margin-top: auto; display: flex; gap: 3cqw; align-items: center; font-size: 3.4cqw; color: #c9ced6; border-top: 1px solid #262b33; padding-top: 3cqw; }
+  .mc__author b { font-family: var(--font-display); font-size: 4.4cqw; color: #fff; }
+  .mc__avatar { width: 11cqw; aspect-ratio: 4 / 5; overflow: hidden; flex: none; }
+  .mc--breaking .mc__author, .mc--draft .mc__author { margin-top: 0; }
+  .mc--weekly .mc__headline { font-size: 7.5cqw; }
+  .mc--weekly { gap: 1.8cqw; }
+  .mc--weekly .mc__text { font-size: 3.6cqw; }
+  .mc--weekly .mc__avatar { width: 8cqw; }
+  .mc__stamp {
+    position: absolute; right: -6cqw; top: 58cqw; transform: rotate(-12deg); pointer-events: none;
+    border: .8cqw solid #facc15; color: #facc15; opacity: .35; font-family: var(--font-display); font-weight: 800;
+    font-size: 16cqw; line-height: 1; padding: 0 3cqw;
+  }
+</style>

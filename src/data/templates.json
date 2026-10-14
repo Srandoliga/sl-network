@@ -1,0 +1,42 @@
+[
+  {
+    "id": "breaking",
+    "name": "Breaking News",
+    "kicker": "Breaking News",
+    "headline": "Čtyři sezony. Dva šampioni.",
+    "text": "Srandoliga vstupuje do nové éry. Sezona V startuje s deseti manažery.",
+    "author": "vrana",
+    "demo": false
+  },
+  {
+    "id": "draft",
+    "name": "Draft Special",
+    "kicker": "Draft Special",
+    "headline": "Sezona V začíná draftem",
+    "text": "8 pokračujících franšíz, 2 nováčci, 1 trofej.",
+    "facts": [
+      { "value": "8", "label": "pokračujících týmů" },
+      { "value": "2", "label": "nováčci" },
+      { "value": "10", "label": "manažerů" }
+    ],
+    "dateLabel": "Termín draftu upřesníme",
+    "author": "brooks",
+    "demo": false
+  },
+  {
+    "id": "weekly",
+    "name": "Weekly Recap",
+    "kicker": "Weekly Recap",
+    "headline": "Kolo X ve Srandolize",
+    "text": "Ukázka rozložení. Čísla a týmy nejsou skutečné.",
+    "results": [
+      { "home": "Tým A", "homeScore": "000.0", "away": "Tým B", "awayScore": "000.0" },
+      { "home": "Tým C", "homeScore": "000.0", "away": "Tým D", "awayScore": "000.0" },
+      { "home": "Tým E", "homeScore": "000.0", "away": "Tým F", "awayScore": "000.0" },
+      { "home": "Tým G", "homeScore": "000.0", "away": "Tým H", "awayScore": "000.0" },
+      { "home": "Tým I", "homeScore": "000.0", "away": "Tým J", "awayScore": "000.0" }
+    ],
+    "author": "brooks",
+    "demo": true
+  }
+]

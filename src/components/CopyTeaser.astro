@@ -1,0 +1,30 @@
+---
+// Tlačítko „Zkopírovat upoutávku“ + textové pole jako záloha (dlouhým stiskem na mobilu).
+interface Props { text: string }
+const { text } = Astro.props;
+---
+<section class="share panel" aria-labelledby="share-title">
+  <h2 id="share-title" class="kicker">Upoutávka pro Messenger</h2>
+  <textarea readonly rows="4" data-teaser>{text}</textarea>
+  <p style="margin:10px 0 0">
+    <button class="button button--red" type="button" data-copy-teaser>Zkopírovat upoutávku</button>
+    <span class="share__status" role="status" data-copy-status></span>
+  </p>
+</section>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-copy-teaser]');
+  const area = document.querySelector<HTMLTextAreaElement>('[data-teaser]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  button?.addEventListener('click', async () => {
+    if (!area || !status) return;
+    try {
+      await navigator.clipboard.writeText(area.value);
+      status.textContent = 'Zkopírováno ✓';
+    } catch {
+      area.focus();
+      area.select();
+      const ok = document.execCommand?.('copy');
+      status.textContent = ok ? 'Zkopírováno ✓' : 'Text je označený – zkopírujte ho ručně.';
+    }
+  });
+</script>

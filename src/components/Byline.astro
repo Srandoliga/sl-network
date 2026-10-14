@@ -1,0 +1,13 @@
+---
+import StaffAvatar from './StaffAvatar.astro';
+import { staffById } from '../lib/data.js';
+import { u } from '../lib/paths';
+interface Props { author: string }
+const person = staffById(Astro.props.author);
+---
+{person && (
+  <a class="byline" href={u(`redakce/${person.id}/`)}>
+    <span class="byline__avatar"><StaffAvatar id={person.avatar} /></span>
+    <span><span class="byline__name">{person.name}</span><br /><span class="byline__role">{person.role}</span></span>
+  </a>
+)}

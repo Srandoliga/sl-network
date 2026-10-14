@@ -1,0 +1,16 @@
+---
+import StaffAvatar from './StaffAvatar.astro';
+import { u } from '../lib/paths';
+interface Props { person: { id: string; name: string; role: string; beat: string; bio: string; signature: string; avatar: string }; link?: boolean; headingLevel?: 'h1' | 'h2' }
+const { person, link = true, headingLevel = 'h2' } = Astro.props;
+const Tag = headingLevel;
+---
+<div class="staff-card panel">
+  <div class="staff-card__avatar"><StaffAvatar id={person.avatar} name={person.name} eager /></div>
+  <div>
+    <Tag class="staff-card__name">{link ? <a href={u(`redakce/${person.id}/`)} style="text-decoration:none">{person.name}</a> : person.name}</Tag>
+    <div class="staff-card__role">{person.role}</div>
+    <p class="staff-card__bio">{person.bio}</p>
+    <p class="staff-card__signature">{person.signature}</p>
+  </div>
+</div>

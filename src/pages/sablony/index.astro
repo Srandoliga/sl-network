@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { templates } from '../../lib/data.js';
+import { u } from '../../lib/paths';
+---
+<Base title="Šablony pro Messenger" description="Obrázkové šablony pro sdílení v Messengeru.">
+  <h1 class="page-title">Šablony pro Messenger</h1>
+  <p class="page-lead">Otevřete šablonu, udělejte snímek obrazovky a pošlete ho do skupiny. Texty se mění v souboru <code>src/data/templates.json</code>.</p>
+  <ul class="article-list" style="margin-top:24px">
+    {templates.map((t) => (
+      <li class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <span><strong>{t.name}</strong>{t.demo && <span class="tag tag--demo" style="margin-left:8px">DEMO</span>}<br /><span class="byline__role">{t.headline}</span></span>
+        <a class="button" href={u(`sablony/${t.id}/`)}>Otevřít</a>
+      </li>
+    ))}
+  </ul>
+</Base>

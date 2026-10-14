@@ -1,0 +1,80 @@
+---
+import '@fontsource/barlow-condensed/latin-ext-600.css';
+import '@fontsource/barlow-condensed/latin-ext-700.css';
+import '@fontsource/barlow-condensed/latin-ext-800.css';
+import '@fontsource/barlow-condensed/latin-ext-800-italic.css';
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '@fontsource/barlow-condensed/latin-800.css';
+import '@fontsource/barlow-condensed/latin-800-italic.css';
+import '@fontsource/inter/latin-ext-400.css';
+import '@fontsource/inter/latin-ext-500.css';
+import '@fontsource/inter/latin-ext-600.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/source-serif-4/latin-ext-400.css';
+import '@fontsource/source-serif-4/latin-ext-400-italic.css';
+import '@fontsource/source-serif-4/latin-ext-700.css';
+import '@fontsource/source-serif-4/latin-400.css';
+import '@fontsource/source-serif-4/latin-400-italic.css';
+import '@fontsource/source-serif-4/latin-700.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../lib/site.js';
+import { u } from '../lib/paths';
+import { absAsset } from '../lib/assets';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Cesta k obrázku v public/ (bez base path), např. "obrazky/x.png". */
+  image?: string;
+  imageAlt?: string;
+  article?: { published: Date; section: string; author: string };
+  /** false u stránek bez vlastní adresy (404). */
+  canonical?: boolean;
+}
+const { title, description = SITE.description, image = 'og-default.png', imageAlt, article, canonical: hasCanonical = true } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} – ${SITE.league}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = absAsset(image, Astro.site);
+---
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <!-- Web nemá být ve vyhledávačích. Neindexování ale NENÍ ochrana přístupu. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0d10" />
+    <link rel="icon" href={u('favicon.svg')} type="image/svg+xml" />
+    {hasCanonical && <link rel="canonical" href={canonical} />}
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={title ?? fullTitle} />
+    <meta property="og:description" content={description} />
+    {hasCanonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    {image === 'og-default.png' && <meta property="og:image:width" content="1200" />}
+    {image === 'og-default.png' && <meta property="og:image:height" content="630" />}
+    {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    {article && <meta property="article:published_time" content={article.published.toISOString()} />}
+    {article && <meta property="article:section" content={article.section} />}
+    {article && <meta property="article:author" content={article.author} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#obsah">Přeskočit na obsah</a>
+    <Header />
+    <main id="obsah" class="container">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

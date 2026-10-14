@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import TeamIcon from '../components/TeamIcon.astro';
+import Trophy from '../components/Trophy.astro';
+import TitleBadge from '../components/TitleBadge.astro';
+import EmptyState from '../components/EmptyState.astro';
+import { seasons, seasonsDesc, rivalries, teamById } from '../lib/data.js';
+import { titleCounts, finalAppearances, rivalryRecord } from '../lib/history.js';
+import { u } from '../lib/paths';
+
+const titles = titleCounts(seasons);
+const finals = finalAppearances(seasons);
+const champions = titles.length;
+const seasonWord = seasons.length >= 5 ? 'sezon' : 'sezony';
+// Ocenění a rekordy: v seasons.json pole awards/records, položka { "label", "value"?, "team"? }.
+const honours = seasonsDesc.flatMap((s) => [...s.awards, ...s.records].map((h) => ({ ...h, season: s.season })));
+---
+<Base title="Síň slávy" description="Šampioni, finalisté a rivality Srandoligy.">
+  <p class="kicker">Síň slávy</p>
+  <h1 class="page-title">{seasons.length} {seasonWord}.<em>{champions === 2 ? 'Dva šampioni' : `${champions} šampioni`}.</em></h1>
+  <p class="page-lead">Každý titul, každé finále. Jen fakta – na legendy máme jiné rubriky.</p>
+  <hr class="rule" />
+
+  <div class="stack">
+    <section class="panel">
+      <SectionHead title="Hall of" accent="Fame" gold />
+      <ol class="hof">
+        {seasonsDesc.map((s) => {
+          const champ = teamById(s.champion);
+          const fin = teamById(s.finalist);
+          return (
+            <li class="hof__row" style={`--team:${champ.color}`}>
+              <span class="hof__trophy"><Trophy /></span>
+              <span class="hof__body">
+                <span class="title-badge">{s.season} · šampion</span>
+                <a class="team-cell" href={u(`tymy/${champ.id}/`)}><TeamIcon team={champ} />{champ.name}</a>
+                <span class="byline__role">Finále vs. <a href={u(`tymy/${fin.id}/`)}>{fin.name}</a></span>
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    <section class="panel">
+      <SectionHead title="Počet" accent="titulů" gold />
+      <ul class="stack" style="list-style:none;padding:0;margin:16px 0 0">
+        {titles.map((t) => {
+          const team = teamById(t.team);
+          return (
+            <li class="stripe-row" style={`--team:${team.color}`}>
+              <span class="stat stat--gold">{t.titles}×</span>
+              <a class="team-cell" href={u(`tymy/${team.id}/`)}><TeamIcon team={team} />{team.name}</a>
+              <span class="trophy-row" style="margin-left:auto">{t.seasons.map(() => <Trophy />)}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+    <section class="panel">
+      <SectionHead title="Účasti" accent="ve finále" />
+      <table class="table">
+        <thead><tr><th scope="col">Tým</th><th scope="col">Finále</th><th scope="col">Tituly</th><th scope="col">Prohraná</th></tr></thead>
+        <tbody>
+          {finals.map((f) => {
+            const team = teamById(f.team);
+            return (
+              <tr>
+                <td><a class="team-cell team-cell--sm" href={u(`tymy/${team.id}/`)}><TeamIcon team={team} />{team.name}</a></td>
+                <td>{f.finals}</td><td>{f.titles}</td><td>{f.lost}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="stack" id="rivality">
+      <SectionHead title="Velké" accent="rivality" />
+      {rivalries.map((r) => {
+        const [a, b] = r.teams.map(teamById);
+        const rec = rivalryRecord(seasons, r.teams);
+        return (
+          <article class="panel">
+            <h3 class="section-title" style="font-size:1.4rem">{r.title}</h3>
+            <div style="display:flex;align-items:center;gap:12px;margin:14px 0;flex-wrap:wrap">
+              <a class="team-cell" href={u(`tymy/${a.id}/`)}><TeamIcon team={a} />{a.name}</a>
+              <span class="kicker" style="letter-spacing:.1em">vs.</span>
+              <a class="team-cell" href={u(`tymy/${b.id}/`)}><TeamIcon team={b} />{b.name}</a>
+            </div>
+            <p style="margin:0 0 10px;color:var(--text-soft)">{r.story}</p>
+            <p style="margin:0">
+              <TitleBadge label={`${rec.titles[a.id]} : ${rec.titles[b.id]} v titulech`} />
+              <span class="byline__role" style="margin-left:10px">Vzájemná finále: {rec.headToHeadFinals.length ? rec.headToHeadFinals.join(', ') : 'zatím žádné'}</span>
+            </p>
+          </article>
+        );
+      })}
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Rekordy a" accent="ocenění" />
+      {honours.length
+        ? <ul class="panel" style="list-style:none;margin:0">{honours.map((h) => (
+            <li style="padding:8px 0;border-bottom:1px solid var(--border)">
+              <TitleBadge label={h.label} /> {h.value && <strong>{h.value}</strong>}
+              <span class="byline__role"> · {h.season}{h.team && teamById(h.team) ? ` · ${teamById(h.team).name}` : ''}</span>
+            </li>
+          ))}</ul>
+        : <EmptyState title="Data nejsou k dispozici" text="Rekordy a individuální ocenění doplníme, až budou ověřené podklady." icon="📊" />}
+    </section>
+  </div>
+</Base>
+<style>
+  .hof { list-style: none; margin: 0; padding: 0; }
+  .hof__row { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .hof__row:last-child { border-bottom: 0; }
+  .hof__trophy :global(svg) { width: 30px; height: 36px; }
+  .hof__body { display: grid; gap: 4px; }
+  .hof__body .team-cell { font-size: 1.15rem; }
+</style>

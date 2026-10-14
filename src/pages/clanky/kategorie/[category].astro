@@ -1,0 +1,19 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ArticleIndex from '../../../components/ArticleIndex.astro';
+import { getArticles } from '../../../lib/content';
+import { CATEGORIES } from '../../../lib/site.js';
+
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  return CATEGORIES.map((c) => ({
+    params: { category: c.id },
+    props: { label: c.label, articles: articles.filter((a) => a.data.category === c.id) },
+  }));
+}
+const { category } = Astro.params;
+const { label, articles } = Astro.props;
+---
+<Base title={`${label} – články`} description={`Články v kategorii ${label}.`}>
+  <ArticleIndex articles={articles} current={category} heading={label} />
+</Base>

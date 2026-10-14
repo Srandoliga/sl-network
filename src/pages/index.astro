@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import EmptyState from '../components/EmptyState.astro';
+import HeroArt from '../components/HeroArt.astro';
+import TeamIcon from '../components/TeamIcon.astro';
+import Trophy from '../components/Trophy.astro';
+import StaffAvatar from '../components/StaffAvatar.astro';
+import { getArticles } from '../lib/content';
+import { coverImage, pickLeadStory, splitHeadline } from '../lib/articles.js';
+import { seasons, seasonsDesc, rivalries, staff, teamById, currentTeams } from '../lib/data.js';
+import { historyFacts, titleCounts } from '../lib/history.js';
+import { latestWeek } from '../lib/weeks.js';
+import { categoryLabel, SITE } from '../lib/site.js';
+import { u } from '../lib/paths';
+import { asset } from '../lib/assets';
+
+const articles = await getArticles();
+const lead = pickLeadStory(articles);
+const latest = articles.filter((a) => a.id !== lead?.id).slice(0, 4);
+const facts = historyFacts(seasons, rivalries.map((r) => r.teams), (id) => teamById(id)?.name ?? id);
+// Zajímavost se mění podle dne buildu (web se přestaví s každým novým obsahem).
+const dayOfYear = Math.floor((Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86400000);
+const fact = facts.length ? facts[dayOfYear % facts.length] : undefined;
+const latestByAuthor = (id: string) => articles.find((a) => a.data.author === id);
+const newcomers = currentTeams.filter((t) => t.status === 'new').length;
+const continuing = currentTeams.filter((t) => t.status === 'active').length;
+const champions = titleCounts(seasons).length;
+const leadTitle = lead ? splitHeadline(lead.data.headline ?? lead.data.title) : undefined;
+const stats = [
+  { value: continuing, label: 'Pokračujících týmů', note: 'Známá jména, další sezona.' },
+  { value: newcomers, label: 'Nové franšízy', note: 'Názvy čekají na potvrzení.' },
+  { value: seasons.length, label: 'Zapsané sezony', note: 'Historie se tady neztrácí.' },
+];
+---
+<Base>
+  <h1 class="visually-hidden">{SITE.name} – zpravodajství {SITE.league}</h1>
+
+  {lead && (
+    <a class="ticker" href={u(`clanky/${lead.id}/`)}>
+      <span class="ticker__label">Breaking News</span>
+      <span class="ticker__text">{articles[0].data.title}</span>
+      <span class="ticker__arrow" aria-hidden="true">→</span>
+    </a>
+  )}
+
+  <div class="stack">
+    <section class="hero" aria-labelledby="lead-title">
+      <div class="hero__grid">
+        <div class="hero__text">
+          {lead ? (
+            <>
+              <p class="kicker">Hlavní příběh <span>/ {categoryLabel(lead.data.category)}{lead.data.draft && ' · koncept'}</span></p>
+              <h2 id="lead-title" class="headline hero__title">
+                <a href={u(`clanky/${lead.id}/`)}>{leadTitle.lead}{leadTitle.rest && <em>{leadTitle.rest}</em>}</a>
+              </h2>
+              <p class="hero__perex">{lead.data.perex}</p>
+              <p class="hero__actions"><a class="button button--red" href={u(`clanky/${lead.id}/`)}>Číst příběh <span aria-hidden="true">→</span></a></p>
+            </>
+          ) : (
+            <>
+              <p class="kicker">{SITE.seasonLabel}</p>
+              <h2 id="lead-title" class="headline hero__title">Redakce ladí první titulek.<em>Brzy začínáme.</em></h2>
+              <p class="hero__perex">{currentTeams.length} týmů, {newcomers} nováčci, jeden pohár.</p>
+            </>
+          )}
+          <ul class="hero__points">
+            <li>{seasons.length} {seasons.length < 5 ? 'sezony' : 'sezon'} v historii</li>
+            <li>{champions} {champions < 5 ? 'šampioni' : 'šampionů'}</li>
+            <li>{SITE.chapter}</li>
+          </ul>
+        </div>
+        <div class="hero__art">
+          {lead
+            ? <img class="hero__image" src={asset(coverImage(lead.data))} alt={lead.data.imageAlt ?? ''} width="1536" height="1024" />
+            : <HeroArt />}
+        </div>
+      </div>
+      <div class="stats">
+        {stats.map((s) => (
+          <div class="stats__item">
+            <span class="stats__value">{String(s.value).padStart(2, '0')}</span>
+            <span><span class="stats__label">{s.label}</span><span class="stats__note"><br />{s.note}</span></span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Z redakčního" accent="stolu" href="clanky/" linkLabel="Všechny články" />
+      {latest.length
+        ? <ul class="article-list article-list--grid">{latest.map((a) => <li><ArticleCard article={a} /></li>)}</ul>
+        : <EmptyState title="Další články se píšou" text="Vrána prý čeká na druhý zdroj." icon="📝" />}
+    </section>
+
+    <div class="grid grid--2">
+      <section class="panel">
+        <SectionHead title="Power" accent="Rankings" />
+        <p class="byline__role" style="margin:10px 0 12px">Redakční žebříček – názor redakce, ne oficiální pořadí ESPN.</p>
+        <EmptyState title="Redakce čeká na první kolo" text="Eddie odmítá cokoli seřadit bez dat. Řekl to suše." icon="📈" />
+      </section>
+
+      <section class="panel">
+        <SectionHead title="Síň" accent="slávy" gold href="sin-slavy/" linkLabel="Všichni šampioni" />
+        <ul style="list-style:none;margin:0;padding:0">
+          {seasonsDesc.map((s) => {
+            const team = teamById(s.champion);
+            return (
+              <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+                <span style="width:24px"><Trophy /></span>
+                <span style="width:34px"><TeamIcon team={team} /></span>
+                <span><span class="title-badge" style="font-size:.85rem">{s.season}</span><br /><a href={u(`tymy/${team.id}/`)} style="text-decoration:none;font-weight:600">{team.name}</a></span>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </div>
+
+    <section class="stack">
+      <SectionHead title="Názory" accent="expertů" href="redakce/" linkLabel="Redakce" />
+      <ul class="grid grid--3" style="list-style:none;margin:0;padding:0">
+        {staff.map((person) => {
+          const article = latestByAuthor(person.id);
+          return (
+            <li class="panel" style="display:grid;grid-template-columns:72px 1fr;gap:12px;position:relative">
+              <span class="card__avatar"><StaffAvatar id={person.avatar} /></span>
+              <span>
+                {article && <span class="tag">{categoryLabel(article.data.category)}</span>}
+                <a class="card__title" style="display:block;margin-top:4px;text-decoration:none" href={u(article ? `clanky/${article.id}/` : `redakce/${person.id}/`)}>
+                  {article ? article.data.title : person.name}
+                </a>
+                <span class="card__byline" style="display:block">{article ? person.shortName : person.role}</span>
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+
+    <div class="grid grid--2">
+      <section class="panel">
+        <SectionHead title="Týden ve" accent="Srandolize" />
+        {latestWeek
+          ? <p style="margin:12px 0 0">Kolo {latestWeek.number}{latestWeek.demo && <span class="tag tag--demo" style="margin-left:8px">DEMO</span>}</p>
+          : <div style="margin-top:12px"><EmptyState title="Redakce čeká na první kolo" text="Výsledky, MVP a All-Fantasy tým přijdou po draftu." /></div>}
+      </section>
+      {fact && (
+        <section class="panel">
+          <SectionHead title="Zajímavost z" accent="historie" href="sin-slavy/" linkLabel="Síň slávy" />
+          <p style="margin:14px 0 0;font-family:var(--font-serif);font-size:1.25rem">{fact}</p>
+        </section>
+      )}
+    </div>
+  </div>
+</Base>

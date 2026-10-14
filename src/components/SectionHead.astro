@@ -1,0 +1,11 @@
+---
+// Nadpis sekce: první část bílá, `accent` červeně (nebo zlatě u titulů).
+import { u } from '../lib/paths';
+interface Props { title: string; accent?: string; gold?: boolean; href?: string; linkLabel?: string; level?: 'h1' | 'h2' }
+const { title, accent, gold = false, href, linkLabel = 'Více', level = 'h2' } = Astro.props;
+const Tag = level;
+---
+<div class="section-head">
+  <Tag class="section-title">{title}{accent && <> {gold ? <span class="gold">{accent}</span> : <em>{accent}</em>}</>}</Tag>
+  {href && <a class="section-link" href={u(href)}>{linkLabel}<span aria-hidden="true">→</span></a>}
+</div>

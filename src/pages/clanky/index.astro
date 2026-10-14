@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleIndex from '../../components/ArticleIndex.astro';
+import { getArticles } from '../../lib/content';
+const articles = await getArticles();
+---
+<Base title="Články" description="Všechny články SL Network – zprávy, zákulisí, analýzy a historie Srandoligy.">
+  <ArticleIndex articles={articles} heading="Články" />
+</Base>

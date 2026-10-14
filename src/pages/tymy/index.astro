@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import TeamIcon from '../../components/TeamIcon.astro';
+import { currentTeams, formerTeams } from '../../lib/data.js';
+import { u } from '../../lib/paths';
+import { SITE } from '../../lib/site.js';
+---
+<Base title="Týmy" description={`Franšízy Srandoligy v sezoně ${SITE.season}.`}>
+  <h1 class="page-title">Týmy</h1>
+  <p class="page-lead">{currentTeams.length} franšíz, jeden pohár. Pokračující týmy, nováčci a ti, kteří zůstali v historii.</p>
+  <div class="stack" style="margin-top:24px">
+    <section class="stack">
+      <SectionHead title={SITE.seasonLabel} accent={SITE.season} />
+      <ul class="team-grid">
+        {currentTeams.map((t) => (
+          <li><a class="team-tile" href={u(`tymy/${t.id}/`)} style={`--team:${t.color}`}>
+            <TeamIcon team={t} />
+            <span class="team-tile__name">{t.name}</span>
+            {t.status === 'new' && <span class="tag">Nováček</span>}
+            {!t.verified && <span class="tag tag--muted">Název nepotvrzen</span>}
+          </a></li>
+        ))}
+      </ul>
+    </section>
+    <section class="stack">
+      <SectionHead title="Z" accent="historie" />
+      <ul class="team-grid">
+        {formerTeams.map((t) => (
+          <li><a class="team-tile" href={u(`tymy/${t.id}/`)} style={`--team:${t.color}`}>
+            <TeamIcon team={t} /><span class="team-tile__name">{t.name}</span><span class="tag tag--muted">Už nehrají</span>
+          </a></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</Base>

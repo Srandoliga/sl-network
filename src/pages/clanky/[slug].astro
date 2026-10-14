@@ -1,0 +1,56 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Byline from '../../components/Byline.astro';
+import CopyTeaser from '../../components/CopyTeaser.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { getArticles } from '../../lib/content';
+import { categoryLabel } from '../../lib/site.js';
+import { staffById } from '../../lib/data.js';
+import { buildTeaser, coverImage, formatDateCs, isoDate, ogImageFor, splitHeadline } from '../../lib/articles.js';
+import { abs, u } from '../../lib/paths';
+import { asset } from '../../lib/assets';
+
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article, more: articles.filter((a) => a.id !== article.id).slice(0, 2) },
+  }));
+}
+
+const { article, more } = Astro.props;
+const { Content } = await render(article);
+const { title, perex, author, category, date, image, imageAlt, teaser, draft, demo } = article.data;
+const url = abs(`clanky/${article.id}/`, Astro.site);
+const person = staffById(author);
+const headline = splitHeadline(title);
+const cover = coverImage({ image, category });
+---
+<Base title={title} description={perex} image={ogImageFor(cover)} imageAlt={imageAlt}
+  article={{ published: date, section: categoryLabel(category), author: person?.name ?? author }}>
+  <article class="article">
+    {draft && <p class="notice notice--draft"><strong>Koncept ke schválení.</strong> Na veřejném webu se zobrazí až po nastavení <code>draft: false</code>.</p>}
+    {demo && <p class="notice notice--demo"><strong>DEMO:</strong> článek obsahuje ukázková, neskutečná data.</p>}
+    <header class="article__head">
+      <div class="article__meta">
+        <a class="tag" href={u(`clanky/kategorie/${category}/`)}>{categoryLabel(category)}</a>
+        <time class="byline__role" datetime={isoDate(date)}>{formatDateCs(date)}</time>
+      </div>
+      <h1 class="page-title">{headline.lead}{headline.rest && <em>{headline.rest}</em>}</h1>
+      <p class="article__perex">{perex}</p>
+      <hr class="rule" />
+      <Byline author={author} />
+    </header>
+    <img class="article__image" src={asset(cover)} alt={image ? imageAlt ?? '' : ''} width="1536" height="1024" />
+    <div class="prose"><Content /></div>
+    <CopyTeaser text={buildTeaser({ title, perex, teaser }, url)} />
+  </article>
+  {more.length > 0 && (
+    <section class="stack" style="margin-top:40px">
+      <SectionHead title="Další" accent="články" href="clanky/" linkLabel="Všechny" />
+      <ul class="article-list article-list--grid">{more.map((a) => <li><ArticleCard article={a} /></li>)}</ul>
+    </section>
+  )}
+</Base>

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "vrana",
+    "name": "Vincent „Two Sources“ Vrána",
+    "shortName": "Vincent Vrána",
+    "role": "Senior Insider",
+    "beat": "Zákulisí, přestupy, kontroverze",
+    "bio": "Má vždy dva zdroje. Jeden z nich je obvykle on sám. Píše vážným tónem o věcech, které si vážnost nezaslouží, a právě proto mu všichni věří.",
+    "signature": "„Podle dvou nezávislých zdrojů…“ – a pak přijde věta, kterou nikdo nečekal.",
+    "avatar": "vrana"
+  },
+  {
+    "id": "benson",
+    "name": "Charles „Chuck“ Benson",
+    "shortName": "Chuck Benson",
+    "role": "Basketball Analyst",
+    "beat": "Trash talk, ironie, nepopulární názory",
+    "bio": "Analytik, který si analýzu pamatuje, ale názor má dřív. Nikoho nešetří, nejméně sebe. Jeho predikce stárnou rychle, jeho hlášky nikdy.",
+    "signature": "Krátké věty. Ostré pointy. Žádná slitování.",
+    "avatar": "benson"
+  },
+  {
+    "id": "brooks",
+    "name": "Eddie „The Numbers“ Brooks",
+    "shortName": "Eddie Brooks",
+    "role": "Head of Analytics",
+    "beat": "Čísla, predikce, Power Rankings",
+    "bio": "Věří tabulkám víc než lidem a tabulky mu to oplácejí. Humor má tak suchý, že by se z něj dala dělat izolace. Bez dat nevyhlásí ani počasí.",
+    "signature": "„Data nejsou k dispozici“ je u něj nejostřejší možná kritika.",
+    "avatar": "brooks"
+  }
+]

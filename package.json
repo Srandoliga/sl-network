@@ -1,0 +1,25 @@
+{
+  "name": "sl-network",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "validate": "node scripts/validate-data.mjs",
+    "build": "npm run validate && astro build && node scripts/check-dist.mjs",
+    "build:koncepty": "SHOW_DRAFTS=1 npm run build",
+    "preview": "astro preview",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "obrazek": "node scripts/prepare-image.mjs",
+    "logo": "node scripts/prepare-logo.mjs"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.1",
+    "astro": "^7.3.8"
+  }
+}
