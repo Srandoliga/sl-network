@@ -42,6 +42,11 @@ Když v hlavičce něco chybí nebo je chybně (neznámý autor, kategorie…), 
 ## 2. Upoutávka do Messengeru
 
 Upoutávky a šablony jsou jen v **redakčním režimu** na vašem počítači (žlutá lišta nahoře) – čtenáři je neuvidí.
+
+**Nejjednodušší cesta:** dvojklik na **Redakce SL Network** na Ploše (nebo `Redakce SL Network.command` ve složce projektu).
+Otevře se okno Terminálu a v prohlížeči redakční verze webu na `http://localhost:4400/sl-network/`.
+Úpravy článků se v prohlížeči projeví samy. Hotovo = zavřít okno Terminálu.
+(Při úplně prvním spuštění se macOS může zeptat, zda soubor otevřít – potvrďte **Otevřít**.)
 Spusťte `npm run dev` (nebo `npm run build:redakce` a `npm run preview`), otevřete článek, sjeďte dolů a klepněte na **Zkopírovat upoutávku**. Pak ji vložte do skupiny.
 Náhled odkazu (titulek, perex, obrázek) si Messenger stáhne sám.
 Když se náhled po úpravě článku nezmění, Messenger ho drží v mezipaměti. Pomůže počkat nebo použít
