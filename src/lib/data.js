@@ -14,6 +14,8 @@ export const teamLogo = (id) => (logoIds.has(id) ? `obrazky/tymy/${id}.webp` : u
 
 export const teamById = (id) => teams.find((t) => t.id === id);
 export const staffById = (id) => staff.find((s) => s.id === id);
+// Redaktoři s vlastním profilem (bez společného autora „Redakce SL Network“, `collective: true`).
+export const staffMembers = staff.filter((s) => !s.collective);
 export const currentTeams = teams.filter((t) => t.status !== 'former');
 export const formerTeams = teams.filter((t) => t.status === 'former');
 export const seasonsDesc = [...seasons].sort((a, b) => b.number - a.number);

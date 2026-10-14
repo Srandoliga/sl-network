@@ -5,7 +5,7 @@ import { checkPage } from './lib/check-html.mjs';
 
 const dist = new URL('../dist/', import.meta.url).pathname;
 const base = (process.env.BASE_PATH || '/sl-network').replace(/\/$/, '') || '/';
-const origin = new URL(process.env.SITE_URL || 'https://example.github.io').origin;
+const origin = new URL(process.env.SITE_URL || 'https://srandoliga.github.io').origin;
 
 const walk = (dir) => readdirSync(dir).flatMap((name) => {
   const path = join(dir, name);

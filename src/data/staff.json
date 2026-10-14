@@ -28,5 +28,16 @@
     "bio": "Věří tabulkám víc než lidem a tabulky mu to oplácejí. Humor má tak suchý, že by se z něj dala dělat izolace. Bez dat nevyhlásí ani počasí.",
     "signature": "„Data nejsou k dispozici“ je u něj nejostřejší možná kritika.",
     "avatar": "brooks"
+  },
+  {
+    "id": "redakce",
+    "name": "Redakce SL Network",
+    "shortName": "Redakce SL Network",
+    "role": "Redakce",
+    "beat": "Oficiální sdělení redakce",
+    "bio": "Společný hlas redakce SL Network.",
+    "signature": "Výsledky jsou skutečné. Zbytek berte s rezervou.",
+    "avatar": "redakce",
+    "collective": true
   }
 ]
