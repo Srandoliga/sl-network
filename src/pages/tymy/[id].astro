@@ -4,12 +4,12 @@ import SectionHead from '../../components/SectionHead.astro';
 import TeamIcon from '../../components/TeamIcon.astro';
 import TitleBadge from '../../components/TitleBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
-import { teams, seasons, rivalries, teamById } from '../../lib/data.js';
+import { publicTeams, seasons, rivalries, teamById } from '../../lib/data.js';
 import { teamHistory } from '../../lib/history.js';
 import { u } from '../../lib/paths';
 
 export function getStaticPaths() {
-  return teams.map((team) => ({ params: { id: team.id }, props: { team } }));
+  return publicTeams.map((team) => ({ params: { id: team.id }, props: { team } }));
 }
 const { team } = Astro.props;
 const history = teamHistory(seasons, team.id);

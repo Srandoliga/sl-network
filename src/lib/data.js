@@ -17,5 +17,8 @@ export const staffById = (id) => staff.find((s) => s.id === id);
 // Redaktoři s vlastním profilem (bez společného autora „Redakce SL Network“, `collective: true`).
 export const staffMembers = staff.filter((s) => !s.collective);
 export const currentTeams = teams.filter((t) => t.status !== 'former');
+// Týmy s veřejným profilem: nepotvrzení nováčci (`verified: false`) se zatím neodhalují.
+export const publicTeams = teams.filter((t) => t.verified);
+export const pendingNewcomers = currentTeams.filter((t) => t.status === 'new' && !t.verified);
 export const formerTeams = teams.filter((t) => t.status === 'former');
 export const seasonsDesc = [...seasons].sort((a, b) => b.number - a.number);

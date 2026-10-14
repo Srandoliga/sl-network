@@ -6,7 +6,7 @@ author: vrana
 category: historie
 perex: "Čtyři ročníky, čtyři finále a jen dvě jména na poháru. Před Sezonou V se ohlížíme za historií, kterou psali Little Barns Fireballs a ACL Rokycany. A také za těmi, kdo jim byli nejblíž."
 teaser: "🏆 Čtyři sezony. Dva šampioni. Little Barns Fireballs a ACL Rokycany se čtyři roky střídají na trůnu. Zlomí Sezona V tenhle kruh? Vincent Vrána otevírá novou éru Srandoligy."
-featured: true
+featured: false
 image: obrazky/clanky/ctyri-sezony-dva-sampioni.webp
 imageAlt: "Dva basketbalisté zezadu ve fialovém a bílém dresu, mezi nimi zlatý pohár"
 draft: false

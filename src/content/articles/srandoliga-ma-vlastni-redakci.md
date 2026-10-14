@@ -1,6 +1,6 @@
 ---
 title: "Srandoliga má vlastní redakci. Nikdo si o ni neřekl."
-date: 2026-10-14T18:00:00+02:00
+date: 2026-10-14T09:00:00+02:00
 author: redakce
 category: redakce
 perex: "Pátá sezona přinese nové manažery, další boj o titul a jednu instituci, jejíž vznik nikdo neschválil. Do světa Srandoligy vstupuje SL Network. Nezávislé sportovní médium s ambicí informovat, analyzovat a pravidelně zpochybňovat kompetenci všech zúčastněných."
