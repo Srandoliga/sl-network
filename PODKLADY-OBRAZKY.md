@@ -1,7 +1,7 @@
 # Podklady obrázků – prompty pro ChatGPT
 
 **Stav 14. 10. 2026:** hotové – Dvě dynastie s názvy na dresech, 5 obrázků rubrik, portréty redakce (nový Vrána a Benson),
-loga ACL, Fireballs, Pilsen Beers, Chlumčany JZD, Los Mustachios, AbuKuafi Vzdejto. **Chybí:** loga Kutlak’s Amateurs a Tachovsky gadzo (zatím kreslený štít se zkratkou).
+loga ACL, Fireballs, Pilsen Beers, Chlumčany JZD, Los Mustachios, AbuKaufí VzdejTo. **Chybí:** loga Kutlak’s Amateurs a Tachovský Gadžo (zatím kreslený štít se zkratkou).
 Originály jsou v `podklady/originaly/`.
 
 Cíl: **80 % čistý sportovní web, 20 % pixelový charakter.** Pixel art drží hlavně portréty redakce,
@@ -114,7 +114,7 @@ Pak doplňte podle týmu:
 | Chlumčany JZD (`chlumcany-jzd`) | `Emblem: a white five-pointed star with black outline flying right, trailing light-blue speed stripes, sky blue and white.` |
 | Los Mustachios (`los-mustachios`) | `Emblem: a cartoon mascot head of a cheerful man with blond hair and a huge brown handlebar mustache, green collar, friendly but cocky look, circle badge in green.` |
 | Kutlak’s Amateurs (`kutlaks-amateurs`) | `Emblem: an ORIGINAL cheerful cartoon mouse mascot in vintage 1930s rubber-hose animation style – big round black ears, white gloves, wide grin, spinning a basketball on one finger, wearing a teal basketball jersey; inside a teal circle badge. Must be an original character, NOT Mickey Mouse or any Disney character (no red shorts with buttons, no Disney features).` |
-| AbuKuafi Vzdejto (`abukuafi-vzdejto`) | `Emblem: [doplnit podle loga v ESPN] in orange and black.` |
-| Tachovsky gadzo (`tachovsky-gadzo`) | `Emblem: a single crisp white high-top basketball sneaker in dynamic three-quarter view, mid-jump with small speed lines, light grey shading, magenta laces and sole accent, fresh and clean look. Generic shoe with NO brand logos, no swoosh, no stripes, no text.` |
+| AbuKaufí VzdejTo (`abukuafi-vzdejto`) | `Emblem: [doplnit podle loga v ESPN] in orange and black.` |
+| Tachovský Gadžo (`tachovsky-gadzo`) | `Emblem: a single crisp white high-top basketball sneaker in dynamic three-quarter view, mid-jump with small speed lines, light grey shading, magenta laces and sole accent, fresh and clean look. Generic shoe with NO brand logos, no swoosh, no stripes, no text.` |
 
-Kutlak’s Amateurs a Tachovsky gadzo: prompty doplněny podle zadání (myš ve stylu starých kreslených filmů, bílá sportovní bota).
+Kutlak’s Amateurs a Tachovský Gadžo: prompty doplněny podle zadání (myš ve stylu starých kreslených filmů, bílá sportovní bota).
