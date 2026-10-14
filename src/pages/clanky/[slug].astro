@@ -6,7 +6,7 @@ import CopyTeaser from '../../components/CopyTeaser.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import { getArticles } from '../../lib/content';
-import { categoryLabel } from '../../lib/site.js';
+import { categoryLabel, EDITORIAL } from '../../lib/site.js';
 import { staffById } from '../../lib/data.js';
 import { buildTeaser, coverImage, formatDateCs, isoDate, ogImageFor, splitHeadline } from '../../lib/articles.js';
 import { abs, u } from '../../lib/paths';
@@ -45,7 +45,7 @@ const cover = coverImage({ image, category });
     </header>
     <img class="article__image" src={asset(cover)} alt={image ? imageAlt ?? '' : ''} width="1536" height="1024" />
     <div class="prose"><Content /></div>
-    <CopyTeaser text={buildTeaser({ title, perex, teaser }, url)} />
+    {EDITORIAL && <CopyTeaser text={buildTeaser({ title, perex, teaser }, url)} />}
   </article>
   {more.length > 0 && (
     <section class="stack" style="margin-top:40px">

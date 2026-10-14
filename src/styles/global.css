@@ -72,6 +72,13 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 }
 .kicker span { color: var(--text-soft); }
 
+/* ---------- Redakční režim ---------- */
+
+.editorial-bar {
+  background: #facc15; color: #111; font-family: var(--font-display); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; padding-block: 6px;
+}
+
 /* ---------- Hlavička ---------- */
 
 .site-header { border-bottom: 1px solid var(--border); }

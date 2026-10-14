@@ -31,5 +31,6 @@ export const NAV = [
   { href: 'redakce/', label: 'Redakce' },
 ];
 
-// Koncepty (draft: true) jsou vidět jen při `npm run dev` nebo `npm run build:koncepty`.
-export const SHOW_DRAFTS = import.meta.env?.DEV === true || process.env.SHOW_DRAFTS === '1';
+// Redakční režim (`npm run dev`, `npm run build:redakce`): koncepty, šablony pro Messenger, upoutávky.
+// Veřejný web (`npm run build`, GitHub) nic z toho neobsahuje.
+export const EDITORIAL = import.meta.env?.DEV === true || process.env.REDAKCE === '1';

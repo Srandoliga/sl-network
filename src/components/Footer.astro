@@ -1,11 +1,11 @@
 ---
-import { SITE } from '../lib/site.js';
+import { EDITORIAL, SITE } from '../lib/site.js';
 import { u } from '../lib/paths';
 ---
 <footer class="site-footer">
   <div class="container">
     <p><strong>{SITE.name}</strong> – neoficiální zpravodajství Srandoligy, sezona {SITE.season}.</p>
     <p>Redakce je fiktivní a texty jsou satira. Oficiální výsledky a pořadí najdete vždy v ESPN.</p>
-    <p><a href={u('sablony/')}>Šablony pro Messenger</a></p>
+    {EDITORIAL && <p><a href={u('sablony/')}>Šablony pro Messenger</a></p>}
   </div>
 </footer>

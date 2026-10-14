@@ -1,5 +1,5 @@
-# SL Network – soukromý web. Indexaci zakazuje <meta name="robots" content="noindex"> na každé stránce.
-# Roboty záměrně neblokujeme: Messenger/Facebook (facebookexternalhit) musí stránky načíst kvůli náhledu odkazu
-# a vyhledávač musí stránku přečíst, aby viděl noindex. Neindexování není ochrana přístupu.
+# Indexaci zakazuje <meta name="robots" content="noindex"> na každé stránce.
+# Roboty záměrně neblokujeme, aby fungovaly náhledy odkazů v chatovacích aplikacích
+# a aby vyhledávače noindex vůbec viděly. Neindexování není ochrana přístupu.
 User-agent: *
 Allow: /

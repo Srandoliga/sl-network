@@ -41,7 +41,8 @@ Když v hlavičce něco chybí nebo je chybně (neznámý autor, kategorie…), 
 
 ## 2. Upoutávka do Messengeru
 
-Otevřete článek na webu, sjeďte dolů a klepněte na **Zkopírovat upoutávku**. Pak ji vložte do skupiny.
+Upoutávky a šablony jsou jen v **redakčním režimu** na vašem počítači (žlutá lišta nahoře) – čtenáři je neuvidí.
+Spusťte `npm run dev` (nebo `npm run build:redakce` a `npm run preview`), otevřete článek, sjeďte dolů a klepněte na **Zkopírovat upoutávku**. Pak ji vložte do skupiny.
 Náhled odkazu (titulek, perex, obrázek) si Messenger stáhne sám.
 Když se náhled po úpravě článku nezmění, Messenger ho drží v mezipaměti. Pomůže počkat nebo použít
 [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) → „Scrape Again“.
@@ -49,7 +50,7 @@ Když se náhled po úpravě článku nezmění, Messenger ho drží v mezipamě
 ## 3. Obrázkové šablony
 
 Texty šablon (Breaking News, Draft Special, Weekly Recap) jsou v `src/data/templates.json`.
-Na webu: patička → **Šablony pro Messenger** → otevřít → snímek obrazovky.
+V redakčním režimu: odkaz **Šablony pro Messenger** v hlavičce nebo patičce → otevřít → snímek obrazovky.
 Šablona s `"demo": true` má razítko DEMO – nepoužívat se skutečnými výsledky, dokud se nepřepíše.
 
 ## 4. Týmy a historie
@@ -70,7 +71,7 @@ Jednou: nainstalovat [Node.js](https://nodejs.org) 22+ a ve složce projektu spu
 |---|---|
 | `npm run dev` | živý náhled na http://localhost:4321/sl-network/ (ukazuje i koncepty) |
 | `npm run build` | sestaví web jako na GitHubu: zkontroluje data, odkazy a noindex |
-| `npm run build:koncepty` | totéž, ale včetně konceptů (pro schvalování) |
+| `npm run build:redakce` | redakční verze: navíc koncepty, šablony pro Messenger a upoutávky (jen pro vás, nezveřejňuje se) |
 | `npm run preview` | zobrazí sestavený web |
 | `npm test` | spustí testy |
 

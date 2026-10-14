@@ -1,0 +1,44 @@
+---
+// Šablony pro Messenger – jen v redakčním režimu (npm run dev / build:redakce). Na veřejném webu se nesestaví.
+import Base from '../../layouts/Base.astro';
+import MessengerCard from '../../components/MessengerCard.astro';
+import { templates } from '../../lib/data.js';
+import { EDITORIAL } from '../../lib/site.js';
+import { u } from '../../lib/paths';
+
+export function getStaticPaths() {
+  if (!EDITORIAL) return [];
+  return [
+    { params: { sablona: undefined }, props: { template: undefined } },
+    ...templates.map((template) => ({ params: { sablona: template.id }, props: { template } })),
+  ];
+}
+const { template } = Astro.props;
+---
+{template ? (
+  <Base title={`Šablona: ${template.name}`}>
+    <p style="margin:0 0 12px"><a href={u('sablony/')}>← Všechny šablony</a></p>
+    <MessengerCard template={template} />
+    <details class="panel" style="margin-top:20px">
+      <summary><strong>Jak uložit jako obrázek</strong></summary>
+      <ol>
+        <li><strong>Telefon:</strong> snímek obrazovky, pak oříznout na rámeček šablony.</li>
+        <li><strong>Chrome na počítači:</strong> pravým tlačítkem na šablonu → Prozkoumat → na označeném prvku pravým tlačítkem → <em>Capture node screenshot</em> (vznikne PNG).</li>
+      </ol>
+      {template.demo && <p><strong>Pozor:</strong> šablona obsahuje DEMO údaje. Před sdílením je přepište skutečnými daty.</p>}
+    </details>
+  </Base>
+) : (
+  <Base title="Šablony pro Messenger" description="Obrázkové šablony pro sdílení v Messengeru.">
+    <h1 class="page-title">Šablony pro Messenger</h1>
+    <p class="page-lead">Otevřete šablonu, udělejte snímek obrazovky a pošlete ho do skupiny. Texty se mění v souboru <code>src/data/templates.json</code>.</p>
+    <ul class="article-list" style="margin-top:24px">
+      {templates.map((t) => (
+        <li class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <span><strong>{t.name}</strong>{t.demo && <span class="tag tag--demo" style="margin-left:8px">DEMO</span>}<br /><span class="byline__role">{t.headline}</span></span>
+          <a class="button" href={u(`sablony/${t.id}/`)}>Otevřít</a>
+        </li>
+      ))}
+    </ul>
+  </Base>
+)}

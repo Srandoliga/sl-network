@@ -18,11 +18,13 @@ const errors = htmlFiles.flatMap((file) => checkPage({
   file: relative(dist, file), html: readFileSync(file, 'utf8'), base, origin, exists,
 }));
 if (!exists('robots.txt')) errors.push('chybí robots.txt');
-// Pojistka: koncepty (draft: true) se do veřejného buildu nesmí dostat.
-if (process.env.SHOW_DRAFTS !== '1') {
+// Pojistka: veřejný build nesmí obsahovat redakční části (koncepty, šablony, upoutávky, odkazy na ně).
+if (process.env.REDAKCE !== '1') {
+  const editorial = /notice--draft|tag--draft|data-copy-teaser|editorial-bar|\/sablony\//;
   htmlFiles
-    .filter((file) => /notice--draft|tag--draft/.test(readFileSync(file, 'utf8')))
-    .forEach((file) => errors.push(`${relative(dist, file)}: obsahuje koncept, ale build není s SHOW_DRAFTS=1`));
+    .filter((file) => editorial.test(readFileSync(file, 'utf8')))
+    .forEach((file) => errors.push(`${relative(dist, file)}: obsahuje redakční část, ale build není v redakčním režimu (REDAKCE=1)`));
+  if (exists('sablony/index.html')) errors.push('veřejný build obsahuje šablony pro Messenger');
 }
 
 if (errors.length) {

@@ -1,9 +1,14 @@
 ---
-import { NAV, SITE } from '../lib/site.js';
+import { EDITORIAL, NAV, SITE } from '../lib/site.js';
 import { u } from '../lib/paths';
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => (href === '' ? path === u('') : path.startsWith(u(href)));
 ---
+{EDITORIAL && (
+  <div class="editorial-bar" role="note">
+    <div class="container">Redakční režim – koncepty, šablony a upoutávky vidíte jen vy. Na veřejném webu nejsou.</div>
+  </div>
+)}
 <header class="site-header">
   <div class="container masthead">
     <a class="brand" href={u('')} aria-label={`${SITE.name} – úvodní stránka`}>
@@ -20,7 +25,7 @@ const isCurrent = (href: string) => (href === '' ? path === u('') : path.startsW
           <li><a class="nav__link" href={u(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
         ))}
       </ul>
-      <a class="nav__aside" href={u('sablony/')}>Do Messengeru <span aria-hidden="true">→</span></a>
+      {EDITORIAL && <a class="nav__aside" href={u('sablony/')}>Šablony pro Messenger <span aria-hidden="true">→</span></a>}
     </div>
   </nav>
 </header>
