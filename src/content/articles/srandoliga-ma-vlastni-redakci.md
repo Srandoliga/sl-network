@@ -8,7 +8,7 @@ teaser: "📢 Srandoliga má vlastní redakci. Nikdo si o ni neřekl. Do páté 
 featured: true
 image: obrazky/clanky/srandoliga-ma-vlastni-redakci.webp
 imageAlt: "Redakce SL Network ve studiu, zleva Charles „Chuck“ Benson, Vincent „Two Sources“ Vrána a Eddie „The Numbers“ Brooks"
-draft: true
+draft: false
 ---
 
 Čtyři sezony fungovala Srandoliga bez vlastního sportovního zpravodajství.
