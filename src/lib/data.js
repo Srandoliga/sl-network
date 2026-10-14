@@ -18,7 +18,12 @@ export const staffById = (id) => staff.find((s) => s.id === id);
 export const staffMembers = staff.filter((s) => !s.collective);
 export const currentTeams = teams.filter((t) => t.status !== 'former');
 // Týmy s veřejným profilem: nepotvrzení nováčci (`verified: false`) se zatím neodhalují.
-export const publicTeams = teams.filter((t) => t.verified);
+export const publicTeams = teams.filter((t) => t.verified && t.profile !== false);
+export const hasProfile = (id) => publicTeams.some((t) => t.id === id);
 export const pendingNewcomers = currentTeams.filter((t) => t.status === 'new' && !t.verified);
 export const formerTeams = teams.filter((t) => t.status === 'former');
 export const seasonsDesc = [...seasons].sort((a, b) => b.number - a.number);
+
+// Historický archiv: jeden JSON na sezonu (src/data/historie/<rrrr-rr>.json).
+const historyModules = import.meta.glob('../data/historie/*.json', { eager: true, import: 'default' });
+export const historySeasons = Object.values(historyModules).sort((a, b) => a.season.localeCompare(b.season));

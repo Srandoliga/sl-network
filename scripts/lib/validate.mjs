@@ -33,6 +33,7 @@ export function validateTeams(teams) {
         id: (v) => isStr(v) && SLUG.test(v), name: isStr, short: isStr,
         status: (v) => TEAM_STATUSES.includes(v), verified: isBool,
         color: (v) => isStr(v) && HEX.test(v), icon: (v) => TEAM_ICONS.includes(v), story: isStr,
+        profile: (v) => v === undefined || isBool(v),
       }, where),
     ];
   });

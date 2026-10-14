@@ -1,0 +1,22 @@
+---
+// Jeden zápas play-off: dva týmy, nasazení a skóre, vítěz zvýrazněný.
+import TeamIcon from './TeamIcon.astro';
+import { teamById } from '../lib/data.js';
+import { formatPoints } from '../lib/archive.js';
+interface Props { game: { teams: string[]; scores: number[]; winner: string; label?: string }; seeds: Record<string, number>; title?: string }
+const { game, seeds, title } = Astro.props;
+---
+<div class="matchup">
+  {title && <div class="matchup__title">{title}</div>}
+  {game.teams.map((id, i) => {
+    const team = teamById(id);
+    return (
+      <div class:list={['matchup__row', { 'is-winner': game.winner === id }]}>
+        <span class="matchup__seed">#{seeds[id]}</span>
+        {team && <TeamIcon team={team} />}
+        <span class="matchup__name">{team?.name ?? id}</span>
+        <span class="matchup__score">{formatPoints(game.scores[i])}</span>
+      </div>
+    );
+  })}
+</div>

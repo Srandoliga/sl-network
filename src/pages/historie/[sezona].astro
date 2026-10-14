@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import TeamLink from '../../components/TeamLink.astro';
+import Matchup from '../../components/Matchup.astro';
+import Trophy from '../../components/Trophy.astro';
+import { historySeasons } from '../../lib/data.js';
+import { bracketOf, formatPoints, formatRecord, seasonSlug } from '../../lib/archive.js';
+import { u } from '../../lib/paths';
+
+export function getStaticPaths() {
+  return historySeasons.map((season, i) => ({
+    params: { sezona: seasonSlug(season.season) },
+    props: { season, prev: historySeasons[i - 1], next: historySeasons[i + 1] },
+  }));
+}
+const { season, prev, next } = Astro.props;
+const standings = [...season.teams].sort((a, b) => a.finalRank - b.finalRank);
+const seeds = Object.fromEntries(season.teams.map((t) => [t.team, t.seed]));
+const dates = Object.fromEntries(season.rounds.map((r) => [r.round, r.dates]));
+const { main, placement, consolation } = bracketOf(season);
+const roundNames = ['Čtvrtfinále', 'Semifinále', 'Finále'];
+const podium = standings.slice(0, 3);
+const ninth = standings.find((t) => t.finalRank === 9);
+const placementTitle = (g: any) => `O umístění 5.–8. · ${dates[g.round]}`;
+---
+<Base title={`Sezona ${season.season}`} description={`Konečná tabulka a play-off Srandoligy v sezoně ${season.season}.`}>
+  <p style="margin:0 0 10px"><a class="section-link" href={u('historie/')}>← Historické výsledky</a></p>
+  <p class="kicker">Sezona</p>
+  <h1 class="page-title">{season.season}</h1>
+
+  <ol class="podium">
+    {podium.map((t) => (
+      <li class:list={['podium__step', `podium__step--${t.finalRank}`]}>
+        <span class="podium__place">{t.finalRank === 1 ? <Trophy /> : `${t.finalRank}.`}</span>
+        <TeamLink id={t.team} />
+        <span class="podium__label">{t.finalRank === 1 ? 'Šampion' : t.finalRank === 2 ? 'Finalista' : '3. místo'}</span>
+      </li>
+    ))}
+  </ol>
+
+  <div class="stack" style="margin-top:28px">
+    <section class="stack">
+      <SectionHead title="Konečná" accent="tabulka" />
+      <p class="byline__role" style="margin:0">
+        <strong>Um.</strong> = konečné umístění po play-off · <strong>Základní část</strong> = bilance W-L-T a body ·
+        <strong>Nas.</strong> = nasazení do play-off · divize East / West.
+      </p>
+      <div class="st-table">
+        <div class="st-row st-row--head" aria-hidden="true">
+          <span>Um.</span><span>Tým</span><span>Bilance</span><span>PF</span><span>PA</span><span>Divize</span><span>Nas.</span>
+        </div>
+        {standings.map((t) => (
+          <div class:list={['st-row', { 'st-row--champ': t.finalRank === 1 }]}>
+            <span class="st-row__rank">{t.finalRank}.</span>
+            <span class="st-row__team">
+              <TeamLink id={t.team} size="sm" />
+              <span class="st-row__meta">
+                {formatRecord(t.record)} · PF {formatPoints(t.pf)} · PA {formatPoints(t.pa)} · {t.division} {t.divisionRank}. · nasazení #{t.seed}
+              </span>
+            </span>
+            <span class="st-row__col">{formatRecord(t.record)}</span>
+            <span class="st-row__col">{formatPoints(t.pf)}</span>
+            <span class="st-row__col">{formatPoints(t.pa)}</span>
+            <span class="st-row__col">{t.division} {t.divisionRank}.</span>
+            <span class="st-row__col">#{t.seed}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Play-off" accent="pavouk" />
+      <div class="bracket">
+        {main.map((games, i) => (
+          <div class="bracket__round">
+            <h3 class="bracket__title">{roundNames[i]}<span>{dates[i + 1]}</span></h3>
+            <div class="bracket__games">
+              {games.map((g) => <Matchup game={g} seeds={seeds} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <div class="grid grid--2">
+      <section class="stack">
+        <SectionHead title="Zápasy o" accent="umístění" />
+        <p class="byline__role" style="margin:0">Poražení ze čtvrtfinále hrají o 5.–8. místo, poražení semifinalisté o 3. místo.</p>
+        <div class="match-list">
+          {placement.map((g) => <Matchup game={g} seeds={seeds} title={g.label ? `${g.label} · ${dates[g.round]}` : placementTitle(g)} />)}
+        </div>
+      </section>
+      <section class="stack">
+        <SectionHead title="Consolation" accent="9.–10." />
+        <p class="byline__role" style="margin:0">Týmy mimo play-off (nasazení 9 a 10) hrají tři zápasy. Konečné pořadí určuje ESPN.</p>
+        {ninth && <div class="cons-result"><span class="byline__role">9. místo podle ESPN:</span> <TeamLink id={ninth.team} size="sm" /></div>}
+        <div class="match-list">
+          {consolation.map((g) => <Matchup game={g} seeds={seeds} title={`${g.label} · ${dates[g.round]}`} />)}
+        </div>
+      </section>
+    </div>
+
+    <nav class="season-nav" aria-label="Další sezony">
+      {prev ? <a class="button" href={u(`historie/${seasonSlug(prev.season)}/`)}>← {prev.season}</a> : <span />}
+      {next && <a class="button" href={u(`historie/${seasonSlug(next.season)}/`)}>{next.season} →</a>}
+    </nav>
+    <p class="byline__role">Zdroj: {season.source.replace(' – screenshoty v podklady/originaly', '')}. Oficiální údaje vždy v ESPN.</p>
+  </div>
+</Base>

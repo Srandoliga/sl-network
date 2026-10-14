@@ -27,6 +27,7 @@ export const NAV = [
   { href: '', label: 'Domů' },
   { href: 'clanky/', label: 'Články' },
   { href: 'sin-slavy/', label: 'Síň slávy' },
+  { href: 'historie/', label: 'Historické výsledky' },
   { href: 'tymy/', label: 'Týmy' },
   { href: 'redakce/', label: 'Redakce' },
 ];

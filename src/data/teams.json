@@ -118,5 +118,38 @@
     "color": "#64748b",
     "icon": "monogram",
     "story": "Součást historie ligy. V Sezoně V už nehrají."
+  },
+  {
+    "id": "uganda-paopice",
+    "name": "Uganda Paopice",
+    "short": "UGA",
+    "status": "former",
+    "verified": true,
+    "color": "#64748b",
+    "icon": "monogram",
+    "profile": false,
+    "story": "Historická organizace. V lize hrála v sezoně 2022/23."
+  },
+  {
+    "id": "budejce-gotcha",
+    "name": "Budějce Gotcha",
+    "short": "BUD",
+    "status": "former",
+    "verified": true,
+    "color": "#64748b",
+    "icon": "monogram",
+    "profile": false,
+    "story": "Historická organizace. V lize hrála v sezoně 2022/23."
+  },
+  {
+    "id": "o-j",
+    "name": "O.J.",
+    "short": "OJ",
+    "status": "former",
+    "verified": true,
+    "color": "#64748b",
+    "icon": "monogram",
+    "profile": false,
+    "story": "Historická organizace. V lize hrála v sezoně 2023/24."
   }
 ]

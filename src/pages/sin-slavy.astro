@@ -24,7 +24,7 @@ const honours = seasonsDesc.flatMap((s) => [...s.awards, ...s.records].map((h) =
 
   <div class="stack">
     <section class="panel">
-      <SectionHead title="Hall of" accent="Fame" gold />
+      <SectionHead title="Hall of" accent="Fame" gold href="historie/" linkLabel="Historické výsledky" />
       <ol class="hof">
         {seasonsDesc.map((s) => {
           const champ = teamById(s.champion);
@@ -35,7 +35,7 @@ const honours = seasonsDesc.flatMap((s) => [...s.awards, ...s.records].map((h) =
               <span class="hof__body">
                 <span class="title-badge">{s.season} · šampion</span>
                 <a class="team-cell" href={u(`tymy/${champ.id}/`)}><TeamIcon team={champ} />{champ.name}</a>
-                <span class="byline__role">Finále vs. <a href={u(`tymy/${fin.id}/`)}>{fin.name}</a></span>
+                <span class="byline__role">Finále vs. <a href={u(`tymy/${fin.id}/`)}>{fin.name}</a> · <a href={u(`historie/${s.season.replace('/', '-')}/`)}>Tabulka a play-off →</a></span>
               </span>
             </li>
           );

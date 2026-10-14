@@ -383,3 +383,102 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 
 .site-footer { border-top: 1px solid var(--border); padding-block: 28px 44px; color: var(--muted); font-size: 0.88rem; }
 .site-footer p { margin: 0 0 6px; }
+
+/* ---------- Historické výsledky ---------- */
+
+.team-cell__name { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.team-cell__tag { font-size: 0.62rem; }
+span.team-cell { cursor: default; }
+
+.season-grid { display: grid; gap: 12px; list-style: none; padding: 0; margin: 0; }
+@media (min-width: 760px) { .season-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .season-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.season-card { display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: var(--radius); padding: 16px; }
+.season-card__season { font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; text-decoration: none; line-height: 1; }
+.season-card__podium { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.season-card__podium li { display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: 6px; }
+.season-card__place { font-family: var(--font-display); font-weight: 700; color: var(--muted); }
+.season-card__place svg { width: 18px; height: 22px; }
+.season-card__meta { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.season-card__best { display: grid; gap: 4px; margin-top: -6px; }
+.season-card .section-link { margin-top: auto; }
+
+.is-gold { color: var(--gold); }
+
+/* Historické statistiky a konečná tabulka: na mobilu řádky s popisky, na desktopu tabulka. */
+.hist-table, .st-table { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.hist-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 10px; padding: 12px 14px; border-top: 1px solid var(--border); font-size: 0.9rem; }
+.hist-row:first-of-type, .hist-row--head + .hist-row { border-top: 0; }
+.hist-row--head { display: none; }
+.hist-divider {
+  padding: 18px 14px 8px; border-top: 2px solid var(--border-strong);
+  font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+}
+.hist-divider + .hist-row { border-top: 0; }
+.hist-row__team { grid-column: 1 / -1; }
+.hist-row [data-label]::before { content: attr(data-label); display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+@media (min-width: 860px) {
+  .hist-row { grid-template-columns: minmax(220px, 2.4fr) repeat(7, minmax(0, 1fr)); align-items: center; }
+  .hist-row--head { display: grid; font-family: var(--font-display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .hist-row__team { grid-column: auto; }
+  .hist-row [data-label]::before { display: none; }
+}
+
+.st-row { display: grid; grid-template-columns: 34px 1fr; gap: 4px 10px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--border); }
+.st-row--head { display: none; }
+.st-row--head + .st-row { border-top: 0; }
+.st-row--champ { box-shadow: inset 3px 0 0 var(--gold); }
+.st-row__rank { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; }
+.st-row__team { display: grid; gap: 4px; min-width: 0; }
+.st-row__meta { font-size: 0.8rem; color: var(--muted); }
+.st-row__col { display: none; }
+@media (min-width: 860px) {
+  .st-row { grid-template-columns: 50px minmax(220px, 2.6fr) repeat(5, minmax(0, 1fr)); }
+  .st-row--head { display: grid; font-family: var(--font-display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .st-row__meta { display: none; }
+  .st-row__col { display: block; font-variant-numeric: tabular-nums; }
+}
+
+.podium { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 10px; }
+.podium__step { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.podium__step--1 { border-color: color-mix(in srgb, var(--gold) 55%, var(--border)); }
+.podium__place { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--muted); }
+.podium__place svg { width: 24px; height: 29px; }
+.podium__label { font-family: var(--font-display); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.podium__step--1 .podium__label { color: var(--gold); }
+@media (min-width: 860px) { .podium { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Play-off pavouk: mobil = kola pod sebou, desktop = tři sloupce. */
+.bracket { display: grid; gap: 18px; }
+.bracket__title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; gap: 8px; }
+.bracket__title span { font-weight: 600; color: var(--muted); letter-spacing: 0.04em; text-transform: none; }
+.bracket__games { display: grid; gap: 10px; }
+@media (min-width: 860px) {
+  .bracket { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .bracket__round { display: flex; flex-direction: column; }
+  .bracket__games { flex: 1; display: flex; flex-direction: column; justify-content: space-around; gap: 14px; }
+}
+
+.matchup { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.matchup__title { padding: 7px 12px; font-family: var(--font-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); border-bottom: 1px solid var(--border); background: var(--surface-2); }
+.matchup__row { display: grid; grid-template-columns: 30px 24px 1fr auto; align-items: center; gap: 8px; padding: 8px 12px; color: var(--muted); }
+.matchup__row + .matchup__row { border-top: 1px solid var(--border); }
+.matchup__row svg, .matchup__row .team-logo { width: 24px; height: 24px; }
+.matchup__seed { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; }
+.matchup__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.matchup__score { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.matchup__row.is-winner { color: var(--text); }
+.matchup__row.is-winner .matchup__name { font-weight: 600; }
+.matchup__row.is-winner .matchup__score { color: var(--text); }
+.matchup__row.is-winner .matchup__score::after { content: '◂'; margin-left: 4px; color: var(--red); font-size: 0.8rem; }
+
+.match-list { display: grid; gap: 10px; }
+.cons-result { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.season-nav { display: flex; justify-content: space-between; gap: 12px; }
+
+.team-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; }
+.team-totals > div { display: grid; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
+.team-totals .stat { font-size: 1.6rem; }
+@media (min-width: 860px) {
+  .st-row.team-seasons { grid-template-columns: 50px minmax(160px, 1.6fr) repeat(4, minmax(0, 1fr)) 0; }
+}

@@ -4,7 +4,8 @@ import SectionHead from '../../components/SectionHead.astro';
 import TeamIcon from '../../components/TeamIcon.astro';
 import TitleBadge from '../../components/TitleBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
-import { publicTeams, seasons, rivalries, teamById } from '../../lib/data.js';
+import { publicTeams, seasons, rivalries, teamById, historySeasons } from '../../lib/data.js';
+import { STAGES, teamSeasons, formatRecord, formatPoints } from '../../lib/archive.js';
 import { teamHistory } from '../../lib/history.js';
 import { u } from '../../lib/paths';
 
@@ -15,6 +16,13 @@ const { team } = Astro.props;
 const history = teamHistory(seasons, team.id);
 const titles = history.filter((h) => h.result === 'champion');
 const teamRivalries = rivalries.filter((r) => r.teams.includes(team.id));
+const archive = teamSeasons(historySeasons, team.id);
+const totals = archive.reduce((a, r) => ({
+  w: a.w + r.record.w, l: a.l + r.record.l, t: a.t + r.record.t,
+  playoffs: a.playoffs + (r.stage === 'out' ? 0 : 1),
+  finals: a.finals + (r.stage === 'champion' || r.stage === 'final' ? 1 : 0),
+  titles: a.titles + (r.stage === 'champion' ? 1 : 0),
+}), { w: 0, l: 0, t: 0, playoffs: 0, finals: 0, titles: 0 });
 const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezony V', former: 'Už nehrají – součást historie' }[team.status];
 ---
 <Base title={team.name} description={team.story}>
@@ -48,6 +56,43 @@ const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezon
             );
           })}</ul>
         : <EmptyState title="Zatím bez finále" text="Kapitola, na kterou redakce teprve čeká." icon="📖" />}
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Sezona po" accent="sezoně" href="historie/" linkLabel="Historické výsledky" />
+      {archive.length ? (
+        <>
+          <div class="team-totals">
+            <div><span class="stat">{archive.length}</span><span class="stats__label">Sezony</span></div>
+            <div><span class="stat">{formatRecord(totals)}</span><span class="stats__label">Bilance zákl. části</span></div>
+            <div><span class="stat">{totals.playoffs}×</span><span class="stats__label">Play-off</span></div>
+            <div><span class="stat">{totals.finals}×</span><span class="stats__label">Finále</span></div>
+            <div><span class:list={['stat', { 'stat--gold': totals.titles > 0 }]}>{totals.titles}×</span><span class="stats__label">Tituly</span></div>
+          </div>
+          <div class="st-table">
+            <div class="st-row st-row--head team-seasons" aria-hidden="true">
+              <span>Um.</span><span>Sezona</span><span>Bilance</span><span>PF</span><span>Nas.</span><span>Play-off</span><span></span>
+            </div>
+            {archive.map((r) => (
+              <div class:list={['st-row', 'team-seasons', { 'st-row--champ': r.stage === 'champion' }]}>
+                <span class="st-row__rank">{r.finalRank}.</span>
+                <span class="st-row__team">
+                  <a href={u(`historie/${r.slug}/`)} style="font-weight:600">Sezona {r.season}</a>
+                  <span class="st-row__meta">{formatRecord(r.record)} · PF {formatPoints(r.pf)} · nasazení #{r.seed} · {STAGES[r.stage]}</span>
+                </span>
+                <span class="st-row__col">{formatRecord(r.record)}</span>
+                <span class="st-row__col">{formatPoints(r.pf)}</span>
+                <span class="st-row__col">#{r.seed}</span>
+                <span class:list={['st-row__col', { 'is-gold': r.stage === 'champion' }]}>{STAGES[r.stage]}</span>
+                <span class="st-row__col"></span>
+              </div>
+            ))}
+          </div>
+          <p class="byline__role" style="margin:0">Um. = konečné umístění po play-off. Bilance = základní část. Zdroj: ESPN.</p>
+        </>
+      ) : (
+        <EmptyState title="V historických výsledcích zatím bez sezony" text="Historie týmu začíná Sezonou V." icon="📖" />
+      )}
     </section>
 
     {teamRivalries.length > 0 && (

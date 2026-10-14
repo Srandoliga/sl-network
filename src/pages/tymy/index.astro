@@ -27,13 +27,16 @@ import { SITE } from '../../lib/site.js';
       )}
     </section>
     <section class="stack">
-      <SectionHead title="Z" accent="historie" />
+      <SectionHead title="Z" accent="historie" href="historie/" linkLabel="Historické výsledky" />
       <ul class="team-grid">
-        {formerTeams.map((t) => (
-          <li><a class="team-tile" href={u(`tymy/${t.id}/`)} style={`--team:${t.color}`}>
-            <TeamIcon team={t} /><span class="team-tile__name">{t.name}</span><span class="tag tag--muted">Už nehrají</span>
-          </a></li>
-        ))}
+        {formerTeams.map((t) => {
+          const Tile = t.profile === false ? 'div' : 'a';
+          return (
+            <li><Tile class="team-tile" href={t.profile === false ? undefined : u(`tymy/${t.id}/`)} style={`--team:${t.color}`}>
+              <TeamIcon team={t} /><span class="team-tile__name">{t.name}</span><span class="tag tag--muted">Už nehrají</span>
+            </Tile></li>
+          );
+        })}
       </ul>
     </section>
   </div>

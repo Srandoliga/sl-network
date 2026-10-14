@@ -66,6 +66,9 @@ V redakčním režimu: odkaz **Šablony pro Messenger** v hlavičce nebo patičc
   Ocenění/rekordy: `"awards": [{ "label": "MVP sezony", "value": "Jméno", "team": "id-tymu" }]`.
 - **Logo týmu jako obrázek:** `npm run logo -- <obrázek> <id-tymu>` → `public/obrazky/tymy/<id>.webp`. Web ho použije místo kreslené ikony.
 - `src/data/rivalries.json` – rivality (dvojice týmů + příběh).
+- **Historické výsledky:** `src/data/historie/<rrrr-rr>.json` – jeden soubor na sezonu (konečné pořadí, bilance základní části, PF/PA,
+  divize, nasazení a 15 zápasů play-off). Po skončení sezony zkopírujte poslední soubor a přepište čísla podle ESPN.
+  Týmy se zapisují jen přes ID z `teams.json`. Build zkontroluje součty (PF = PA, výhry = prohry), pavouk i shodu se Síní slávy.
 - `src/data/staff.json` – redakce.
 
 ## 5. Kontrola a náhled na počítači

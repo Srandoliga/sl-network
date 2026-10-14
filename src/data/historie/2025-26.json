@@ -1,0 +1,372 @@
+{
+  "season": "2025/26",
+  "espnSeason": 2026,
+  "rounds": [
+    {
+      "round": 1,
+      "dates": "16.–22. 3. 2026"
+    },
+    {
+      "round": 2,
+      "dates": "23.–29. 3. 2026"
+    },
+    {
+      "round": 3,
+      "dates": "30. 3.–5. 4. 2026"
+    }
+  ],
+  "teams": [
+    {
+      "team": "acl-rokycany",
+      "finalRank": 1,
+      "record": {
+        "w": 19,
+        "l": 1,
+        "t": 0
+      },
+      "pf": 30031,
+      "pa": 24822,
+      "division": "East",
+      "divisionRank": 1,
+      "seed": 1
+    },
+    {
+      "team": "chlumcany-jzd",
+      "finalRank": 2,
+      "record": {
+        "w": 7,
+        "l": 13,
+        "t": 0
+      },
+      "pf": 24367,
+      "pa": 25189,
+      "division": "East",
+      "divisionRank": 4,
+      "seed": 7
+    },
+    {
+      "team": "little-barns-fireballs",
+      "finalRank": 3,
+      "record": {
+        "w": 16,
+        "l": 4,
+        "t": 0
+      },
+      "pf": 28126,
+      "pa": 23842,
+      "division": "East",
+      "divisionRank": 2,
+      "seed": 3
+    },
+    {
+      "team": "pilsen-beers",
+      "finalRank": 4,
+      "record": {
+        "w": 14,
+        "l": 6,
+        "t": 0
+      },
+      "pf": 28404,
+      "pa": 25270,
+      "division": "East",
+      "divisionRank": 3,
+      "seed": 4
+    },
+    {
+      "team": "kutlaks-amateurs",
+      "finalRank": 5,
+      "record": {
+        "w": 12,
+        "l": 8,
+        "t": 0
+      },
+      "pf": 26962,
+      "pa": 26031,
+      "division": "West",
+      "divisionRank": 1,
+      "seed": 2
+    },
+    {
+      "team": "los-mustachios",
+      "finalRank": 6,
+      "record": {
+        "w": 9,
+        "l": 11,
+        "t": 0
+      },
+      "pf": 25259,
+      "pa": 25865,
+      "division": "West",
+      "divisionRank": 3,
+      "seed": 6
+    },
+    {
+      "team": "abukuafi-vzdejto",
+      "finalRank": 7,
+      "record": {
+        "w": 12,
+        "l": 8,
+        "t": 0
+      },
+      "pf": 26467,
+      "pa": 26255,
+      "division": "West",
+      "divisionRank": 2,
+      "seed": 5
+    },
+    {
+      "team": "prestice-mighty-ducks",
+      "finalRank": 8,
+      "record": {
+        "w": 5,
+        "l": 15,
+        "t": 0
+      },
+      "pf": 23450,
+      "pa": 25946,
+      "division": "East",
+      "divisionRank": 5,
+      "seed": 8
+    },
+    {
+      "team": "tachovsky-gadzo",
+      "finalRank": 9,
+      "record": {
+        "w": 5,
+        "l": 15,
+        "t": 0
+      },
+      "pf": 23464,
+      "pa": 25917,
+      "division": "West",
+      "divisionRank": 4,
+      "seed": 9
+    },
+    {
+      "team": "irish-airballers",
+      "finalRank": 10,
+      "record": {
+        "w": 1,
+        "l": 19,
+        "t": 0
+      },
+      "pf": 19307,
+      "pa": 26700,
+      "division": "West",
+      "divisionRank": 5,
+      "seed": 10
+    }
+  ],
+  "games": [
+    {
+      "bracket": "main",
+      "round": 1,
+      "teams": [
+        "prestice-mighty-ducks",
+        "acl-rokycany"
+      ],
+      "scores": [
+        1156,
+        1557
+      ]
+    },
+    {
+      "bracket": "main",
+      "round": 1,
+      "teams": [
+        "abukuafi-vzdejto",
+        "pilsen-beers"
+      ],
+      "scores": [
+        1318,
+        1654
+      ]
+    },
+    {
+      "bracket": "main",
+      "round": 1,
+      "teams": [
+        "los-mustachios",
+        "little-barns-fireballs"
+      ],
+      "scores": [
+        1125,
+        1444
+      ]
+    },
+    {
+      "bracket": "main",
+      "round": 1,
+      "teams": [
+        "chlumcany-jzd",
+        "kutlaks-amateurs"
+      ],
+      "scores": [
+        1627,
+        1429
+      ]
+    },
+    {
+      "bracket": "main",
+      "round": 2,
+      "teams": [
+        "pilsen-beers",
+        "acl-rokycany"
+      ],
+      "scores": [
+        1711,
+        1844
+      ]
+    },
+    {
+      "bracket": "main",
+      "round": 2,
+      "teams": [
+        "chlumcany-jzd",
+        "little-barns-fireballs"
+      ],
+      "scores": [
+        1605,
+        1313
+      ]
+    },
+    {
+      "bracket": "main",
+      "round": 3,
+      "teams": [
+        "chlumcany-jzd",
+        "acl-rokycany"
+      ],
+      "scores": [
+        1476,
+        1739
+      ],
+      "places": [
+        1,
+        2
+      ],
+      "label": "Finále"
+    },
+    {
+      "bracket": "placement",
+      "round": 2,
+      "teams": [
+        "abukuafi-vzdejto",
+        "kutlaks-amateurs"
+      ],
+      "scores": [
+        1362,
+        1627
+      ]
+    },
+    {
+      "bracket": "placement",
+      "round": 2,
+      "teams": [
+        "prestice-mighty-ducks",
+        "los-mustachios"
+      ],
+      "scores": [
+        602,
+        1176
+      ]
+    },
+    {
+      "bracket": "placement",
+      "round": 3,
+      "teams": [
+        "pilsen-beers",
+        "little-barns-fireballs"
+      ],
+      "scores": [
+        1584,
+        1685
+      ],
+      "places": [
+        3,
+        4
+      ],
+      "label": "O 3. místo"
+    },
+    {
+      "bracket": "placement",
+      "round": 3,
+      "teams": [
+        "los-mustachios",
+        "kutlaks-amateurs"
+      ],
+      "scores": [
+        1043,
+        1569
+      ],
+      "places": [
+        5,
+        6
+      ],
+      "label": "O 5. místo"
+    },
+    {
+      "bracket": "placement",
+      "round": 3,
+      "teams": [
+        "prestice-mighty-ducks",
+        "abukuafi-vzdejto"
+      ],
+      "scores": [
+        786,
+        1457
+      ],
+      "places": [
+        7,
+        8
+      ],
+      "label": "O 7. místo"
+    },
+    {
+      "bracket": "consolation",
+      "round": 1,
+      "teams": [
+        "irish-airballers",
+        "tachovsky-gadzo"
+      ],
+      "scores": [
+        729,
+        964
+      ],
+      "label": "GmC1"
+    },
+    {
+      "bracket": "consolation",
+      "round": 2,
+      "teams": [
+        "irish-airballers",
+        "tachovsky-gadzo"
+      ],
+      "scores": [
+        596,
+        1297
+      ],
+      "label": "GmC2"
+    },
+    {
+      "bracket": "consolation",
+      "round": 3,
+      "teams": [
+        "irish-airballers",
+        "tachovsky-gadzo"
+      ],
+      "scores": [
+        668,
+        1160
+      ],
+      "places": [
+        9,
+        10
+      ],
+      "label": "GmC3"
+    }
+  ],
+  "source": "ESPN League Standings (Final Standings) a Final Playoff Results, sezona 2026 – screenshoty v podklady/originaly",
+  "verification": "transcribed",
+  "note": "Názvy týmů se berou ze src/data/teams.json (sjednocené názvy, chybné zápisy z ESPN se nepřebírají)."
+}

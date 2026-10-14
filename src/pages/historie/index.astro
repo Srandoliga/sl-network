@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import TeamLink from '../../components/TeamLink.astro';
+import Trophy from '../../components/Trophy.astro';
+import { historySeasons, teamById } from '../../lib/data.js';
+import { allTimeStats, bestRecord, formatPct, formatPoints, formatRecord, seasonSlug } from '../../lib/archive.js';
+import { u } from '../../lib/paths';
+
+const seasonsDesc = [...historySeasons].reverse();
+const byRank = (s: any, r: number) => s.teams.find((t: any) => t.finalRank === r);
+const stats = allTimeStats(historySeasons);
+// Nahoře současní účastníci, pod čarou organizace, které už v lize nehrají.
+const isCurrent = (id: string) => teamById(id)?.status !== 'former';
+const groups = [
+  { title: undefined, rows: stats.filter((r) => isCurrent(r.team)) },
+  { title: 'Organizace, které už v lize nehrají', rows: stats.filter((r) => !isCurrent(r.team)) },
+];
+---
+<Base title="Historické výsledky" description="Historie Srandoligy: konečné tabulky, play-off a statistiky organizací ze všech sezon.">
+  <p class="kicker">Historické výsledky</p>
+  <h1 class="page-title">{historySeasons.length} sezony.<em>Každý zápas play-off.</em></h1>
+  <p class="page-lead">Konečná pořadí, bilance základní části a kompletní play-off podle ESPN.</p>
+
+  <div class="stack" style="margin-top:24px">
+    <section class="stack">
+      <SectionHead title="Odehrané" accent="sezony" />
+      <ul class="season-grid">
+        {seasonsDesc.map((s) => {
+          const best = bestRecord(s);
+          return (
+            <li class="season-card">
+              <a class="season-card__season" href={u(`historie/${seasonSlug(s.season)}/`)}>{s.season}</a>
+              <ol class="season-card__podium">
+                {[1, 2, 3].map((r) => (
+                  <li>
+                    <span class:list={['season-card__place', { 'is-gold': r === 1 }]}>{r === 1 ? <Trophy /> : `${r}.`}</span>
+                    <TeamLink id={byRank(s, r).team} size="sm" />
+                  </li>
+                ))}
+              </ol>
+              <p class="season-card__meta">Nejlepší bilance základní části: <strong>{formatRecord(best[0].record)}</strong></p>
+              <div class="season-card__best">{best.map((t) => <TeamLink id={t.team} size="sm" />)}</div>
+              <a class="section-link" href={u(`historie/${seasonSlug(s.season)}/`)}>Tabulka a play-off<span aria-hidden="true">→</span></a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Historické" accent="statistiky" />
+      <p class="byline__role" style="margin:0">Součet všech odehraných sezon. Bilance = základní část (W-L-T), play-off = účast v hlavním pavouku (nasazení 1–8).</p>
+      <div class="hist-table">
+        <div class="hist-row hist-row--head" aria-hidden="true">
+          <span>Tým</span><span>Sezony</span><span>Bilance</span><span>Úspěšnost</span><span>PF</span><span>Play-off</span><span>Finále</span><span>Tituly</span>
+        </div>
+        {groups.map((group) => (
+          <>
+            {group.title && <div class="hist-divider">{group.title}</div>}
+            {group.rows.map((r) => (
+              <div class="hist-row">
+                <span class="hist-row__team"><TeamLink id={r.team} size="sm" historicalTag /></span>
+                <span data-label="Sezony">{r.seasons}</span>
+                <span data-label="Bilance">{formatRecord(r)}</span>
+                <span data-label="Úspěšnost">{formatPct(r.pct)}</span>
+                <span data-label="PF">{formatPoints(r.pf)}</span>
+                <span data-label="Play-off">{r.playoffs}×</span>
+                <span data-label="Finále">{r.finals}×</span>
+                <span data-label="Tituly" class:list={{ 'is-gold': r.titles > 0 }}>{r.titles}×</span>
+              </div>
+            ))}
+          </>
+        ))}
+      </div>
+    </section>
+    <p class="byline__role">Zdroj: ESPN Fantasy – Final Standings a Final Playoff Results. Oficiální údaje vždy v ESPN.</p>
+  </div>
+</Base>

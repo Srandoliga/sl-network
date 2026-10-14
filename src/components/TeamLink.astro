@@ -1,0 +1,17 @@
+---
+// Tým s ikonou: odkaz na profil, nebo jen název u historických organizací bez profilu.
+import TeamIcon from './TeamIcon.astro';
+import { teamById, hasProfile } from '../lib/data.js';
+import { u } from '../lib/paths';
+interface Props { id: string; size?: 'sm' | 'md'; historicalTag?: boolean }
+const { id, size = 'md', historicalTag = false } = Astro.props;
+const team = teamById(id);
+const linked = hasProfile(id);
+const Tag = linked ? 'a' : 'span';
+---
+{team && (
+  <Tag class:list={['team-cell', { 'team-cell--sm': size === 'sm' }]} href={linked ? u(`tymy/${id}/`) : undefined}>
+    <TeamIcon team={team} />
+    <span class="team-cell__name">{team.name}{historicalTag && !linked && <span class="tag tag--muted team-cell__tag">historická organizace</span>}</span>
+  </Tag>
+)}

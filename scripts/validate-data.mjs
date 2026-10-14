@@ -4,6 +4,7 @@ import { join, basename } from 'node:path';
 import {
   validateTeams, validateSeasons, validateRivalries, validateStaff, validateTemplates, validateWeek, mergeResults,
 } from './lib/validate.mjs';
+import { validateHistorySeason } from './lib/validate-history.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const parseErrors = [];
@@ -46,6 +47,17 @@ const weekResults = weekFiles.map((file) => {
   return week === undefined ? { errors: [], warnings: [] } : validateWeek(week, basename(file, '.json'), playingIds);
 });
 
+// Historický archiv: jeden JSON na sezonu v src/data/historie/
+const historyDir = join(root, 'src/data/historie');
+const historyFiles = existsSync(historyDir) ? readdirSync(historyDir).filter((f) => f.endsWith('.json')) : [];
+const historyResults = historyFiles.map((file) => {
+  const season = readJson(join(historyDir, file));
+  if (season === undefined) return { errors: [], warnings: [] };
+  const expected = basename(file, '.json').replace('-', '/');
+  const result = validateHistorySeason(season, Array.isArray(seasons) ? seasons : [], teamIds);
+  return { errors: [...result.errors, ...(season.season === expected ? [] : [`src/data/historie/${file}: pole season „${season.season}“ neodpovídá názvu souboru`])], warnings: [] };
+});
+
 const { errors, warnings } = mergeResults(
   { errors: parseErrors, warnings: [] },
   validateTeams(teams),
@@ -54,6 +66,7 @@ const { errors, warnings } = mergeResults(
   validateStaff(staff, avatarIds),
   validateTemplates(templates, staffIds),
   ...weekResults,
+  ...historyResults,
 );
 // parseErrors se plní i při čtení týdnů, proto je připojíme znovu bez duplicit.
 const allErrors = [...new Set([...errors, ...parseErrors])];
@@ -64,4 +77,4 @@ if (allErrors.length) {
   console.error(`\nValidace dat selhala (${allErrors.length} chyb). Build zastaven.`);
   process.exit(1);
 }
-console.log(`✅ Data v pořádku: ${teams.length} týmů, ${seasons.length} sezon, ${weekFiles.length} kol${warnings.length ? `, ${warnings.length} varování ke kontrole` : ''}.`);
+console.log(`✅ Data v pořádku: ${teams.length} týmů, ${seasons.length} sezon (${historyFiles.length} v historických výsledcích), ${weekFiles.length} kol${warnings.length ? `, ${warnings.length} varování ke kontrole` : ''}.`);
