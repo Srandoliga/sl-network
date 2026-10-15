@@ -24,13 +24,16 @@ const facts = historyFacts(seasons, rivalries.map((r) => r.teams), (id) => teamB
 const dayOfYear = Math.floor((Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86400000);
 const fact = facts.length ? facts[dayOfYear % facts.length] : undefined;
 const latestByAuthor = (id: string) => articles.find((a) => a.data.author === id);
-const newcomers = currentTeams.filter((t) => t.status === 'new').length;
+const newTeams = currentTeams.filter((t) => t.status === 'new');
+const newcomers = newTeams.length;
+// Potvrzení nováčci jménem, dokud nejsou všichni potvrzeni, jen obecná poznámka.
+const newcomersNote = newTeams.every((t) => t.verified) ? newTeams.map((t) => t.name).join(' a ') + '.' : 'Názvy čekají na potvrzení.';
 const continuing = currentTeams.filter((t) => t.status === 'active').length;
 const champions = titleCounts(seasons).length;
 const leadTitle = lead ? splitHeadline(lead.data.headline ?? lead.data.title) : undefined;
 const stats = [
   { value: continuing, label: 'Pokračujících týmů', note: 'Známá jména, další sezona.' },
-  { value: newcomers, label: 'Nové franšízy', note: 'Názvy čekají na potvrzení.' },
+  { value: newcomers, label: 'Nové franšízy', note: newcomersNote },
   { value: seasons.length, label: 'Zapsané sezony', note: 'Historie se tady neztrácí.' },
 ];
 ---

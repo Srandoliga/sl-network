@@ -1,6 +1,6 @@
 # SL Network – předání pro další práci
 
-Stav k 14. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.md](BACKLOG.md), obsluha: [PUBLIKOVANI.md](PUBLIKOVANI.md).
+Stav k 15. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.md](BACKLOG.md), obsluha: [PUBLIKOVANI.md](PUBLIKOVANI.md).
 
 ## Kde co je
 
@@ -24,10 +24,11 @@ Stav k 14. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.
 ## Hotovo
 
 - **Fáze 1** (úkoly 1–10): Astro 7 web, design (Barlow Condensed / Source Serif 4 / Inter, tmavý styl, zlatá jen pro tituly), články z Markdownu, redakce (Vrána, Benson, Brooks + společný autor „Redakce SL Network“), Síň slávy, týmy s logy, Open Graph pro Messenger, noindex, validace dat při buildu.
-- **Publikované články:** „Srandoliga má vlastní redakci. Nikdo si o ni neřekl.“ (hlavní, `featured`) a „Čtyři sezony. Dva šampioni…“ (historie).
+- **Publikované články:** „Dva nováčci. Dva kmotři.“ (zákulisí, hlavní příběh od 15. 10.), „Srandoliga má vlastní redakci. Nikdo si o ni neřekl.“ a „Čtyři sezony. Dva šampioni…“ (historie).
 - **Redakční režim** (jen lokálně): ikona „Redakce SL Network“ na Ploše / `npm run dev` / `npm run build:redakce` – koncepty, šablony pro Messenger, upoutávky. Veřejný build je nesmí obsahovat (hlídá `scripts/check-dist.mjs`).
 - **Fáze 1.5 – Historické výsledky** (`/historie/`): 4 sezony 2022/23–2025/26 z ESPN – konečné pořadí, bilance základní části, PF/PA, divize East/West, nasazení, 15 zápasů play-off na sezonu (hlavní pavouk, o umístění, consolation). Souhrnné statistiky, profily týmů „sezona po sezoně“, odkazy ze Síně slávy.
-- **Nováčci:** dva nepotvrzení (`novy-tym-1/2`, `verified: false`) – na webu skryti, místo nich oznámení na stránce Týmy. Skutečná jména ani loga zatím do repa nepatří.
+- **Nováčci (odhaleni 15. 10.):** Litice Hoops (`litice-hoops`, doporučení Little Barns Fireballs) a Michal’s Balls of Fire (`michals-balls-of-fire`, doporučení Pilsen Beers) – profily a loga, bez historie. Divize zatím nepotvrzeny.
+- **Typografie článků:** pravidla v `PUBLIKOVANI.md` (tučné názvy týmů s odkazem při první zmínce, redakční citace s `<cite>`, nepovinné pole `subtitle`).
 
 ## Klíčová rozhodnutí (neměnit bez majitele)
 

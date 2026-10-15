@@ -80,24 +80,24 @@
     "story": "Ve finále zatím nebyli. Redakce čeká na první velký titulek z Tachova."
   },
   {
-    "id": "novy-tym-1",
-    "name": "Nový tým 1",
-    "short": "N1",
+    "id": "litice-hoops",
+    "name": "Litice Hoops",
+    "short": "LIT",
     "status": "new",
-    "verified": false,
-    "color": "#94a3b8",
+    "verified": true,
+    "color": "#3b82f6",
     "icon": "monogram",
-    "story": "Nováček Sezony V. Název a příběh doplníme, jakmile je majitel potvrdí."
+    "story": "Nová organizace Sezony V. Do ligy vstupuje na doporučení Little Barns Fireballs. Historie týmu začíná teprve teď."
   },
   {
-    "id": "novy-tym-2",
-    "name": "Nový tým 2",
-    "short": "N2",
+    "id": "michals-balls-of-fire",
+    "name": "Michal’s Balls of Fire",
+    "short": "MBF",
     "status": "new",
-    "verified": false,
-    "color": "#94a3b8",
+    "verified": true,
+    "color": "#f97316",
     "icon": "monogram",
-    "story": "Nováček Sezony V. Název a příběh doplníme, jakmile je majitel potvrdí."
+    "story": "Nová organizace Sezony V. Do ligy vstupuje na doporučení Pilsen Beers. Historie týmu začíná teprve teď."
   },
   {
     "id": "prestice-mighty-ducks",

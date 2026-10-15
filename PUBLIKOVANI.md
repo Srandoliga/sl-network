@@ -12,6 +12,7 @@ Cíl: 5–10 minut týdně. Vše se dělá úpravou souborů. Žádná databáze
 ---
 title: "Titulek článku"
 headline: "Krátce. Úderně."    # nepovinné – krátký titulek pro Hlavní příběh (2. věta se vysází kurzívou)
+subtitle: "Podtitulek?"       # nepovinné – menší kurzíva pod nadpisem; v Messengeru a vyhledávači se připojí za titulek
 date: 2026-10-20            # datum publikace (RRRR-MM-DD)
 author: vrana                # vrana | benson | brooks
 category: zpravy             # zpravy | zakulisi | analyza | komentar | historie
@@ -25,9 +26,27 @@ draft: true                  # koncept: na veřejném webu se NEzobrazí
 ```
 
 3. Pod hlavičku napište text v Markdownu (`## Mezititulek`, `**tučně**`, `*kurzíva*`, `> citace`, tabulky).
-4. Ostré nebo satirické texty nechte nejdřív jako `draft: true`, ověřte je a pak změňte na `draft: false`.
+4. Dodržujte typografická pravidla níže.
+5. Ostré nebo satirické texty nechte nejdřív jako `draft: true`, ověřte je a pak změňte na `draft: false`.
 
 Homepage, výpis článků, kategorie i profil autora se aktualizují samy.
+
+**Typografická pravidla článků**
+
+- **Názvy týmů** tučně, přesně podle oficiálního názvu (diakritika, velká písmena, typografický apostrof `’`).
+  Při první relevantní zmínce jako odkaz na profil: `[**Litice Hoops**](../../tymy/litice-hoops/)`.
+  Další zmínky už obyčejně – text nemá působit přeformátovaně. Tučné a kurzívu u názvů týmů nekombinujte.
+- **Redaktoři:** při první zmínce celé jméno tučně, např. **Charles „Chuck“ Benson**, **Eddie „The Numbers“ Brooks**.
+- **Přímé citace redaktorů** jako redakční citace (kurzíva s červenou linkou vlevo a malým podpisem):
+
+  ```markdown
+  > „Text citace.“
+  >
+  > <cite>— **Eddie „The Numbers“ Brooks**, Head of Analytics</cite>
+  ```
+
+- **Tučně** střídmě: názvy klubů, důležitá tvrzení, závěrečná pointa. **Kurzíva** hlavně pro podtitulky a citace.
+- Dlouhý titulek rozdělte: krátký `title` (např. „Dva nováčci. Dva kmotři.“) + `subtitle`.
 
 **Obrázek článku:** formát na šířku 3:2 (např. 1536×1024 z ChatGPT). Připravíte ho jedním příkazem:
 `npm run obrazek -- ~/Downloads/obrazek.png nazev-clanku` → vytvoří `public/obrazky/clanky/nazev-clanku.webp`

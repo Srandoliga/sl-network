@@ -12,6 +12,8 @@ const articles = defineCollection({
     title: z.string().min(3),
     // Krátký titulek pro Hlavní příběh a šablony, např. „Dvě dynastie. Jedna liga.“ (nepovinné).
     headline: z.string().min(3).optional(),
+    // Podtitulek pod hlavním nadpisem článku (nepovinné). Do SEO titulku a náhledu v Messengeru se připojí za titulek.
+    subtitle: z.string().min(3).optional(),
     date: z.coerce.date(),
     author: z.enum(staffIds),
     category: z.enum(CATEGORY_IDS as [string, ...string[]]),
