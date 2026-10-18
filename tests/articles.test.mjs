@@ -23,6 +23,10 @@ test('pickLeadStory preferuje nejnovější featured článek', () => {
   assert.equal(pickLeadStory([]), undefined);
 });
 
+test('buildTeaser nepřidá odkaz podruhé, když ho upoutávka už obsahuje', () => {
+  assert.equal(buildTeaser({ title: 'T', perex: 'P', teaser: 'A\n👇 Celé:\nhttps://x.cz/a/\n' }, 'https://x.cz/a/'), 'A\n👇 Celé:\nhttps://x.cz/a/');
+});
+
 test('buildTeaser použije vlastní upoutávku nebo titulek s perexem a přidá odkaz', () => {
   assert.equal(
     buildTeaser({ title: 'T', perex: 'P' }, 'https://x.cz/a/'),

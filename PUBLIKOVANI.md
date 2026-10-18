@@ -13,9 +13,11 @@ Cíl: 5–10 minut týdně. Vše se dělá úpravou souborů. Žádná databáze
 title: "Titulek článku"
 headline: "Krátce. Úderně."    # nepovinné – krátký titulek pro Hlavní příběh (2. věta se vysází kurzívou)
 subtitle: "Podtitulek?"       # nepovinné – menší kurzíva pod nadpisem; v Messengeru a vyhledávači se připojí za titulek
+seoTitle: "Krátce"            # nepovinné – kratší titulek pro Messenger/vyhledávač („Krátce | SL Network“)
+seoDescription: "…"           # nepovinné – popis pro Messenger/vyhledávač místo perexu
 date: 2026-10-20            # datum publikace (RRRR-MM-DD)
 author: vrana                # vrana | benson | brooks
-category: zpravy             # zpravy | zakulisi | analyza | komentar | historie
+category: zpravy             # zpravy | zakulisi | analyza | komentar | historie | draft
 perex: "Jedna dvě věty pod titulek. Použijí se i v náhledu v Messengeru."
 teaser: "Vlastní text upoutávky (nepovinné)."
 image: obrazky/clanky/nazev.webp  # nepovinné – obrázek článku (karta, Hlavní příběh, náhled v Messengeru)
@@ -47,6 +49,18 @@ Homepage, výpis článků, kategorie i profil autora se aktualizují samy.
 
 - **Tučně** střídmě: názvy klubů, důležitá tvrzení, závěrečná pointa. **Kurzíva** hlavně pro podtitulky a citace.
 - Dlouhý titulek rozdělte: krátký `title` (např. „Dva nováčci. Dva kmotři.“) + `subtitle`.
+- **Obrázek uvnitř článku s popiskem** (soubor připravte `npm run obrazek`):
+
+  ```html
+  <figure>
+    <img src="../../obrazky/clanky/nazev.webp" alt="Popis" width="1600" height="900" loading="lazy" decoding="async">
+    <figcaption>Popisek pod obrázkem.</figcaption>
+  </figure>
+  ```
+
+**Draftové pořadí v článku:** data jsou v `src/data/draft/<rrrr-rr>.json` (pořadí id týmů; bilance se berou z historických
+výsledků sezony `recordsFrom`, build hlídá, že pořadí odpovídá pravidlu). Do textu stačí vložit samostatný řádek
+`<!-- draft-order: 2026-27 -->` (tabulka s logy a odkazy) nebo `<!-- snake-rounds: 2026-27 -->` (přehled prvních tří kol).
 
 **Obrázek článku:** formát na šířku 3:2 (např. 1536×1024 z ChatGPT). Připravíte ho jedním příkazem:
 `npm run obrazek -- ~/Downloads/obrazek.png nazev-clanku` → vytvoří `public/obrazky/clanky/nazev-clanku.webp`

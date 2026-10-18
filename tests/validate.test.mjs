@@ -119,3 +119,22 @@ test('validateSeasons: ocenění a rekordy musí mít label a existující tým'
   assert.ok(r.some((e) => e.includes('„zz“')));
   assert.ok(r.some((e) => e.includes('„label“')));
 });
+
+test('validateTeams: původní identita přejmenovaného týmu nesmí kolidovat s jiným týmem', () => {
+  const base = { short: 'X', status: 'new', verified: true, color: '#ffffff', icon: 'monogram', story: 's' };
+  const ok = [{ ...base, id: 'novy', name: 'Nový', formerIdentities: [{ id: 'stary', name: 'Starý', until: '2026-10-18' }] }];
+  assert.deepEqual(validateTeams(ok).errors, []);
+  const clash = [...ok, { ...base, id: 'stary', name: 'Jiný' }];
+  assert.match(validateTeams(clash).errors.join(), /původní id „stary“ používá jiný tým/);
+  assert.equal(validateTeams([{ ...base, id: 'a', name: 'A', formerIdentities: [{ id: 'Špatně', name: 'x', until: 'y' }] }]).errors.length, 1);
+});
+
+test('teams.json: 10 hrajících týmů, 2 nováčci, staré id přejmenovaného týmu není samostatný tým', async () => {
+  const { readFileSync } = await import('node:fs');
+  const teams = JSON.parse(readFileSync(new URL('../src/data/teams.json', import.meta.url), 'utf8'));
+  const playing = teams.filter((t) => t.status !== 'former');
+  assert.equal(playing.length, 10);
+  assert.deepEqual(playing.filter((t) => t.status === 'new').map((t) => t.id), ['litice-hoops', 'mc-rising-stars']);
+  assert.equal(teams.some((t) => t.id === 'michals-balls-of-fire'), false);
+  assert.equal(validateTeams(teams).errors.length, 0);
+});

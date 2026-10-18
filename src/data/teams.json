@@ -90,14 +90,22 @@
     "story": "Nová organizace Sezony V. Do ligy vstupuje na doporučení Little Barns Fireballs. Historie týmu začíná teprve teď."
   },
   {
-    "id": "michals-balls-of-fire",
-    "name": "Michal’s Balls of Fire",
-    "short": "MBF",
+    "id": "mc-rising-stars",
+    "name": "MC Rising Stars",
+    "short": "MCR",
     "status": "new",
     "verified": true,
-    "color": "#f97316",
+    "color": "#fc660a",
     "icon": "monogram",
-    "story": "Nová organizace Sezony V. Do ligy vstupuje na doporučení Pilsen Beers. Historie týmu začíná teprve teď."
+    "summary": "Nová organizace Sezony V Srandoligy, která do soutěže vstoupila na doporučení Pilsen Beers.",
+    "story": "Nová organizace, která do Srandoligy vstoupila na doporučení Pilsen Beers. Ještě před svým prvním draftem stihla změnit název i klubovou identitu. Původně vystupovala jako Michal’s Balls of Fire. Redakce SL Network přejmenování zaznamenala a založila příslušný spis. Sportovní historie organizace se teprve začne psát.",
+    "formerIdentities": [
+      {
+        "id": "michals-balls-of-fire",
+        "name": "Michal’s Balls of Fire",
+        "until": "2026-10-18"
+      }
+    ]
   },
   {
     "id": "prestice-mighty-ducks",

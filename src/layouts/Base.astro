@@ -23,11 +23,13 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../lib/site.js';
-import { u } from '../lib/paths';
+import { u, abs } from '../lib/paths';
 import { absAsset } from '../lib/assets';
 
 interface Props {
   title?: string;
+  /** Vlastní og:title (jinak `title`). */
+  ogTitle?: string;
   description?: string;
   /** Cesta k obrázku v public/ (bez base path), např. "obrazky/x.png". */
   image?: string;
@@ -35,10 +37,12 @@ interface Props {
   article?: { published: Date; section: string; author: string };
   /** false u stránek bez vlastní adresy (404). */
   canonical?: boolean;
+  /** Statické přesměrování (GitHub Pages neumí HTTP 301): cesta uvnitř webu, kam stránka vede. */
+  redirectTo?: string;
 }
-const { title, description = SITE.description, image = 'og-default.png', imageAlt, article, canonical: hasCanonical = true } = Astro.props;
+const { title, ogTitle, description = SITE.description, image = 'og-default.png', imageAlt, article, canonical: hasCanonical = true, redirectTo } = Astro.props;
 const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} – ${SITE.league}`;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const canonical = redirectTo ? abs(redirectTo, Astro.site) : new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = absAsset(image, Astro.site);
 // Výchozí náhled i náhledy z `npm run obrazek` (*-og.jpg) mají vždy 1200×630.
 const knownSize = image === 'og-default.png' || image.endsWith('-og.jpg');
@@ -55,11 +59,12 @@ const knownSize = image === 'og-default.png' || image.endsWith('-og.jpg');
     <meta name="theme-color" content="#0b0d10" />
     <link rel="icon" href={u('favicon.svg')} type="image/svg+xml" />
     {hasCanonical && <link rel="canonical" href={canonical} />}
+    {redirectTo && <meta http-equiv="refresh" content={`0; url=${u(redirectTo)}`} />}
 
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content={SITE.locale} />
     <meta property="og:type" content={article ? 'article' : 'website'} />
-    <meta property="og:title" content={title ?? fullTitle} />
+    <meta property="og:title" content={ogTitle ?? title ?? fullTitle} />
     <meta property="og:description" content={description} />
     {hasCanonical && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />

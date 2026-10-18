@@ -305,6 +305,36 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .prose blockquote { border-left: 3px solid var(--red); padding-left: 16px; color: var(--text-soft); font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; }
 .prose blockquote p { margin: 0 0 0.5em; }
 .prose blockquote cite { display: block; font-family: var(--font-body); font-style: normal; font-size: 0.85rem; color: var(--muted); }
+.prose figure { margin: 1.4em 0 1.6em; }
+.prose figure img { display: block; width: 100%; height: auto; }
+.prose figcaption { margin-top: 8px; font-size: 0.85rem; line-height: 1.5; color: var(--muted); }
+/* Draftové pořadí (generuje src/lib/remark-draft.mjs) */
+.prose .draft-table { display: table; width: 100%; table-layout: auto; font-size: 1rem; margin: 1.2em 0 1.5em; }
+.prose .draft-table caption { caption-side: top; text-align: left; padding-bottom: 8px; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem; color: var(--muted); }
+.prose .draft-table td { white-space: normal; vertical-align: middle; padding: 8px 10px 8px 0; }
+.prose .draft-table th:last-child, .draft-table__record { text-align: right; padding-right: 4px; white-space: nowrap; }
+.prose .draft-table th:last-child { white-space: normal; width: 5.5em; }
+.prose .draft-table tr.is-new td { background: rgba(239, 51, 64, 0.07); }
+.draft-table__pick { width: 2.2em; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; color: var(--text); }
+.prose .draft-table td.draft-table__pick { padding-left: 4px; }
+.prose .draft-table__team { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-weight: 600; line-height: 1.25; }
+.prose .draft-table__team:hover span { text-decoration: underline; }
+.draft-table__team img, .draft-table__mono { flex: none; width: 40px; height: 40px; object-fit: contain; }
+.draft-table__mono { display: grid; place-items: center; border: 2px solid var(--team); border-radius: 50%; font-family: var(--font-display); font-weight: 800; font-size: 0.8rem; }
+.draft-table__record { font-variant-numeric: tabular-nums; color: var(--text-soft); }
+@media (max-width: 420px) {
+  .prose .draft-table { font-size: 0.95rem; }
+  .prose .draft-table__team { gap: 8px; }
+  .draft-table__team img, .draft-table__mono { width: 32px; height: 32px; }
+  .draft-table__pick { font-size: 1.15rem; }
+}
+/* Přehled kol Snake Draftu */
+.prose .snake-rounds { list-style: none; padding: 0; margin: 1em 0 1.4em; display: grid; gap: 12px; }
+.snake-rounds__label { display: block; margin-bottom: 4px; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.8rem; color: var(--muted); }
+.snake-rounds__label span { color: var(--red); }
+.snake-rounds__slots { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.snake-rounds__slots span { display: grid; place-items: center; height: 2rem; border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text); }
+.snake-rounds__slots span.is-start { border-color: var(--red); color: var(--red-strong); }
 .prose strong { color: #fff; font-weight: 600; }
 .prose em { font-family: var(--font-serif); }
 .prose table { display: block; overflow-x: auto; width: 100%; border-collapse: collapse; font-size: 0.95rem; margin-bottom: 1.3em; }
@@ -319,6 +349,11 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .notice { border: 1px dashed var(--border-strong); padding: 14px 16px; color: var(--text-soft); background: var(--surface); }
 .notice--draft { border-color: var(--red); }
 .notice--demo { border-color: #facc15; }
+/* Datovaná redakční aktualizace na začátku už vydaného článku */
+.prose .article-update { border-style: solid; border-left: 3px solid var(--red); margin-bottom: 1.6em; font-size: 0.98rem; line-height: 1.6; }
+.prose .article-update p { margin: 0 0 0.6em; }
+.prose .article-update p:last-child { margin-bottom: 0; color: var(--muted); font-size: 0.9rem; }
+.prose .article-update .kicker { margin: 0 0 8px; }
 
 .share { margin-top: 36px; }
 .share textarea {

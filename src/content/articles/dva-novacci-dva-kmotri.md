@@ -12,6 +12,16 @@ imageAlt: "Investigativní nástěnka „Akce Bílý kůň?“: červené nitě 
 draft: false
 ---
 
+<aside class="notice article-update" aria-label="Aktualizace redakce">
+  <p class="kicker">Aktualizace redakce | <time datetime="2026-10-18">18. 10. 2026</time></p>
+  <p>Pouhé tři dny po zveřejnění této investigativní reportáže oznámila organizace Michal’s Balls of Fire změnu názvu i klubového loga.</p>
+  <p>Nově vystupuje jako <a href="../../tymy/mc-rising-stars/"><strong>MC Rising Stars</strong></a>.</p>
+  <p>Redakce připomíná, že původní článek upozornil na nápadnou podobnost názvů dvou organizací Srandoligy.</p>
+  <p>Zda jde o pouhou shodu okolností, nebo snahu zamést stopy, není známo.</p>
+  <p>Vincent Vrána už požádal o otevření dalšího vyšetřovacího spisu.</p>
+  <p>Původní znění článku ponecháváme beze změny jako dokumentaci stavu v době jeho zveřejnění.</p>
+</aside>
+
 SL Network proto zjišťuje, zda jde o nevinné rozšíření ligy, nebo začátek pečlivě připravené operace.
 
 Srandoliga má dva nové účastníky. Oficiálně jde o přirozenou obměnu soutěže. Nová krev, nové ambice, nové příběhy.
@@ -20,7 +30,7 @@ Jenže naše redakce si všimla detailu, který ostatním zřejmě unikl.
 
 **Oba nováčci přišli na doporučení stávajících organizací.**
 
-[**Litice Hoops**](../../tymy/litice-hoops/) mají vazbu na [**Little Barns Fireballs**](../../tymy/little-barns-fireballs/). [**Michal’s Balls of Fire**](../../tymy/michals-balls-of-fire/) doporučili [**Pilsen Beers**](../../tymy/pilsen-beers/).
+[**Litice Hoops**](../../tymy/litice-hoops/) mají vazbu na [**Little Barns Fireballs**](../../tymy/little-barns-fireballs/). [**Michal’s Balls of Fire**](../../tymy/mc-rising-stars/) doporučili [**Pilsen Beers**](../../tymy/pilsen-beers/).
 
 Dvě nové organizace. Dva zavedení patroni. A spousta otázek, na které zatím nikdo neodpovídal. Především proto, že je nikdo nepokládal.
 

@@ -14,8 +14,9 @@ export function pickLeadStory(sorted) {
   return sorted.find((a) => a.data.featured) ?? sorted[0];
 }
 
-/** Text upoutávky pro Messenger. */
+/** Text upoutávky pro Messenger. Obsahuje-li vlastní upoutávka už odkaz na článek, nepřidává se znovu. */
 export function buildTeaser({ title, perex, teaser }, url) {
+  if (teaser?.includes(url)) return teaser.trim();
   const body = teaser ? teaser : `📰 ${title}\n${perex}`;
   return `${body}\n👉 ${url}`;
 }

@@ -1,0 +1,19 @@
+{
+  "season": "2026/27",
+  "start": "2026-10-19T21:00:00+02:00",
+  "format": "snake",
+  "recordsFrom": "2025/26",
+  "note": "Nováčci podle pořadí příchodu do ligy, pokračující organizace podle obrácené bilance základní části 2025/26; při shodě rozhoduje horší konečné umístění po play-off.",
+  "order": [
+    "litice-hoops",
+    "mc-rising-stars",
+    "tachovsky-gadzo",
+    "chlumcany-jzd",
+    "los-mustachios",
+    "abukuafi-vzdejto",
+    "kutlaks-amateurs",
+    "pilsen-beers",
+    "little-barns-fireballs",
+    "acl-rokycany"
+  ]
+}

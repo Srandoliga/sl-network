@@ -17,6 +17,7 @@ export const CATEGORIES = [
   { id: 'komentar', label: 'Komentář' },
   { id: 'historie', label: 'Historie' },
   { id: 'redakce', label: 'Redakce' },
+  { id: 'draft', label: 'Draft speciál' },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);

@@ -34,14 +34,21 @@ export function validateTeams(teams) {
         status: (v) => TEAM_STATUSES.includes(v), verified: isBool,
         color: (v) => isStr(v) && HEX.test(v), icon: (v) => TEAM_ICONS.includes(v), story: isStr,
         profile: (v) => v === undefined || isBool(v),
+        summary: (v) => v === undefined || isStr(v),
+        formerIdentities: (v) => v === undefined || (Array.isArray(v) && v.every((f) => isStr(f?.name) && SLUG.test(f?.id ?? '') && isStr(f?.until))),
       }, where),
     ];
   });
+  // Původní identity přejmenovaných týmů (formerIdentities): staré id nesmí patřit jinému týmu ani se opakovat.
+  const formerIds = teams.flatMap((t) => (Array.isArray(t?.formerIdentities) ? t.formerIdentities.map((f) => f?.id) : []));
+  const currentIds = new Set(teams.map((t) => t?.id));
+  const formerClash = formerIds.filter((id) => currentIds.has(id)).map((id) => `teams.json: původní id „${id}“ používá jiný tým`);
+  const formerDup = duplicates(formerIds).map((id) => `teams.json: původní id „${id}“ je uvedeno víckrát`);
   const dupIds = duplicates(teams.map((t) => t?.id)).map((id) => `teams.json: duplicitní id týmu „${id}“`);
   const dupNames = duplicates(teams.map((t) => t?.name)).map((n) => `teams.json: duplicitní název týmu „${n}“`);
   const playing = teams.filter((t) => t?.status !== 'former').length;
   const warnings = playing === 10 ? [] : [`teams.json: v sezoně hraje ${playing} týmů, liga má mít 10`];
-  return { errors: [...errors, ...dupIds, ...dupNames], warnings };
+  return { errors: [...errors, ...dupIds, ...dupNames, ...formerClash, ...formerDup], warnings };
 }
 
 export function validateSeasons(seasons, teamIds) {

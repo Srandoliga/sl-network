@@ -5,6 +5,7 @@ import {
   validateTeams, validateSeasons, validateRivalries, validateStaff, validateTemplates, validateWeek, mergeResults,
 } from './lib/validate.mjs';
 import { validateHistorySeason } from './lib/validate-history.mjs';
+import { validateDraft } from './lib/validate-draft.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const parseErrors = [];
@@ -58,6 +59,18 @@ const historyResults = historyFiles.map((file) => {
   return { errors: [...result.errors, ...(season.season === expected ? [] : [`src/data/historie/${file}: pole season „${season.season}“ neodpovídá názvu souboru`])], warnings: [] };
 });
 
+// Draftové pořadí: src/data/draft/<rrrr-rr>.json, bilance z historických výsledků sezony `recordsFrom`.
+const draftDir = join(root, 'src/data/draft');
+const draftFiles = existsSync(draftDir) ? readdirSync(draftDir).filter((f) => f.endsWith('.json')) : [];
+const newIds = new Set(Array.isArray(teams) ? teams.filter((t) => t?.status === 'new').map((t) => t?.id) : []);
+const draftResults = draftFiles.map((file) => {
+  const draft = readJson(join(draftDir, file));
+  if (draft === undefined) return { errors: [], warnings: [] };
+  const historyFile = join(historyDir, `${String(draft.recordsFrom).replace('/', '-')}.json`);
+  const history = existsSync(historyFile) ? readJson(historyFile) : undefined;
+  return validateDraft(draft, file, { playingIds, newIds, history });
+});
+
 const { errors, warnings } = mergeResults(
   { errors: parseErrors, warnings: [] },
   validateTeams(teams),
@@ -67,6 +80,7 @@ const { errors, warnings } = mergeResults(
   validateTemplates(templates, staffIds),
   ...weekResults,
   ...historyResults,
+  ...draftResults,
 );
 // parseErrors se plní i při čtení týdnů, proto je připojíme znovu bez duplicit.
 const allErrors = [...new Set([...errors, ...parseErrors])];

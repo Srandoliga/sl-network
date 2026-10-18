@@ -10,9 +10,13 @@ import { teamHistory } from '../../lib/history.js';
 import { u } from '../../lib/paths';
 
 export function getStaticPaths() {
-  return publicTeams.map((team) => ({ params: { id: team.id }, props: { team } }));
+  const profiles = publicTeams.map((team) => ({ params: { id: team.id }, props: { team } }));
+  // Přejmenované týmy: na staré adrese jen statické přesměrování na aktuální profil (žádný druhý profil).
+  const renamed = publicTeams.flatMap((team) => (team.formerIdentities ?? [])
+    .map((former) => ({ params: { id: former.id }, props: { team, former } })));
+  return [...profiles, ...renamed];
 }
-const { team } = Astro.props;
+const { team, former } = Astro.props;
 const history = teamHistory(seasons, team.id);
 const titles = history.filter((h) => h.result === 'champion');
 const teamRivalries = rivalries.filter((r) => r.teams.includes(team.id));
@@ -25,7 +29,16 @@ const totals = archive.reduce((a, r) => ({
 }), { w: 0, l: 0, t: 0, playoffs: 0, finals: 0, titles: 0 });
 const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezony V', former: 'Už nehrají – součást historie' }[team.status];
 ---
-<Base title={team.name} description={team.story}>
+{former ? (
+<Base title={team.name} description={team.summary ?? team.story} redirectTo={`tymy/${team.id}/`}>
+  <div class="stack">
+    <h1 class="page-title">{former.name} → {team.name}</h1>
+    <p class="page-lead">Organizace {former.name} se přejmenovala na {team.name}.</p>
+    <p><a class="button button--red" href={u(`tymy/${team.id}/`)}>Přejít na profil {team.name} →</a></p>
+  </div>
+</Base>
+) : (
+<Base title={team.name} description={team.summary ?? team.story}>
   <div class="stack">
     <header class="team-hero" style={`--team:${team.color}`}>
       <TeamIcon team={team} decorative={false} />
@@ -108,3 +121,4 @@ const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezon
 
   </div>
 </Base>
+)}
