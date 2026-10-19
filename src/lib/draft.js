@@ -19,6 +19,15 @@ export function draftRows(order, teamById, historySeason) {
   });
 }
 
+/** Soupisky po draftu: v pořadí draftových pozic, u každé organizace její výběry podle čísla výběru. */
+export function draftRosters(order, picks, teamById) {
+  return order.map((id, i) => ({
+    slot: i + 1,
+    team: teamById(id),
+    picks: picks.filter((p) => p.team === id).sort((a, b) => a.pick - b.pick),
+  }));
+}
+
 /**
  * Pravidlo pořadí pokračujících organizací: obrácená bilance základní části (méně výher dřív),
  * při shodě dřív vybírá horší konečné umístění po play-off. Vrací id seřazená podle pravidla.

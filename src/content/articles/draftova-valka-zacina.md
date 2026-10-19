@@ -12,7 +12,7 @@ teaser: |
 
   🏀 DRAFTOVÁ VÁLKA ZAČÍNÁ!
 
-  🐎 Velká cena nováčků má vítěze. Litice Hoops získávají první výběr draftu, nově přejmenovaní MC Rising Stars budou vybírat druzí.
+  🐎 Velká cena nováčků má vítěze. Litice Hoopers získávají první výběr draftu, nově přejmenovaní MC Rising Stars budou vybírat druzí.
 
   🏆 Úřadující šampionka ACL Rokycany až desátá. Dvě dynastie na konci prvního kola.
 
@@ -93,13 +93,13 @@ Benson si stěžoval preventivně.
 ## Velká cena nováčků
 
 <figure>
-  <img src="../../obrazky/clanky/velka-cena-novacku.webp" alt="Satirický dostih nováčků Srandoligy. Litice Hoops vítězí před MC Rising Stars a získávají první výběr draftu." width="1600" height="900" loading="lazy" decoding="async">
-  <figcaption>Redakční rekonstrukce souboje o draftovou jedničku. Skutečný dostih ani náhodné losování neproběhly.</figcaption>
+  <img src="../../obrazky/clanky/velka-cena-novacku.webp" alt="Satirický dostih nováčků Srandoligy. Litice Hoopers vítězí před MC Rising Stars a získávají první výběr draftu." width="1600" height="900" loading="lazy" decoding="async">
+  <figcaption>Redakční rekonstrukce souboje o draftovou jedničku. Skutečný dostih ani náhodné losování neproběhly.<br><em>Redakční ilustrace vznikla před opravou názvu organizace Litice Hoopers. Na obrázku je proto zachováno původní označení Litice Hoops.</em></figcaption>
 </figure>
 
 Ještě před několika dny SL Network [upozornila na zajímavé personální vazby](../dva-novacci-dva-kmotri/) nových organizací.
 
-[**Litice Hoops**](../../tymy/litice-hoops/) vstoupily do soutěže na doporučení dvojnásobných šampionů Little Barns Fireballs.
+[**Litice Hoopers**](../../tymy/litice-hoopers/) vstoupily do soutěže na doporučení dvojnásobných šampionů Little Barns Fireballs.
 
 Druhou organizaci přivedli do soutěže dvojnásobní finalisté [**Pilsen Beers**](../../tymy/pilsen-beers/).
 
@@ -119,11 +119,11 @@ Vrána jeho stanovisko odmítl jako nedostatečně investigativní.
 
 Oba nováčci se mezitím symbolicky postavili na start Velké ceny nováčků, jejíž vítěz získal právo prvního výběru.
 
-Bílý kůň reprezentující Litice Hoops protnul cílovou pásku před tmavým soupeřem MC Rising Stars.
+Bílý kůň reprezentující Litice Hoopers protnul cílovou pásku před tmavým soupeřem MC Rising Stars.
 
 Oficiální výsledek:
 
-🥇 **Litice Hoops** — draftová jednička (#1)
+🥇 **Litice Hoopers** — draftová jednička (#1)
 
 🥈 **MC Rising Stars** — draftová dvojka (#2)
 
@@ -131,7 +131,7 @@ Vincent Vrána okamžitě zahájil vyšetřování regulérnosti závodu. Prově
 
 Eddie Brooks mezitím předložil podstatně jednodušší vysvětlení.
 
-> „Litice Hoops se do soutěže připojily jako první. Proto vybírají první. Žádný závod se nekonal.“
+> „Litice Hoopers se do soutěže připojily jako první. Proto vybírají první. Žádný závod se nekonal.“
 >
 > <cite>— **Eddie „The Numbers“ Brooks**, Head of Analytics</cite>
 
@@ -184,7 +184,7 @@ A takto se pokračuje i v dalších kolech.
 
 Jak to bude vypadat v praxi?
 
-Litice Hoops získají celkové výběry **#1, #20 a #21**.
+Litice Hoopers získají celkové výběry **#1, #20 a #21**.
 
 ACL Rokycany budou vybírat na pozicích **#10, #11 a #30**.
 

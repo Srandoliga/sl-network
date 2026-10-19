@@ -20,11 +20,12 @@ const errors = htmlFiles.flatMap((file) => checkPage({
 if (!exists('robots.txt')) errors.push('chybí robots.txt');
 // Pojistka: veřejný build nesmí obsahovat redakční části (koncepty, šablony, upoutávky, odkazy na ně).
 if (process.env.REDAKCE !== '1') {
-  const editorial = /notice--draft|tag--draft|data-copy-teaser|editorial-bar|\/sablony\//;
+  const editorial = /notice--draft|tag--draft|data-copy-teaser|editorial-bar|\/sablony\/|\/interni\//;
   htmlFiles
     .filter((file) => editorial.test(readFileSync(file, 'utf8')))
     .forEach((file) => errors.push(`${relative(dist, file)}: obsahuje redakční část, ale build není v redakčním režimu (REDAKCE=1)`));
   if (exists('sablony/index.html')) errors.push('veřejný build obsahuje šablony pro Messenger');
+  if (exists('interni')) errors.push('veřejný build obsahuje interní redakční přehledy');
 }
 
 if (errors.length) {

@@ -80,14 +80,22 @@
     "story": "Ve finále zatím nebyli. Redakce čeká na první velký titulek z Tachova."
   },
   {
-    "id": "litice-hoops",
-    "name": "Litice Hoops",
+    "id": "litice-hoopers",
+    "name": "Litice Hoopers",
     "short": "LIT",
     "status": "new",
     "verified": true,
     "color": "#3b82f6",
     "icon": "monogram",
-    "story": "Nová organizace Sezony V. Do ligy vstupuje na doporučení Little Barns Fireballs. Historie týmu začíná teprve teď."
+    "story": "Nová organizace Sezony V. Do ligy vstupuje na doporučení Little Barns Fireballs. Historie týmu začíná teprve teď.",
+    "formerIdentities": [
+      {
+        "id": "litice-hoops",
+        "name": "Litice Hoops",
+        "until": "2026-10-19",
+        "type": "correction"
+      }
+    ]
   },
   {
     "id": "mc-rising-stars",

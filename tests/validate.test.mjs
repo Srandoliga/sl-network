@@ -134,7 +134,7 @@ test('teams.json: 10 hrajících týmů, 2 nováčci, staré id přejmenovaného
   const teams = JSON.parse(readFileSync(new URL('../src/data/teams.json', import.meta.url), 'utf8'));
   const playing = teams.filter((t) => t.status !== 'former');
   assert.equal(playing.length, 10);
-  assert.deepEqual(playing.filter((t) => t.status === 'new').map((t) => t.id), ['litice-hoops', 'mc-rising-stars']);
+  assert.deepEqual(playing.filter((t) => t.status === 'new').map((t) => t.id), ['litice-hoopers', 'mc-rising-stars']);
   assert.equal(teams.some((t) => t.id === 'michals-balls-of-fire'), false);
   assert.equal(validateTeams(teams).errors.length, 0);
 });

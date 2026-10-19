@@ -35,7 +35,7 @@ export function validateTeams(teams) {
         color: (v) => isStr(v) && HEX.test(v), icon: (v) => TEAM_ICONS.includes(v), story: isStr,
         profile: (v) => v === undefined || isBool(v),
         summary: (v) => v === undefined || isStr(v),
-        formerIdentities: (v) => v === undefined || (Array.isArray(v) && v.every((f) => isStr(f?.name) && SLUG.test(f?.id ?? '') && isStr(f?.until))),
+        formerIdentities: (v) => v === undefined || (Array.isArray(v) && v.every((f) => isStr(f?.name) && SLUG.test(f?.id ?? '') && isStr(f?.until) && [undefined, 'rename', 'correction'].includes(f?.type))),
       }, where),
     ];
   });

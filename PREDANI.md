@@ -27,7 +27,7 @@ Stav k 15. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.
 - **Publikované články:** „Dva nováčci. Dva kmotři.“ (zákulisí, hlavní příběh od 15. 10.), „Srandoliga má vlastní redakci. Nikdo si o ni neřekl.“ a „Čtyři sezony. Dva šampioni…“ (historie).
 - **Redakční režim** (jen lokálně): ikona „Redakce SL Network“ na Ploše / `npm run dev` / `npm run build:redakce` – koncepty, šablony pro Messenger, upoutávky. Veřejný build je nesmí obsahovat (hlídá `scripts/check-dist.mjs`).
 - **Fáze 1.5 – Historické výsledky** (`/historie/`): 4 sezony 2022/23–2025/26 z ESPN – konečné pořadí, bilance základní části, PF/PA, divize East/West, nasazení, 15 zápasů play-off na sezonu (hlavní pavouk, o umístění, consolation). Souhrnné statistiky, profily týmů „sezona po sezoně“, odkazy ze Síně slávy.
-- **Nováčci (odhaleni 15. 10.):** Litice Hoops (`litice-hoops`, doporučení Little Barns Fireballs) a MC Rising Stars (`mc-rising-stars`, doporučení Pilsen Beers; do 18. 10. jako Michal’s Balls of Fire – `formerIdentities` v `teams.json`, stará adresa profilu přesměrovává). Divize zatím nepotvrzeny.
+- **Nováčci (odhaleni 15. 10.):** Litice Hoopers (`litice-hoopers`, doporučení Little Barns Fireballs; do 19. 10. chybně uváděni jako Litice Hoops – oprava názvu, stará adresa přesměrovává) a MC Rising Stars (`mc-rising-stars`, doporučení Pilsen Beers; do 18. 10. jako Michal’s Balls of Fire – `formerIdentities` v `teams.json`, stará adresa profilu přesměrovává). Divize zatím nepotvrzeny.
 - **Typografie článků:** pravidla v `PUBLIKOVANI.md` (tučné názvy týmů s odkazem při první zmínce, redakční citace s `<cite>`, nepovinné pole `subtitle`).
 
 ## Klíčová rozhodnutí (neměnit bez majitele)

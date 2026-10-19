@@ -33,7 +33,9 @@ const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezon
 <Base title={team.name} description={team.summary ?? team.story} redirectTo={`tymy/${team.id}/`}>
   <div class="stack">
     <h1 class="page-title">{former.name} → {team.name}</h1>
-    <p class="page-lead">Organizace {former.name} se přejmenovala na {team.name}.</p>
+    <p class="page-lead">{former.type === 'correction'
+      ? `Správný název organizace je ${team.name}. Dříve jsme chybně uváděli ${former.name}.`
+      : `Organizace ${former.name} se přejmenovala na ${team.name}.`}</p>
     <p><a class="button button--red" href={u(`tymy/${team.id}/`)}>Přejít na profil {team.name} →</a></p>
   </div>
 </Base>

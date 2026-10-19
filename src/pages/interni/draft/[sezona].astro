@@ -1,0 +1,43 @@
+---
+// Interní kontrolní přehled soupisek po draftu – jen v redakčním režimu (npm run dev / build:redakce).
+// Na veřejném webu se nesestaví (hlídá scripts/check-dist.mjs). Podklad pro Draft Report a Power Rankings.
+import Base from '../../../layouts/Base.astro';
+import TeamIcon from '../../../components/TeamIcon.astro';
+import { teamById } from '../../../lib/data.js';
+import { draftRosters } from '../../../lib/draft.js';
+import { EDITORIAL } from '../../../lib/site.js';
+import { u } from '../../../lib/paths';
+
+const drafts = import.meta.glob('../../../data/draft/*.json', { eager: true, import: 'default' });
+
+export function getStaticPaths() {
+  if (!EDITORIAL) return [];
+  return Object.entries(import.meta.glob('../../../data/draft/*.json', { eager: true, import: 'default' }))
+    .filter(([, d]) => Array.isArray(d.picks))
+    .map(([path]) => ({ params: { sezona: path.split('/').pop().replace('.json', '') } }));
+}
+const { sezona } = Astro.params;
+const draft = Object.entries(drafts).find(([path]) => path.endsWith(`/${sezona}.json`))[1];
+const rosters = draftRosters(draft.order, draft.picks, teamById);
+---
+<Base title={`Interní: soupisky po draftu ${draft.season}`}>
+  <h1 class="page-title">Soupisky po draftu <em>{draft.season}</em></h1>
+  <p class="notice notice--draft"><strong>Interní kontrolní přehled.</strong> Na veřejném webu se nezobrazuje.{' '}
+    {draft.picks.length} výběrů, {draft.rounds} kol, {draft.order.length} organizací. {draft.verificationNote}</p>
+  <div class="team-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin-top:20px">
+    {rosters.map(({ slot, team, picks }) => (
+      <section class="panel" style={`--team:${team.color}`}>
+        <h2 style="display:flex;gap:10px;align-items:center;margin:0 0 10px;font-size:1.1rem">
+          <span style="width:32px;flex:none"><TeamIcon team={team} /></span>
+          <a href={u(`tymy/${team.id}/`)}>{slot}. {team.name}</a>
+        </h2>
+        <ol style="margin:0;padding-left:0;list-style:none;font-size:.92rem;line-height:1.6">
+          {picks.map((p) => (
+            <li><span class="byline__role">{p.round}. kolo · #{p.pick}</span> — <strong>{p.player}</strong> <span class="byline__role">({p.nbaTeam}, {p.positionShown})</span></li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+  <p class="byline__role" style="margin-top:16px">Zdroj: {draft.source}</p>
+</Base>

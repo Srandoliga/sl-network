@@ -4,11 +4,11 @@ subtitle: "Začíná v Srandolize operace Bílý kůň?"
 date: 2026-10-15
 author: vrana
 category: zakulisi
-perex: "Sezona V přivítá dvě nové organizace. Litice Hoops a Michal’s Balls of Fire vstupují do soutěže na doporučení zavedených manažerů."
-teaser: "🚨 HOT NEWS: Dva nováčci. Dva kmotři. Litice Hoops a Michal’s Balls of Fire vstupují do Srandoligy – na doporučení Little Barns Fireballs a Pilsen Beers. Začíná operace Bílý kůň? Vincent Vrána vyšetřuje."
+perex: "Sezona V přivítá dvě nové organizace. Litice Hoopers a Michal’s Balls of Fire vstupují do soutěže na doporučení zavedených manažerů."
+teaser: "🚨 HOT NEWS: Dva nováčci. Dva kmotři. Litice Hoopers a Michal’s Balls of Fire vstupují do Srandoligy – na doporučení Little Barns Fireballs a Pilsen Beers. Začíná operace Bílý kůň? Vincent Vrána vyšetřuje."
 featured: true
 image: obrazky/clanky/dva-novacci-dva-kmotri.webp
-imageAlt: "Investigativní nástěnka „Akce Bílý kůň?“: červené nitě vedou od Little Barns Fireballs k Litice Hoops a od Pilsen Beers k Michal’s Balls of Fire"
+imageAlt: "Investigativní nástěnka „Akce Bílý kůň?“: červené nitě vedou od Little Barns Fireballs k Litice Hoopers a od Pilsen Beers k Michal’s Balls of Fire"
 draft: false
 ---
 
@@ -30,7 +30,7 @@ Jenže naše redakce si všimla detailu, který ostatním zřejmě unikl.
 
 **Oba nováčci přišli na doporučení stávajících organizací.**
 
-[**Litice Hoops**](../../tymy/litice-hoops/) mají vazbu na [**Little Barns Fireballs**](../../tymy/little-barns-fireballs/). [**Michal’s Balls of Fire**](../../tymy/mc-rising-stars/) doporučili [**Pilsen Beers**](../../tymy/pilsen-beers/).
+[**Litice Hoopers**](../../tymy/litice-hoopers/) mají vazbu na [**Little Barns Fireballs**](../../tymy/little-barns-fireballs/). [**Michal’s Balls of Fire**](../../tymy/mc-rising-stars/) doporučili [**Pilsen Beers**](../../tymy/pilsen-beers/).
 
 Dvě nové organizace. Dva zavedení patroni. A spousta otázek, na které zatím nikdo neodpovídal. Především proto, že je nikdo nepokládal.
 
@@ -78,7 +78,7 @@ Je to sportovní náhoda, nebo mistrovská strategie?
 
 ## Nováčci, vítejte. Sledujeme vás.
 
-Litice Hoops ani Michal’s Balls of Fire zatím v Srandolize neodehráli jediný soutěžní zápas.
+Litice Hoopers ani Michal’s Balls of Fire zatím v Srandolize neodehráli jediný soutěžní zápas.
 
 Nemají za sebou žádné kontroverzní přestupy, žádné prohrané finále ani jediný katastrofální draft.
 

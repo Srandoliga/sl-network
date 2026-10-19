@@ -36,7 +36,7 @@ Homepage, výpis článků, kategorie i profil autora se aktualizují samy.
 **Typografická pravidla článků**
 
 - **Názvy týmů** tučně, přesně podle oficiálního názvu (diakritika, velká písmena, typografický apostrof `’`).
-  Při první relevantní zmínce jako odkaz na profil: `[**Litice Hoops**](../../tymy/litice-hoops/)`.
+  Při první relevantní zmínce jako odkaz na profil: `[**Litice Hoopers**](../../tymy/litice-hoopers/)`.
   Další zmínky už obyčejně – text nemá působit přeformátovaně. Tučné a kurzívu u názvů týmů nekombinujte.
 - **Redaktoři:** při první zmínce celé jméno tučně, např. **Charles „Chuck“ Benson**, **Eddie „The Numbers“ Brooks**.
 - **Přímé citace redaktorů** jako redakční citace (kurzíva s červenou linkou vlevo a malým podpisem):
@@ -61,6 +61,10 @@ Homepage, výpis článků, kategorie i profil autora se aktualizují samy.
 **Draftové pořadí v článku:** data jsou v `src/data/draft/<rrrr-rr>.json` (pořadí id týmů; bilance se berou z historických
 výsledků sezony `recordsFrom`, build hlídá, že pořadí odpovídá pravidlu). Do textu stačí vložit samostatný řádek
 `<!-- draft-order: 2026-27 -->` (tabulka s logy a odkazy) nebo `<!-- snake-rounds: 2026-27 -->` (přehled prvních tří kol).
+
+**Výsledek draftu:** všech 130 výběrů je ve stejném souboru v poli `picks` (číslo výběru, kolo, id týmu, hráč, NBA tým a pozice
+opsané z ESPN). Build ověří úplnost, Snake Draft i duplicity. Kontrolní přehled soupisek je jen v redakčním režimu:
+`/interni/draft/2026-27/` (odkaz v patičce).
 
 **Obrázek článku:** formát na šířku 3:2 (např. 1536×1024 z ChatGPT). Připravíte ho jedním příkazem:
 `npm run obrazek -- ~/Downloads/obrazek.png nazev-clanku` → vytvoří `public/obrazky/clanky/nazev-clanku.webp`

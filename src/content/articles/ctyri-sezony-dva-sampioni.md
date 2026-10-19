@@ -53,7 +53,7 @@ Los Mustachios, AbuKaufí VzdejTo a Tachovský Gadžo na svou první finálovou 
 
 Sezona V přináší změnu sestavy. Přeštice Mighty Ducks a Irish Airballers zůstávají v historii ligy, do nového ročníku už nenastoupí.
 
-Jejich místa zaujmou dva nováčci: [**Litice Hoops**](../../tymy/litice-hoops/) a [**MC Rising Stars**](../../tymy/mc-rising-stars/) (původně Michal’s Balls of Fire). Kdo za nimi stojí, rozebírám v článku [Dva nováčci. Dva kmotři.](../dva-novacci-dva-kmotri/)
+Jejich místa zaujmou dva nováčci: [**Litice Hoopers**](../../tymy/litice-hoopers/) a [**MC Rising Stars**](../../tymy/mc-rising-stars/) (původně Michal’s Balls of Fire). Kdo za nimi stojí, rozebírám v článku [Dva nováčci. Dva kmotři.](../dva-novacci-dva-kmotri/)
 
 Deset manažerů. Jeden pohár. Dvě zavedené dynastie.
 
