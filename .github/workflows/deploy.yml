@@ -1,12 +1,16 @@
 # Build + kontrola při každém pushi. Veřejné nasazení na GitHub Pages je ZATÍM jen ruční
 # (Actions → „Build a nasazení“ → Run workflow) a smí proběhnout až po schválení majitelem.
 # Po schválení lze nasazení zapnout i pro push: v jobu deploy smazat řádek `if:`.
+# Plánované vydání (schválené majitelem): jednorázově 20. 10. 2026 v 19:40 SELČ = 17:40 UTC.
+# GitHub plánovač bývá o několik minut zpožděný. Po vydání trigger `schedule` smazat.
 name: Build a nasazení
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '40 17 20 10 *'
 
 permissions:
   contents: read
@@ -20,7 +24,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      scheduled-ok: ${{ steps.gate.outputs.ok }}
     steps:
+      # Pojistka: plánované nasazení platí jen pro rok 2026 (cron by se jinak opakoval každý 20. 10.).
+      - id: gate
+        run: echo "ok=$([ "$(date -u +%Y)" = 2026 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -40,7 +49,7 @@ jobs:
           path: dist
 
   deploy:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && needs.build.outputs.scheduled-ok == 'true')
     needs: build
     runs-on: ubuntu-latest
     environment:

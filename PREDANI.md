@@ -55,6 +55,8 @@ Začíná **datovým pilotem**: vyžádat screenshoty **jednoho kompletního mat
 
 ## Drobnosti / limity
 
+- **Plánované vydání 20. 10. 2026 19:40** (Opening Week + Draft Report): ve `.github/workflows/deploy.yml` je jednorázový `schedule` (17:40 UTC) s pojistkou na rok 2026. Po vydání trigger `schedule` a krok `gate` smazat.
+
 - Homepage má zatím prázdné moduly „Power Rankings“ a „Týden ve Srandolize“ („Redakce čeká na první kolo“) – záměrně do fáze 2.
 - GitHub Actions hlásí zastaralý Node 20 v akcích – zatím jen varování; aktualizovat verze akcí, až vyjdou.
 - Lokální náhled: `npx astro preview --port 4321` (běží na pozadí) nebo ikona Redakce (port 4400).
