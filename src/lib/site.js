@@ -19,6 +19,7 @@ export const CATEGORIES = [
   { id: 'redakce', label: 'Redakce' },
   { id: 'draft', label: 'Draft speciál' },
   { id: 'draft-report', label: 'Draft Report' },
+  { id: 'matchup-preview', label: 'Matchup Preview' },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);

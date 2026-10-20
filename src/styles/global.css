@@ -297,7 +297,7 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .article__meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
 .article__subtitle { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.15rem, 4.2vw, 1.45rem); line-height: 1.3; color: var(--text-soft); margin: 8px 0 0; }
 .article__perex { font-size: 1.15rem; line-height: 1.6; color: var(--text-soft); margin: 16px 0 0; }
-.article__image { margin: 24px 0; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.article__image { margin: 24px 0; width: 100%; height: auto; }
 .prose { font-size: 1.06rem; line-height: 1.75; color: #e3e6ea; }
 .prose p, .prose ul, .prose ol, .prose blockquote { margin: 0 0 1.15em; }
 .prose h2 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: 1.4rem; margin: 1.7em 0 0.6em; color: var(--text); }
@@ -349,6 +349,23 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 /* Klíčové řádky rozboru: štítek nad textem, nenápadná linka vlevo */
 .prose p:has(> .review-label) { margin-bottom: 1.3em; padding-left: 14px; border-left: 2px solid var(--border-strong); }
 .review-label { display: block; margin-bottom: 2px; font-family: var(--font-display); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+/* Matchup Preview: hlavička duelu s logy obou týmů, hlavní zápas kola zvýrazněný */
+.prose .matchup-head { margin: 3em 0 1.2em; padding-top: 1.4em; border-top: 1px solid var(--border); text-align: center; }
+.prose hr + .matchup-head { margin-top: 0; padding-top: 0; border-top: 0; }
+.prose .matchup-head--main { padding: 1.2em 12px 1em; border: 1px solid var(--border-strong); border-top: 3px solid var(--red); background: var(--surface); }
+.prose .matchup-head__label { margin: 0 0 12px; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.prose .matchup-head--main .matchup-head__label { color: var(--red-strong); }
+.prose .matchup-head__teams { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 10px; margin: 0; font-size: clamp(1.05rem, 4.2vw, 1.45rem); line-height: 1.15; }
+.prose .matchup-head__team { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text); text-decoration: none; }
+.prose .matchup-head__team:hover span { text-decoration: underline; }
+.prose .matchup-head__team img { width: 56px; height: 56px; object-fit: contain; }
+.prose .matchup-head__vs { align-self: center; padding-bottom: 1.6em; font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--red); }
+.prose .matchup-head__status { margin: 12px 0 0; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft); }
+/* Benson's Bold Predictions: kompaktní přehled pěti duelů */
+.prose .predictions { list-style: none; padding: 0; margin: 1em 0 1.4em; border-top: 1px solid var(--border); }
+.prose .predictions li { display: grid; gap: 2px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.predictions__label { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.predictions__teams { font-size: 1.02rem; }
 /* Draft Awards: každé ocenění jako samostatný blok */
 .prose p:has(> .award-title) { margin-top: 2.2em; padding-top: 1.2em; border-top: 1px solid var(--border); }
 .prose h2 + p:has(> .award-title) { margin-top: 0; padding-top: 0; border-top: 0; }

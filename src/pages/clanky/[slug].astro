@@ -1,5 +1,7 @@
 ---
 import { render } from 'astro:content';
+import sharp from 'sharp';
+import { join } from 'node:path';
 import Base from '../../layouts/Base.astro';
 import Byline from '../../components/Byline.astro';
 import CopyTeaser from '../../components/CopyTeaser.astro';
@@ -35,6 +37,8 @@ const fullTitle = subtitle ? `${title} ${subtitle}` : title;
 const pageTitle = seoTitle ?? fullTitle;
 const ogTitle = seoTitle ? `${seoTitle} | ${SITE.name}` : undefined;
 const cover = coverImage({ image, category });
+// Skutečné rozměry hlavního obrázku: zobrazí se celý ve vlastním poměru (3:2 i 16:9), bez ořezu.
+const { width: coverWidth = 1536, height: coverHeight = 1024 } = await sharp(join(process.cwd(), 'public', cover)).metadata();
 ---
 <Base title={pageTitle} ogTitle={ogTitle} description={seoDescription ?? perex} image={ogImageFor(cover)} imageAlt={imageAlt}
   article={{ published: date, section: categoryLabel(category), author: person?.name ?? author }}>
@@ -54,7 +58,7 @@ const cover = coverImage({ image, category });
       <hr class="rule" />
       <Byline author={author} />
     </header>
-    <img class="article__image" src={asset(cover)} alt={image ? imageAlt ?? '' : ''} width="1536" height="1024" />
+    <img class="article__image" src={asset(cover)} alt={image ? imageAlt ?? '' : ''} width={coverWidth} height={coverHeight} />
     {embedded ? <div class="prose" set:html={embedded} /> : <div class="prose"><Content /></div>}
     {EDITORIAL && <CopyTeaser text={buildTeaser({ title: fullTitle, perex, teaser }, url)} />}
   </article>
