@@ -18,6 +18,7 @@ export const CATEGORIES = [
   { id: 'historie', label: 'Historie' },
   { id: 'redakce', label: 'Redakce' },
   { id: 'draft', label: 'Draft speciál' },
+  { id: 'draft-report', label: 'Draft Report' },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);

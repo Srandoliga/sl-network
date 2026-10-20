@@ -334,6 +334,25 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .snake-rounds__label span { color: var(--red); }
 .snake-rounds__slots { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
 .snake-rounds__slots span { display: grid; place-items: center; height: 2rem; border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text); }
+.grade-table__note { display: block; font-weight: 400; font-size: 0.85rem; color: var(--muted); }
+/* Redakční známka (Draft Report): v tabulce i v mezititulku hodnocení */
+.grade { display: inline-block; min-width: 2.3em; padding: 1px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; line-height: 1.3; text-align: center; letter-spacing: 0.02em; color: var(--text); background: var(--surface-2); }
+.grade--top { border-color: var(--red); }
+.prose h2 .grade { margin-left: 10px; font-size: 1.15rem; vertical-align: 2px; }
+.prose hr { border: 0; border-top: 1px solid var(--border); margin: 2.2em 0; }
+/* Rozbor týmu (Draft Report): nadpis s logem a známkou, oddělený linkou */
+.prose .review-head { display: flex; align-items: center; gap: 12px; margin: 2.8em 0 0.5em; padding-top: 1.6em; border-top: 1px solid var(--border); font-size: clamp(1.45rem, 5.6vw, 1.85rem); line-height: 1.1; }
+.prose hr + .review-head { margin-top: 0; padding-top: 0; border-top: 0; }
+.prose .review-head img { flex: none; width: 40px; height: 40px; object-fit: contain; }
+.review-head__name { flex: 0 1 auto; min-width: 0; overflow-wrap: normal; }
+.prose .review-head .grade { flex: none; font-size: 1.3rem; }
+/* Klíčové řádky rozboru: štítek nad textem, nenápadná linka vlevo */
+.prose p:has(> .review-label) { margin-bottom: 1.3em; padding-left: 14px; border-left: 2px solid var(--border-strong); }
+.review-label { display: block; margin-bottom: 2px; font-family: var(--font-display); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+/* Draft Awards: každé ocenění jako samostatný blok */
+.prose p:has(> .award-title) { margin-top: 2.2em; padding-top: 1.2em; border-top: 1px solid var(--border); }
+.prose h2 + p:has(> .award-title) { margin-top: 0; padding-top: 0; border-top: 0; }
+.award-title { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: 0.03em; line-height: 1.3; color: var(--text); }
 .snake-rounds__slots span.is-start { border-color: var(--red); color: var(--red-strong); }
 .prose strong { color: #fff; font-weight: 600; }
 .prose em { font-family: var(--font-serif); }
