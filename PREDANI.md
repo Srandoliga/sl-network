@@ -55,7 +55,7 @@ Začíná **datovým pilotem**: vyžádat screenshoty **jednoho kompletního mat
 
 ## Drobnosti / limity
 
-- **Plánované vydání 20. 10. 2026 19:40** (Opening Week + Draft Report): ve `.github/workflows/deploy.yml` je jednorázový `schedule` (17:40 UTC) s pojistkou na rok 2026. Po vydání trigger `schedule` a krok `gate` smazat.
+- **Plánované vydání 25. 10. 2026 7:50 SEČ** (Week 2 Preview): ve `.github/workflows/deploy.yml` je jednorázový `schedule` (6:50 UTC) s pojistkou na rok 2026. GitHub plánovač zpožďuje (20. 10. o 26 min). Po vydání trigger `schedule` a krok `gate` smazat.
 
 - Homepage má zatím prázdné moduly „Power Rankings“ a „Týden ve Srandolize“ („Redakce čeká na první kolo“) – záměrně do fáze 2.
 - GitHub Actions hlásí zastaralý Node 20 v akcích – zatím jen varování; aktualizovat verze akcí, až vyjdou.
