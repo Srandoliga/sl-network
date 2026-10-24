@@ -5,7 +5,7 @@ import {
   validateTeams, validateSeasons, validateRivalries, validateStaff, validateTemplates, validateWeek, mergeResults,
 } from './lib/validate.mjs';
 import { validateHistorySeason } from './lib/validate-history.mjs';
-import { validateDraft } from './lib/validate-draft.mjs';
+import { validateDraft, validateHistoricalDraft, validatePlayerAliases } from './lib/validate-draft.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const parseErrors = [];
@@ -63,13 +63,21 @@ const historyResults = historyFiles.map((file) => {
 const draftDir = join(root, 'src/data/draft');
 const draftFiles = existsSync(draftDir) ? readdirSync(draftDir).filter((f) => f.endsWith('.json')) : [];
 const newIds = new Set(Array.isArray(teams) ? teams.filter((t) => t?.status === 'new').map((t) => t?.id) : []);
-const draftResults = draftFiles.map((file) => {
-  const draft = readJson(join(draftDir, file));
-  if (draft === undefined) return { errors: [], warnings: [] };
-  const historyFile = join(historyDir, `${String(draft.recordsFrom).replace('/', '-')}.json`);
-  const history = existsSync(historyFile) ? readJson(historyFile) : undefined;
-  return validateDraft(draft, file, { playingIds, newIds, history });
+// Draft s `recordsFrom` je aktuální (pravidlo pořadí podle bilancí), bez něj historický (účastníci z archivu téže sezony).
+const historyOf = (season) => {
+  const path = join(historyDir, `${String(season).replace('/', '-')}.json`);
+  return existsSync(path) ? readJson(path) : undefined;
+};
+const drafts = draftFiles.map((file) => ({ file, draft: readJson(join(draftDir, file)) })).filter(({ draft }) => draft !== undefined);
+const draftResults = drafts.map(({ file, draft }) => {
+  const result = draft.recordsFrom === undefined
+    ? validateHistoricalDraft(draft, file, { teamIds, history: historyOf(draft.season) })
+    : validateDraft(draft, file, { playingIds, newIds, history: historyOf(draft.recordsFrom) });
+  const expected = basename(file, '.json').replace('-', '/');
+  return draft.season === expected ? result : { ...result, errors: [...result.errors, `src/data/draft/${file}: pole season „${draft.season}“ neodpovídá názvu souboru`] };
 });
+const aliasesFile = join(root, 'src/data/hraci-aliasy.json');
+const aliasResult = existsSync(aliasesFile) ? validatePlayerAliases(readJson(aliasesFile) ?? [], drafts.map((d) => d.draft)) : { errors: [], warnings: [] };
 
 const { errors, warnings } = mergeResults(
   { errors: parseErrors, warnings: [] },
@@ -81,6 +89,7 @@ const { errors, warnings } = mergeResults(
   ...weekResults,
   ...historyResults,
   ...draftResults,
+  aliasResult,
 );
 // parseErrors se plní i při čtení týdnů, proto je připojíme znovu bez duplicit.
 const allErrors = [...new Set([...errors, ...parseErrors])];
@@ -91,4 +100,4 @@ if (allErrors.length) {
   console.error(`\nValidace dat selhala (${allErrors.length} chyb). Build zastaven.`);
   process.exit(1);
 }
-console.log(`✅ Data v pořádku: ${teams.length} týmů, ${seasons.length} sezon (${historyFiles.length} v historických výsledcích), ${weekFiles.length} kol${warnings.length ? `, ${warnings.length} varování ke kontrole` : ''}.`);
+console.log(`✅ Data v pořádku: ${teams.length} týmů, ${seasons.length} sezon (${historyFiles.length} v historických výsledcích), ${drafts.length} draftů, ${weekFiles.length} kol${warnings.length ? `, ${warnings.length} varování ke kontrole` : ''}.`);

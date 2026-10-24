@@ -3,7 +3,7 @@
 // Na veřejném webu se nesestaví (hlídá scripts/check-dist.mjs). Podklad pro Draft Report a Power Rankings.
 import Base from '../../../layouts/Base.astro';
 import TeamIcon from '../../../components/TeamIcon.astro';
-import { teamById } from '../../../lib/data.js';
+import { teamById, hasProfile } from '../../../lib/data.js';
 import { draftRosters } from '../../../lib/draft.js';
 import { EDITORIAL } from '../../../lib/site.js';
 import { u } from '../../../lib/paths';
@@ -29,7 +29,7 @@ const rosters = draftRosters(draft.order, draft.picks, teamById);
       <section class="panel" style={`--team:${team.color}`}>
         <h2 style="display:flex;gap:10px;align-items:center;margin:0 0 10px;font-size:1.1rem">
           <span style="width:32px;flex:none"><TeamIcon team={team} /></span>
-          <a href={u(`tymy/${team.id}/`)}>{slot}. {team.name}</a>
+          {hasProfile(team.id) ? <a href={u(`tymy/${team.id}/`)}>{slot}. {team.name}</a> : <span>{slot}. {team.name}</span>}
         </h2>
         <ol style="margin:0;padding-left:0;list-style:none;font-size:.92rem;line-height:1.6">
           {picks.map((p) => (
