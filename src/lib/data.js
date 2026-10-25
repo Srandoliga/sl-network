@@ -27,3 +27,15 @@ export const seasonsDesc = [...seasons].sort((a, b) => b.number - a.number);
 // Historický archiv: jeden JSON na sezonu (src/data/historie/<rrrr-rr>.json).
 const historyModules = import.meta.glob('../data/historie/*.json', { eager: true, import: 'default' });
 export const historySeasons = Object.values(historyModules).sort((a, b) => a.season.localeCompare(b.season));
+
+// Drafty (src/data/draft/*.json), aliasy hráčů a zápasy základní části (src/data/zapasy/*.json).
+import aliasesRaw from '../data/hraci-aliasy.json';
+import { aliasMap, sortDrafts } from './draft-history.js';
+import { canonicalGames } from './matches.js';
+const draftModules = import.meta.glob('../data/draft/*.json', { eager: true, import: 'default' });
+export const drafts = sortDrafts(Object.values(draftModules));
+export const playerAliases = aliasMap(aliasesRaw);
+const matchModules = import.meta.glob('../data/zapasy/*.json', { eager: true, import: 'default' });
+export const matchSeasons = Object.values(matchModules).sort((a, b) => a.season.localeCompare(b.season));
+export const allGames = canonicalGames(matchSeasons, historySeasons);
+export const draftBySlug = (slug) => drafts.find((d) => d.season.replace('/', '-') === slug);
