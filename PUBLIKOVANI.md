@@ -108,6 +108,17 @@ V redakčním režimu: odkaz **Šablony pro Messenger** v hlavičce nebo patičc
   Týmy se zapisují jen přes ID z `teams.json`. Build zkontroluje součty (PF = PA, výhry = prohry), pavouk i shodu se Síní slávy.
 - `src/data/staff.json` – redakce.
 
+### Drafty, zápasy a historie klubů
+
+- **Po draftu nové sezony:** `src/data/draft/<rrrr-rr>.json` (pořadí, 130 výběrů, `espnLabels`). Archiv draftů, profily klubů i interní signály se aktualizují samy.
+- **Po skončení sezony:** vedle `src/data/historie/<rrrr-rr>.json` přidat `src/data/zapasy/<rrrr-rr>.json` (100 zápasů základní části a kalendář kol podle ESPN League Schedule). Build zkontroluje, že bilance a body ze zápasů sedí s archivem.
+- **Odkazy z článků do historie** (stabilní, nemění se):
+  - výběr v draftu: `[#46](../../historie/drafty/2023-24/#vyber-46)` (celkové číslo výběru, ne pořadí v kole),
+  - organizace v draftu: `../../historie/drafty/2026-27/#acl-rokycany`,
+  - zápas základní části: `../../historie/2025-26/#2025-26-z19-irish-airballers--little-barns-fireballs` (sezona, kolo, hosté--domácí).
+- **Rekordy skóre** se počítají jen ze 7denních kol (zkrácené 1. kolo a dvoutýdenní kolo s All-Star přestávkou se nesrovnávají) – v textu to vždy uveďte.
+- **Interní náměty:** v redakčním režimu odkaz **Interní: History Signals** v patičce. Jsou to historické souvislosti, ne hotové texty; ostré formulace podléhají schválení.
+
 ## 5. Kontrola a náhled na počítači
 
 Jednou: nainstalovat [Node.js](https://nodejs.org) 22+ a ve složce projektu spustit `npm install`.

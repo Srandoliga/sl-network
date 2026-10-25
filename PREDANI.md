@@ -1,6 +1,6 @@
 # SL Network – předání pro další práci
 
-Stav k 24. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.md](BACKLOG.md), obsluha a typografie článků: [PUBLIKOVANI.md](PUBLIKOVANI.md).
+Stav k 25. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.md](BACKLOG.md), obsluha a typografie článků: [PUBLIKOVANI.md](PUBLIKOVANI.md).
 
 ## Kde co je
 
@@ -23,12 +23,11 @@ Stav k 24. 10. 2026. Pravidla projektu: [AGENTS.md](AGENTS.md), plán: [BACKLOG.
 
 Pozor: hook `block-no-verify` blokuje příkaz, kde je `grep -n` ve stejném Bash volání jako `git commit` – commit spouštět samostatně.
 
-## Aktuální stav (24. 10. 2026)
+## Aktuální stav (25. 10. 2026)
 
-- **Na webu:** Opening Week Preview (hlavní), Draft Report, Draftová válka začíná, Dva nováčci. Dva kmotři., Srandoliga má vlastní redakci, Čtyři sezony.
-- **Pushnuto, čeká na vydání:** `f393793` Week 2 Preview (`week-2-preview-2026`, `draft: false`, datum 25. 10. 2026 8:30 SEČ) + `857dd9c` plánovač.
-- **Plánované vydání:** `.github/workflows/deploy.yml` má `schedule` `'50 6 25 10 *'` = **25. 10. 7:50 SEČ** (po konci letního času = 6:50 UTC), deploy jen při `workflow_dispatch` nebo tomto plánu, krok `gate` pouští plán jen v roce 2026. GitHub plánovač zpožďuje (20. 10.: plán 19:40, start 20:06). Očekávané vydání cca 7:55–8:30.
-- **Po vydání Week 2 (TODO):** ověřit živý web (homepage: week-2 hlavní, pod ním opening-week), pak **smazat `schedule` a krok `gate` z workflow** (commit + push). Pokud plán do ~8:45 neproběhne → majitel ručně Run workflow.
+- **Na webu:** Week 2 Preview (hlavní, vydáno 25. 10. v 8:24 ručním Run workflow; plánovač naběhl v 8:25 a nasadil totéž, oba běhy `857dd9c` úspěšné), Opening Week Preview, Draft Report, Draftová válka začíná, Dva nováčci. Dva kmotři., Srandoliga má vlastní redakci, Čtyři sezony. Živý web ověřen (pořadí, metadata, obrázky, 375/320 px).
+- **TODO workflow:** `.github/workflows/deploy.yml` má ještě `schedule` `'50 6 25 10 *'` a krok `gate` (pustí plán jen v roce 2026, takže už nic nespustí). Smazat samostatným commitem až s dalším pushem – nepřibalovat k nečemu jinému bez souhlasu.
+- **Větev `feat/draft-archiv` (HA-FP):** historické drafty a výsledky, 400 zápasů, knihovny, archiv draftů, historie klubu a sezon, interní History Signals, dokumentace – commity od `origin/main` (857dd9c). Před pushem 25. 10. byla nepushnutá historie očištěna od neveřejného redakčního pravidla (viz Soukromí). Nasazení jen se souhlasem majitele.
 - Messenger zprávy posílá majitel ručně až po potvrzení živého webu.
 
 ## Hotovo
@@ -66,7 +65,9 @@ Pozor: hook `block-no-verify` blokuje příkaz, kde je `grep -n` ve stejném Bas
   - Kalendář opsaný z nadpisů ESPN „Matchup N (od – do)“ / „Playoff Round N“; `days` = kalendářní dny včetně krajních. Kola nejsou stejně dlouhá (1. kolo 6 dní od 2023/24, kolo 17/18 = 14 dní); příčiny zdroj neuvádí – nedomýšlet. Absolutní rekordy vždy s délkou kola.
   - Soutěže rozlišovat: `regular` / `championship` (hlavní pavouk #1–#8) / `placement` (zápasy o umístění) / `consolation` (#9–#10). Audit IV: H2H list počítá jen základní část; korelace seed ~ konečné umístění je nafouknutá zařazením #9–#10 (+0,60 vs. +0,21 jen pro #1–#8).
   - Jména manažerů (jsou v PDF i v xlsx auditu) se do repozitáře nepřebírají.
-- Draft DNA a archiv draftů na webu: návrh schválen jen jako koncept, implementace čeká na samostatný pokyn.
+- **Veřejné části (větev `feat/draft-archiv`):** archiv draftů `/historie/drafty/` a `/historie/drafty/<sezona>/` (kotvy `#vyber-<celkové číslo>`, `#kolo-<n>`, `#<id-organizace>`; kola a soupisky rozbalovací, bez JS vše otevřené), „Historie klubu“ na profilech (`src/components/ClubHistory.astro`; nováček = „První sezona“, žádné nuly), na stránkách sezon cesta šampiona, rekordy a rozpis 20 kol (`SeasonMatches.astro`, kotva = ID zápasu). Rekordy skóre a výher jen ze 7denních kol a vždy tak označené. „Z historie“ = `publicText` signálu + odkaz Zdroj.
+- **Interní History Signals:** `/interni/history-signals/` jen v redakčním buildu; `src/lib/history-signals.js` (8 typů, texty jen z ověřených podmínek, `topSignals` pro pestrost, `signalsFor` pro organizaci/hráče/dvojici soupeřů/sezonu/typ článku). Všechny signály mají `dataStatus: 'historical'`; propojení s aktuálními událostmi až s ověřenými týdenními daty. Repo je veřejné → kód i texty signálů jsou vidět na GitHubu („interní“ ≠ tajné).
+- **Build hlídá kotvy:** `scripts/check-dist.mjs` selže i při odkazu na neexistující `#kotvu`.
 
 ## Postup u nového článku (osvědčený)
 
