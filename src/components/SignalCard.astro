@@ -1,0 +1,57 @@
+---
+// Interní karta jednoho History Signalu (jen redakční režim).
+import TeamLink from './TeamLink.astro';
+import { u } from '../lib/paths';
+import { AREAS } from '../lib/history-signals.js';
+interface Props { s: any; compact?: boolean }
+const { s, compact = false } = Astro.props;
+const level = (n: number) => (n >= 70 ? 'vysoká' : n >= 55 ? 'střední' : 'nízká');
+---
+<article class:list={['signal', { 'signal--compact': compact }]} id={s.id}>
+  <header class="signal__head">
+    <span class="signal__type">{AREAS[s.area]} · {s.typeLabel}</span>
+    <span class:list={['signal__rel', `is-${level(s.relevance.score)}`]} title={`neobvyklost ${Math.round(s.relevance.rarity)} · aktuálnost ${s.relevance.current} · opakování ${s.relevance.recurrence} · překvapivost ${s.relevance.surprise}`}>relevance {s.relevance.score} · {level(s.relevance.score)}</span>
+  </header>
+  <h3 class="signal__title">{s.title}</h3>
+  <div class="signal__stat"><strong>{s.stat}</strong><span>{s.statLabel}</span></div>
+  <div class="signal__teams">{s.teams.map((t: string) => <TeamLink id={t} size="sm" />)}</div>
+  <p class="signal__finding">{s.finding}</p>
+  {!compact && (
+    <>
+      <details class="more">
+        <summary>Zdroje ({s.evidence.length})</summary>
+        <ul class="signal__evidence">{s.evidence.map((e: any) => <li><a href={u(e.href)}>{e.label}</a></li>)}</ul>
+      </details>
+      <dl class="signal__meta">
+        <dt>Proč zajímavé</dt><dd>{s.why}</dd>
+        <dt>Omezení</dt><dd>{s.limits}</dd>
+        <dt>Využití</dt><dd>{s.uses.map((x: string) => <span class="tag tag--outline">{x}</span>)}</dd>
+      </dl>
+    </>
+  )}
+  {compact && <p class="signal__finding"><strong>Proč:</strong> {s.why} <a href={u(s.evidence[0].href)}>Zdroj →</a></p>}
+  <p class="signal__id"><code>{s.id}</code> · {s.dataStatus} · {s.seasons.join(', ')}</p>
+</article>
+
+<style is:global>
+.signal-grid { display: grid; gap: 14px; margin-top: 20px; }
+@media (min-width: 900px) { .signal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.signal { display: grid; gap: 10px; align-content: start; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid #facc15; border-radius: var(--radius); padding: 16px; min-width: 0; }
+.signal__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; }
+.signal__type { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red-strong); }
+.signal__rel { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em; padding: 0 8px; border: 1px solid var(--border-strong); }
+.signal__rel.is-vysoká { border-color: #facc15; color: #facc15; }
+.signal__title { font-family: var(--font-serif); font-size: 1.3rem; line-height: 1.25; margin: 0; }
+.signal--compact .signal__title { font-size: 1.1rem; }
+.signal--compact .signal__stat strong { font-size: 1.6rem; }
+.signal__stat { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.signal__stat strong { font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; line-height: 1; }
+.signal__stat span { color: var(--muted); font-size: 0.9rem; }
+.signal__teams { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.signal__finding { margin: 0; color: var(--text-soft); font-size: 0.95rem; }
+.signal__evidence { margin: 0; padding-left: 18px; font-size: 0.9rem; }
+.signal__meta { margin: 0; display: grid; grid-template-columns: 1fr; gap: 2px; font-size: 0.9rem; }
+.signal__meta dt { font-family: var(--font-display); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.signal__meta dd { margin: 0; color: var(--text-soft); display: flex; flex-wrap: wrap; gap: 6px; }
+.signal__id { margin: 0; font-size: 0.78rem; color: var(--muted); overflow-wrap: anywhere; }
+</style>

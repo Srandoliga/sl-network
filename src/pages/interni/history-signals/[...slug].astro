@@ -1,0 +1,36 @@
+---
+// Interní: History Signals – redakční náměty z ověřených dat. Jen v redakčním režimu (hlídá scripts/check-dist.mjs).
+import Base from '../../../layouts/Base.astro';
+import SectionHead from '../../../components/SectionHead.astro';
+import SignalCard from '../../../components/SignalCard.astro';
+import { drafts, allGames, playerAliases, historySeasons, teamById } from '../../../lib/data.js';
+import { historySignals, topSignals, AREAS } from '../../../lib/history-signals.js';
+import { EDITORIAL } from '../../../lib/site.js';
+
+export function getStaticPaths() { return EDITORIAL ? [{ params: { slug: undefined } }] : []; }
+const all = historySignals({ drafts, games: allGames, aliases: playerAliases, history: historySeasons, currentSeason: drafts.at(-1).season, name: (id: string) => teamById(id)?.name ?? id });
+const top = topSignals(all);
+const byArea = Object.keys(AREAS).map((area) => ({ area, list: all.filter((s) => s.area === area) })).filter((g) => g.list.length);
+---
+<Base title="Interní: History Signals">
+  <p class="kicker">Interní · redakce</p>
+  <h1 class="page-title">History Signals</h1>
+  <p class="notice notice--draft"><strong>Interní přehled.</strong> Na veřejném webu se nezobrazuje. Signály jsou historické (bez aktuálního spouštěče); nejsou to hotové články. Relevance = redakční priorita, ne pravděpodobnost.</p>
+  <div class="stack" style="margin-top:20px">
+    <section class="stack">
+      <SectionHead title="Nejsilnější" accent="náměty" />
+      <p class="hist-note">Výběr {top.length} signálů – nejvýš jeden z každého typu, přednostně z různých oblastí ({[...new Set(top.map((s) => AREAS[s.area]))].join(', ')}).</p>
+      <div class="signal-grid">{top.map((s) => <SignalCard s={s} />)}</div>
+    </section>
+    <section class="stack">
+      <SectionHead title="Úplný" accent="katalog" />
+      <p class="hist-note">{all.length} signálů podle oblastí, seřazených podle relevance.</p>
+      {byArea.map((g) => (
+        <details class="more">
+          <summary>{AREAS[g.area]} ({g.list.length})</summary>
+          <div class="signal-grid">{g.list.map((s) => <SignalCard s={s} compact />)}</div>
+        </details>
+      ))}
+    </section>
+  </div>
+</Base>
