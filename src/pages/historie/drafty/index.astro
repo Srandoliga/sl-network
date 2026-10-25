@@ -1,0 +1,73 @@
+---
+// Archiv draftů: pět draftů a draftové pozice organizací po sezonách.
+import Base from '../../../layouts/Base.astro';
+import SectionHead from '../../../components/SectionHead.astro';
+import TeamLink from '../../../components/TeamLink.astro';
+import TeamIcon from '../../../components/TeamIcon.astro';
+import Trophy from '../../../components/Trophy.astro';
+import { drafts, historySeasons, teams, teamById, hasProfile } from '../../../lib/data.js';
+import { u } from '../../../lib/paths';
+
+const slug = (s: string) => s.replace('/', '-');
+const short = (s: string) => s.replace(/^20(\d\d)\/(\d\d)$/, '$1/$2');
+const champion = (season: string) => historySeasons.find((h) => h.season === season)?.teams.find((t) => t.finalRank === 1)?.team;
+const date = (iso: string) => new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
+const desc = [...drafts].reverse();
+const ids = [...new Set(drafts.flatMap((d) => d.order))];
+const rows = ids
+  .map((id) => ({ team: teamById(id), slots: drafts.map((d) => (d.order.includes(id) ? d.order.indexOf(id) + 1 : null)) }))
+  .sort((a, b) => Number(a.team.status === 'former') - Number(b.team.status === 'former') || a.team.name.localeCompare(b.team.name, 'cs'));
+---
+<Base title="Archiv draftů" description="Všech pět draftů Srandoligy: pořadí, výběry a draftové pozice organizací.">
+  <p style="margin:0 0 10px"><a class="section-link" href={u('historie/')}>← Historické výsledky</a></p>
+  <p class="kicker">Historie</p>
+  <h1 class="page-title">Archiv draftů.<em>{drafts.length} draftů, {drafts.length * 130} výběrů.</em></h1>
+  <p class="page-lead">Snake Draft, 13 kol, 10 organizací. Čísla výběrů a hráči podle ESPN Draft Recap.</p>
+
+  <div class="stack" style="margin-top:24px">
+    <section class="stack">
+      <SectionHead title="Všechny" accent="drafty" />
+      <ul class="season-grid season-grid--5">
+        {desc.map((d) => {
+          const first = d.picks[0];
+          const champ = champion(d.season);
+          return (
+            <li class="season-card season-card--draft">
+              <a class="season-card__season" href={u(`historie/drafty/${slug(d.season)}/`)}>{d.season}</a>
+              <p class="season-card__meta">Draft {date(d.start)}</p>
+              <div class="draft-first"><span class="stats__label">Výběr #1</span><strong>{first.player}</strong><TeamLink id={first.team} size="sm" /></div>
+              {champ
+                ? <div class="draft-first"><span class="stats__label is-gold">Šampion sezony</span><TeamLink id={champ} size="sm" /><span class="byline__role">vybíral jako #{d.order.indexOf(champ) + 1}</span></div>
+                : <p class="season-card__meta"><span class="tag tag--outline">Sezona probíhá</span></p>}
+              <a class="section-link" href={u(`historie/drafty/${slug(d.season)}/`)}>Celý draft<span aria-hidden="true">→</span></a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Draftové" accent="pozice" />
+      <p class="hist-note">Pozice v 1. kole (#1 vybírá první). Od 2023/24 vybírají nováčci první, pokračující organizace podle obrácené bilance předchozí sezony.</p>
+      <div class="slot-table" role="table" aria-label="Draftové pozice organizací po sezonách">
+        <div class="slot-table__row slot-table__row--head" role="row">
+          <span role="columnheader">Organizace</span>
+          {drafts.map((d) => <span role="columnheader"><a href={u(`historie/drafty/${slug(d.season)}/`)}>{short(d.season)}</a></span>)}
+        </div>
+        {rows.map((r) => (
+          <div class:list={['slot-table__row', { 'is-former': r.team.status === 'former' }]} role="row">
+            <span role="cell" class="slot-table__team">
+              {hasProfile(r.team.id) ? <a href={u(`tymy/${r.team.id}/`)}><TeamIcon team={r.team} /><span class="slot-table__name">{r.team.name}</span><span class="slot-table__short">{r.team.short}</span></a>
+                : <span><TeamIcon team={r.team} /><span class="slot-table__name">{r.team.name}</span><span class="slot-table__short">{r.team.short}</span></span>}
+            </span>
+            {r.slots.map((s, i) => (
+              <span role="cell" class="slot-table__slot">{s ? <a href={u(`historie/drafty/${slug(drafts[i].season)}/#${r.team.id}`)} class:list={{ 'is-gold': champion(drafts[i].season) === r.team.id }}>{s}</a> : <span class="slot-table__none" aria-label="nehráli">·</span>}</span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <p class="byline__role" style="margin:0"><span class="is-gold">Zlatě</span> = pozice organizace, která v dané sezoně získala titul. Tečka = organizace v sezoně nehrála.</p>
+    </section>
+    <p class="byline__role">Zdroj: ESPN Fantasy – Draft Recap jednotlivých sezon. NBA tým a pozice hráče podle ESPN (ne hráčská způsobilost).</p>
+  </div>
+</Base>

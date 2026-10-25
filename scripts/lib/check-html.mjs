@@ -19,7 +19,22 @@ export function urlToDistPath(url, base) {
   return rest.endsWith('/') ? `${rest}index.html` : rest;
 }
 
-export function checkPage({ file, html, base, origin, exists }) {
+/** Hodnoty atributů id na stránce (cíle kotev). */
+export const pageIds = (html) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+
+/** Kotvy: `#x` na téže stránce i `/base/stranka/#x` musí mít cílové id. `idsOf(target)` vrací id cílové stránky. */
+export function fragmentErrors({ file, html, base, origin, idsOf }) {
+  const own = pageIds(html);
+  const local = [...html.matchAll(/\shref="#([^"]+)"/g)].map((m) => decodeURIComponent(m[1])).filter((f) => !own.has(f));
+  const remote = [...new Set(internalUrls(html, origin))].filter((u) => u.includes('#')).flatMap((u) => {
+    const target = urlToDistPath(u, base);
+    const frag = decodeURIComponent(u.split('#')[1] ?? '');
+    return target && frag && !idsOf(target).has(frag) ? [u] : [];
+  });
+  return [...local.map((f) => `${file}: kotva „#${f}“ na stránce neexistuje`), ...remote.map((u) => `${file}: odkaz „${u}“ míří na neexistující kotvu`)];
+}
+
+export function checkPage({ file, html, base, origin, exists, idsOf }) {
   const errors = [];
   if (!/<meta name="robots" content="noindex/.test(html)) errors.push(`${file}: chybí meta robots noindex`);
   if (!/<meta property="og:title"/.test(html)) errors.push(`${file}: chybí og:title`);
@@ -29,5 +44,5 @@ export function checkPage({ file, html, base, origin, exists }) {
     if (target === null) errors.push(`${file}: odkaz „${url}“ nezačíná base path ${base}`);
     else if (!exists(target)) errors.push(`${file}: odkaz „${url}“ vede na neexistující soubor`);
   }
-  return errors;
+  return idsOf ? [...errors, ...fragmentErrors({ file, html, base, origin, idsOf })] : errors;
 }

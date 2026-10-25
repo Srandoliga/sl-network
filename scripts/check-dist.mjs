@@ -1,7 +1,7 @@
 // Kontrola sestaveného webu (dist/): base path, funkční interní odkazy, noindex a Open Graph na každé stránce.
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { checkPage } from './lib/check-html.mjs';
+import { checkPage, pageIds } from './lib/check-html.mjs';
 
 const dist = new URL('../dist/', import.meta.url).pathname;
 const base = (process.env.BASE_PATH || '/sl-network').replace(/\/$/, '') || '/';
@@ -14,8 +14,13 @@ const walk = (dir) => readdirSync(dir).flatMap((name) => {
 
 const htmlFiles = walk(dist).filter((f) => f.endsWith('.html'));
 const exists = (p) => existsSync(join(dist, p));
+const idCache = new Map();
+const idsOf = (p) => {
+  if (!idCache.has(p)) idCache.set(p, exists(p) ? pageIds(readFileSync(join(dist, p), 'utf8')) : new Set());
+  return idCache.get(p);
+};
 const errors = htmlFiles.flatMap((file) => checkPage({
-  file: relative(dist, file), html: readFileSync(file, 'utf8'), base, origin, exists,
+  file: relative(dist, file), html: readFileSync(file, 'utf8'), base, origin, exists, idsOf,
 }));
 if (!exists('robots.txt')) errors.push('chybí robots.txt');
 // Pojistka: veřejný build nesmí obsahovat redakční části (koncepty, šablony, upoutávky, odkazy na ně).
@@ -33,4 +38,4 @@ if (errors.length) {
   console.error(`\nKontrola buildu selhala (${errors.length} chyb).`);
   process.exit(1);
 }
-console.log(`✅ Build v pořádku: ${htmlFiles.length} stránek, base path „${base}“, odkazy funkční, noindex všude.`);
+console.log(`✅ Build v pořádku: ${htmlFiles.length} stránek, base path „${base}“, odkazy i kotvy funkční, noindex všude.`);

@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import TeamLink from '../../components/TeamLink.astro';
 import Trophy from '../../components/Trophy.astro';
-import { historySeasons, teamById } from '../../lib/data.js';
+import { drafts, historySeasons, teamById } from '../../lib/data.js';
 import { allTimeStats, bestRecord, formatPct, formatPoints, formatRecord, seasonSlug } from '../../lib/archive.js';
 import { u } from '../../lib/paths';
 
@@ -46,6 +46,11 @@ const groups = [
           );
         })}
       </ul>
+    </section>
+
+    <section class="stack">
+      <SectionHead title="Archiv" accent="draftů" href="historie/drafty/" linkLabel="Všechny drafty" />
+      <p class="hist-note">Všech {drafts.length} draftů Srandoligy po kolech i podle organizací, draftové pozice po sezonách a opakovaně draftovaní hráči v profilech klubů.</p>
     </section>
 
     <section class="stack">

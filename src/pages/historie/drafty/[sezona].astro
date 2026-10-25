@@ -1,0 +1,103 @@
+---
+// Detail draftu: 13 kol (#1–#130) a soupisky podle organizací. Stabilní kotvy: #vyber-<celkové číslo>, #kolo-<n>, #<id-organizace>.
+import Base from '../../../layouts/Base.astro';
+import SectionHead from '../../../components/SectionHead.astro';
+import TeamLink from '../../../components/TeamLink.astro';
+import TeamIcon from '../../../components/TeamIcon.astro';
+import { drafts, historySeasons, teamById, hasProfile } from '../../../lib/data.js';
+import { draftRosters } from '../../../lib/draft.js';
+import { u } from '../../../lib/paths';
+
+export function getStaticPaths() {
+  return drafts.map((d, i) => ({ params: { sezona: d.season.replace('/', '-') }, props: { draft: d, prev: drafts[i - 1], next: drafts[i + 1] } }));
+}
+const { draft, prev, next } = Astro.props;
+const slug = (s: string) => s.replace('/', '-');
+const n = draft.order.length;
+const rounds = Array.from({ length: draft.rounds }, (_, i) => ({ round: i + 1, picks: draft.picks.filter((p) => p.round === i + 1) }));
+const rosters = draftRosters(draft.order, draft.picks, teamById);
+const done = historySeasons.find((h) => h.season === draft.season);
+const finalRank = (id: string) => done?.teams.find((t) => t.team === id)?.finalRank;
+const norm = (s: string) => s.replace(/[’']/g, "'").normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const labels = draft.order.filter((id) => draft.espnLabels?.[id] && norm(draft.espnLabels[id]) !== norm(teamById(id).name))
+  .map((id) => ({ id, label: draft.espnLabels[id], typo: norm(draft.espnLabels[id]) !== norm(teamById(id).name) }));
+const date = new Date(draft.start).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`Draft ${draft.season}`} description={`Všech ${draft.picks.length} výběrů draftu Srandoligy ${draft.season} po kolech i podle organizací.`}>
+  <p style="margin:0 0 10px"><a class="section-link" href={u('historie/drafty/')}>← Archiv draftů</a></p>
+  <p class="kicker">Draft</p>
+  <h1 class="page-title">{draft.season}</h1>
+  <p class="page-lead">{date} · Snake Draft · {draft.rounds} kol · {draft.picks.length} výběrů ·
+    {done ? <a href={u(`historie/${slug(draft.season)}/`)}>Výsledky sezony →</a> : <span class="tag tag--outline">Sezona probíhá</span>}</p>
+
+  <nav class="jump" aria-label="Přejít na kolo">
+    <span class="jump__label">Kolo</span>
+    {rounds.map((r) => <a href={`#kolo-${r.round}`}>{r.round}</a>)}
+  </nav>
+  <nav class="jump" aria-label="Přejít na organizaci">
+    <span class="jump__label">Organizace</span>
+    {draft.order.map((id) => <a href={`#${id}`} title={teamById(id).name}>{teamById(id).short}</a>)}
+  </nav>
+
+  <div class="stack" style="margin-top:24px">
+    <section class="stack" id="kola">
+      <SectionHead title="Podle" accent="kol" />
+      {rounds.map((r) => (
+        <details class="draft-round" id={`kolo-${r.round}`} open data-collapse>
+          <summary class="draft-round__title">{r.round}. kolo <span>#{r.picks[0].pick}–#{r.picks.at(-1).pick} · {r.round % 2 ? 'pozice 1 → 10' : 'pozice 10 → 1'}</span></summary>
+          <ol class="pick-table">
+            {r.picks.map((p) => (
+              <li class="pick-row" id={`vyber-${p.pick}`}>
+                <a class="pick-row__no" href={`#vyber-${p.pick}`} aria-label={`Výběr #${p.pick}`}>#{p.pick}</a>
+                <span class="pick-row__player">{p.player}<span class="pick-row__nba">{p.nbaTeam} · {p.positionShown}</span></span>
+                <span class="pick-row__team"><TeamLink id={p.team} size="sm" /></span>
+              </li>
+            ))}
+          </ol>
+        </details>
+      ))}
+    </section>
+
+    <section class="stack" id="organizace">
+      <SectionHead title="Podle" accent="organizací" />
+      <div class="roster-grid">
+        {rosters.map(({ slot, team, picks }) => (
+          <details class="roster" id={team.id} style={`--team:${team.color}`} open data-collapse>
+            <summary class="roster__head"><span class="roster__slot">#{slot}</span><span class="roster__name">{team.name}</span>{finalRank(team.id) && <span class:list={['roster__rank', { 'is-gold': finalRank(team.id) === 1 }]}>{finalRank(team.id)}. místo</span>}</summary>
+            <ol class="roster__list">
+              {picks.map((p) => <li><a href={`#vyber-${p.pick}`}>#{p.pick}</a><span>{p.player}</span></li>)}
+            </ol>
+            {hasProfile(team.id) && <p class="roster__link"><a class="section-link" href={u(`tymy/${team.id}/`)}>Profil klubu<span aria-hidden="true">→</span></a></p>}
+          </details>
+        ))}
+      </div>
+    </section>
+
+    {labels.length > 0 && (
+      <p class="hist-note">Názvy v ESPN v době draftu: {labels.map((l, i) => <>{i > 0 && ' · '}{teamById(l.id).name} = „{l.label}“</>)}.</p>
+    )}
+    <nav class="season-nav" aria-label="Další drafty">
+      {prev ? <a class="button" href={u(`historie/drafty/${slug(prev.season)}/`)}>← {prev.season}</a> : <span />}
+      {next && <a class="button" href={u(`historie/drafty/${slug(next.season)}/`)}>{next.season} →</a>}
+    </nav>
+    <script is:inline>
+      // Bez JavaScriptu zůstávají kola i soupisky otevřené. S ním se sbalí; otevře se 1. kolo a vše, na co míří odkaz.
+      (function () {
+        var all = [].slice.call(document.querySelectorAll('details[data-collapse]'));
+        var reveal = function () {
+          var id = location.hash && decodeURIComponent(location.hash.slice(1));
+          var el = id && document.getElementById(id);
+          if (!el) return false;
+          for (var d = el; d; d = d.parentElement) if (d.tagName === 'DETAILS') d.open = true;
+          if (el.tagName === 'DETAILS') el.open = true;
+          el.scrollIntoView();
+          return true;
+        };
+        all.forEach(function (d) { d.open = false; });
+        if (!reveal()) { var first = document.getElementById('kolo-1'); if (first) first.open = true; }
+        window.addEventListener('hashchange', reveal);
+      })();
+    </script>
+    <p class="byline__role">Zdroj: ESPN Fantasy – Draft Recap {draft.season}. NBA tým a pozice tak, jak je ESPN zobrazuje v historii ligy (u vyměněných hráčů pozdější tým); pozice není hráčská způsobilost.</p>
+  </div>
+</Base>

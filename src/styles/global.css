@@ -561,3 +561,70 @@ span.team-cell { cursor: default; }
 @media (min-width: 860px) {
   .st-row.team-seasons { grid-template-columns: 50px minmax(140px, 1.3fr) repeat(3, minmax(0, 0.8fr)) minmax(180px, 1.6fr) 0; }
 }
+
+/* ---------- Archiv draftů ---------- */
+
+@media (min-width: 1000px) { .season-grid--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.season-card--draft { border-top-color: var(--red); }
+.draft-first { display: grid; gap: 4px; }
+.draft-first strong { font-family: var(--font-display); font-size: 1.15rem; }
+.is-gold { color: var(--gold); }
+
+.slot-table { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.slot-table__row { display: grid; grid-template-columns: minmax(0, 1fr) repeat(5, 36px); gap: 4px; align-items: center; padding: 8px 10px; border-top: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+.slot-table__row--head { border-top: 0; font-family: var(--font-display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.06em; color: var(--muted); }
+.slot-table__row--head span:not(:first-child), .slot-table__slot { text-align: center; }
+.slot-table__row.is-former { background: var(--bg); }
+.slot-table__team a, .slot-table__team > span { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; min-width: 0; }
+.slot-table__team svg, .slot-table__team .team-logo { width: 22px; height: 22px; flex: none; }
+.slot-table__name { display: none; }
+.slot-table__slot a { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; text-decoration: none; }
+.slot-table__none { color: var(--muted); }
+@media (min-width: 560px) {
+  .slot-table__row { grid-template-columns: minmax(0, 1fr) repeat(5, 56px); }
+  .slot-table__name { display: inline; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .slot-table__short { display: none; }
+}
+
+.jump { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; }
+.jump__label { font-family: var(--font-display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.jump a { min-width: 34px; text-align: center; padding: 3px 7px; border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: var(--font-display); font-weight: 700; text-decoration: none; }
+.jump a:hover { border-color: var(--text-soft); }
+
+.draft-round { scroll-margin-top: 16px; }
+.draft-round__title { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.draft-round__title span { font-weight: 600; font-size: 0.85rem; color: var(--muted); letter-spacing: 0.04em; text-transform: none; margin-left: 6px; }
+.pick-table { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.pick-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 10px; align-items: center; padding: 9px 12px; border-top: 1px solid var(--border); scroll-margin-top: 16px; }
+.pick-row:first-child { border-top: 0; }
+.pick-row:target { background: color-mix(in srgb, var(--red) 14%, var(--surface)); }
+.pick-row__player { font-weight: 600; min-width: 0; display: flex; flex-wrap: wrap; gap: 0 10px; align-items: baseline; }
+.pick-row__nba { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+.pick-row__team { grid-column: 2; min-width: 0; }
+@media (min-width: 760px) {
+  .pick-row { grid-template-columns: 60px minmax(0, 1.3fr) minmax(0, 1fr); }
+  .pick-row__team { grid-column: auto; }
+}
+
+.roster-grid { display: grid; gap: 12px; }
+@media (min-width: 760px) { .roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.roster { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--team); border-radius: var(--radius); padding: 12px 14px; scroll-margin-top: 16px; }
+.roster:target { border-color: var(--text-soft); border-top-color: var(--team); }
+.roster__head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 8px; font-size: 1rem; }
+.roster__slot { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; }
+.roster__rank { margin-left: auto; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+.roster__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 0.92rem; }
+.roster__list li { display: grid; grid-template-columns: 48px minmax(0, 1fr); }
+.roster__list a { font-family: var(--font-display); font-weight: 700; text-decoration: none; color: var(--text-soft); }
+
+/* Rozbalovací kola a soupisky draftu */
+details.draft-round > summary.draft-round__title { cursor: pointer; list-style-position: inside; padding: 8px 0; margin: 0; }
+details.draft-round > summary.draft-round__title::marker { color: var(--red); }
+details.draft-round + details.draft-round { margin-top: 6px; }
+details.roster > summary.roster__head { cursor: pointer; list-style-position: inside; margin: 0; }
+details.roster[open] > summary.roster__head { margin-bottom: 8px; }
+.roster__name { font-weight: 600; }
+.roster__link { margin: 8px 0 0; }
+.draft-round:target > summary, .roster:target > summary { color: #fff; }
+

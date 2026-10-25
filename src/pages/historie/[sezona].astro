@@ -101,6 +101,8 @@ const placementTitle = (g: any) => `O umístění 5.–8. · ${dates[g.round]}`;
       </section>
     </div>
 
+    <p><a class="section-link" href={u(`historie/drafty/${seasonSlug(season.season)}/`)}>Draft sezony {season.season}<span aria-hidden="true">→</span></a></p>
+
     <nav class="season-nav" aria-label="Další sezony">
       {prev ? <a class="button" href={u(`historie/${seasonSlug(prev.season)}/`)}>← {prev.season}</a> : <span />}
       {next && <a class="button" href={u(`historie/${seasonSlug(next.season)}/`)}>{next.season} →</a>}
