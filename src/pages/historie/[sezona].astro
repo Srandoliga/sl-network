@@ -4,6 +4,7 @@ import SectionHead from '../../components/SectionHead.astro';
 import TeamLink from '../../components/TeamLink.astro';
 import Matchup from '../../components/Matchup.astro';
 import Trophy from '../../components/Trophy.astro';
+import SeasonMatches from '../../components/SeasonMatches.astro';
 import { historySeasons } from '../../lib/data.js';
 import { bracketOf, formatPoints, formatRecord, seasonSlug } from '../../lib/archive.js';
 import { u } from '../../lib/paths';
@@ -100,6 +101,8 @@ const placementTitle = (g: any) => `O umístění 5.–8. · ${dates[g.round]}`;
         </div>
       </section>
     </div>
+
+    <SeasonMatches season={season} />
 
     <p><a class="section-link" href={u(`historie/drafty/${seasonSlug(season.season)}/`)}>Draft sezony {season.season}<span aria-hidden="true">→</span></a></p>
 

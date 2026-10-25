@@ -1,0 +1,89 @@
+---
+// Rozšíření stránky sezony: cesta šampiona, rekordy základní části a rozpis 20 kol (kotvy = stabilní ID zápasu).
+import SectionHead from './SectionHead.astro';
+import TeamLink from './TeamLink.astro';
+import { allGames, matchSeasons, teamById } from '../lib/data.js';
+import { championshipPath, scoringRecords, matchupGames, streaks, formatSpan } from '../lib/matches.js';
+import { formatPoints } from '../lib/archive.js';
+import { u } from '../lib/paths';
+
+interface Props { season: any }
+const { season } = Astro.props;
+const ms = matchSeasons.find((m) => m.season === season.season);
+const games = allGames.filter((g) => g.season === season.season);
+const champ = season.teams.find((t: any) => t.finalRank === 1);
+const path = championshipPath(allGames, season.season, champ.team);
+const rec = scoringRecords(games, { standardOnly: true });
+const longStreak = season.teams.flatMap((t: any) => streaks(games, t.team)).filter((s: any) => s.kind === 'w').sort((a: any, b: any) => b.length - a.length || a.team.localeCompare(b.team))[0];
+const regular = ms ? ms.matchups.filter((p: any) => p.kind === 'regular') : [];
+const odd = regular.filter((p: any) => p.days !== 7);
+const name = (id: string) => teamById(id)?.name ?? id;
+const anchor = (g: any) => `#${g.id}`;
+const line = (g: any) => `${name(g.teams[0])} ${formatPoints(g.scores[0])} : ${formatPoints(g.scores[1])} ${name(g.teams[1])}`;
+---
+{ms && (
+<>
+  <section class="stack">
+    <SectionHead title="Cesta" accent="šampiona" gold />
+    <div class="path-head"><TeamLink id={champ.team} /><span class="byline__role">nasazení #{champ.seed} · základní část {champ.record.w}-{champ.record.l}-{champ.record.t}</span></div>
+    <ol class="path-list">
+      {path.map((r) => (
+        <li class:list={['path-list__step', { 'is-final': r.round === 3 }]}>
+          <span class="path-list__round">{r.roundName}</span>
+          <span class="path-list__opp"><span class="path-list__vs">vs.</span> #{r.oppSeed} <TeamLink id={r.opp} size="sm" /></span>
+          <span class="path-list__score"><strong>{formatPoints(r.score)}</strong> : {formatPoints(r.oppScore)}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="stack">
+    <SectionHead title="Rekordy" accent="základní části" />
+    <ul class="record-list">
+      <li><span class="record-list__label">Nejvyšší skóre · 7denní kolo</span><span class="record-list__value">{formatPoints(rec.highest.score)}</span><span class="record-list__meta">{name(rec.highest.team)} · <a href={anchor(rec.highest.game)}>kolo {rec.highest.game.matchup}</a></span></li>
+      <li><span class="record-list__label">Nejvyšší výhra · 7denní kolo</span><span class="record-list__value">o {formatPoints(rec.biggestWin.margin)}</span><span class="record-list__meta">{name(rec.biggestWin.winner)} · <a href={anchor(rec.biggestWin)}>kolo {rec.biggestWin.matchup}</a></span></li>
+      <li><span class="record-list__label">Nejtěsnější výhra · 7denní kolo</span><span class="record-list__value">o {formatPoints(rec.closestWin.margin)}</span><span class="record-list__meta">{name(rec.closestWin.winner)} · <a href={anchor(rec.closestWin)}>kolo {rec.closestWin.matchup}</a></span></li>
+      {longStreak && <li><span class="record-list__label">Nejdelší vítězná série</span><span class="record-list__value">{longStreak.length} výher</span><span class="record-list__meta">{name(longStreak.team)} · kola {longStreak.from}–{longStreak.to}</span></li>}
+      <li><span class="record-list__label">Nejnižší skóre · 7denní kolo</span><span class="record-list__value">{formatPoints(rec.lowest.score)}</span><span class="record-list__meta">{name(rec.lowest.team)} · <a href={anchor(rec.lowest.game)}>kolo {rec.lowest.game.matchup}</a></span></li>
+      <li><span class="record-list__label">Nejvyšší součet · 7denní kolo</span><span class="record-list__value">{formatPoints(rec.highestTotal.total)}</span><span class="record-list__meta"><a href={anchor(rec.highestTotal)}>kolo {rec.highestTotal.matchup}</a> · {name(rec.highestTotal.teams[0])} × {name(rec.highestTotal.teams[1])}</span></li>
+    </ul>
+    <p class="byline__role" style="margin:0">Skóre a výhry jen ze 7denních kol, nejde o absolutní rekordy všech kol. {odd.length > 0 && `Kola s jinou délkou: ${odd.map((p: any) => `${p.matchup}. (${p.days} dní)`).join(', ')}.`}</p>
+  </section>
+
+  <section class="stack">
+    <SectionHead title="Rozpis" accent="základní části" />
+    <details class="more schedule" id="rozpis">
+      <summary>Všech 20 kol a 100 zápasů</summary>
+      <div class="schedule__rounds">
+        {regular.map((p: any) => (
+          <div class="schedule__round" id={`kolo-${p.matchup}`}>
+            <h3 class="schedule__title">Kolo {p.matchup} <span>{formatSpan(p.start, p.end)}{p.days !== 7 && ` · ${p.days} dní`}</span></h3>
+            <ul class="score-list">
+              {matchupGames(games, season.season, p.matchup).map((g: any) => (
+                <li class="score-row" id={g.id}>
+                  {g.teams.map((t: string, i: number) => (
+                    <span class:list={['score-row__side', { 'is-winner': g.winner === t }]}><span class="score-row__name" title={name(t)}><span class="score-row__short">{teamById(t)?.short}</span><span class="score-row__full">{name(t)}</span></span><span class="score-row__pts">{formatPoints(g.scores[i])}</span></span>
+                  ))}
+                  <a class="score-row__link" href={`#${g.id}`} aria-label={`Odkaz na zápas: ${line(g)}`}>#</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="byline__role">Pořadí dvojice: hosté – domácí podle ESPN. Remíza bez zvýraznění. Zdroj: ESPN League Schedule.</p>
+    </details>
+  </section>
+  <script is:inline>
+    // Odkaz na konkrétní zápas otevře rozpis a dojede na řádek.
+    (function () {
+      var open = function () {
+        var el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        var d = el && el.closest && el.closest('details');
+        if (d && !d.open) { d.open = true; el.scrollIntoView(); }
+      };
+      open(); window.addEventListener('hashchange', open);
+    })();
+  </script>
+</>
+)}

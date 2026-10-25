@@ -1,0 +1,147 @@
+---
+// „Historie klubu“ na profilu: draft (Draft DNA), soupeři v základní části a rekordy. Na první pohled jen to podstatné,
+// podrobnosti v <details>. Nováček dostane jen skutečná data svého prvního draftu – žádné nulové bilance.
+import SectionHead from './SectionHead.astro';
+import TeamLink from './TeamLink.astro';
+import { drafts, allGames, playerAliases, teamById, historySeasons } from '../lib/data.js';
+import { historySignals } from '../lib/history-signals.js';
+import { teamHistoryModel } from '../lib/team-history.js';
+import { formatPoints } from '../lib/archive.js';
+import { u } from '../lib/paths';
+
+interface Props { teamId: string }
+const { teamId } = Astro.props;
+const CURRENT = drafts.at(-1).season;
+const m = teamHistoryModel({ teamId, drafts, games: allGames, aliases: playerAliases, currentSeason: CURRENT });
+const slug = (s: string) => s.replace('/', '-');
+const short = (s: string) => s.replace(/^20(\d\d)\/(\d\d)$/, '$1/$2');
+const record = (o: any) => `${o.w}–${o.l}${o.t ? `–${o.t}` : ''}`;
+const pickHref = (season: string, pick: number) => u(`historie/drafty/${slug(season)}/#vyber-${pick}`);
+const gameHref = (g: any) => u(`historie/${slug(g.season)}/#${g.id}`);
+
+// Rekord klubu se porovnává s rekordem ligy ze stejně počítaného souboru (základní část, skóre jen ze 7denních kol).
+const isLeagueStreak = m.streakW && m.streakW.length === m.league.streakW;
+const isLeagueHigh = m.records && m.records.highest.game.id === m.league.highest.game.id;
+
+const top3 = m.current?.picks.slice(0, 3) ?? [];
+const repeatedShown = m.repeated.slice(0, 3);
+const repeatedMore = m.repeated.slice(3);
+const sortedOpp = [...m.opponents].filter((o) => o.n >= 4);
+const bestOpp = [...sortedOpp].sort((a, b) => (b.w - b.l) - (a.w - a.l) || b.n - a.n)[0];
+const worstOpp = [...sortedOpp].sort((a, b) => (a.w - a.l) - (b.w - b.l) || b.n - a.n)[0];
+const name = (id: string) => teamById(id)?.name ?? id;
+// Jedna zajímavost: nejrelevantnější veřejně vhodný signál klubu, který neopakuje údaje sekce
+// (návraty, série a skóre jsou vidět níže). Podobnosti, korelace a relevance zůstávají interní.
+const PUBLIC = ['championship_run', 'playoff_series', 'head_to_head', 'slot_repeat', 'price_shift'];
+const fact = historySignals({ drafts, games: allGames, aliases: playerAliases, history: historySeasons, currentSeason: CURRENT, name })
+  .filter((s: any) => PUBLIC.includes(s.type) && s.publicText && s.teams[0] === teamId)
+  .sort((x: any, y: any) => PUBLIC.indexOf(x.type) - PUBLIC.indexOf(y.type) || y.relevance.score - x.relevance.score)[0];
+---
+<section class="stack club-history" id="historie-klubu">
+  <SectionHead title="Historie" accent="klubu" href="historie/drafty/" linkLabel="Archiv draftů" />
+
+  {m.isDebut ? (
+    <div class="club-debut">
+      <p class="kicker" style="margin:0">První sezona</p>
+      <p class="club-debut__title">Historie se teprve píše.</p>
+      <p class="club-debut__text">{name(teamId)} vstupují do ligy v sezoně {CURRENT}. Bilance, soupeři a rekordy přibudou s prvními odehranými zápasy.</p>
+    </div>
+  ) : null}
+
+  {fact && <p class="club-fact"><span class="kicker">Z historie</span><span>{fact.publicText} <a class="club-fact__src" href={u(fact.evidence[0].href)}>Zdroj</a></span></p>}
+
+  {m.current && (
+    <div class="club-block">
+      <h3 class="club-block__title">Draft {CURRENT}</h3>
+      <div class="team-totals">
+        <div><span class="stat">#{m.current.slot}</span><span class="stats__label">Draftová pozice</span></div>
+        {m.returns ? (
+          <div><span class="stat">{m.returns.count}/{m.returns.total}</span><span class="stats__label">Hráčů draftovali už dříve</span></div>
+        ) : null}
+        {m.returns && <div><span class="stat">{m.returns.inTop3}</span><span class="stats__label">Z toho v prvních 3 kolech</span></div>}
+        <div><span class="stat">{m.seasonsInLeague}</span><span class="stats__label">{m.seasonsInLeague === 1 ? 'Sezona v lize' : 'Sezony v lize'}</span></div>
+      </div>
+      <ol class="pick-list">
+        {top3.map((p) => (
+          <li><a class="pick-list__no" href={pickHref(CURRENT, p.pick)}>#{p.pick}</a><span class="pick-list__player">{p.player}</span><span class="pick-list__meta">{p.round}. kolo · {p.nbaTeam} {p.positionShown}</span></li>
+        ))}
+      </ol>
+      {m.returns && m.returns.count > 0 && (
+        <details class="more">
+          <summary>Kteří hráči se vrátili ({m.returns.count})</summary>
+          <ul class="chip-list">{m.returns.picks.map((p) => <li><a href={pickHref(CURRENT, p.pick)}>#{p.pick}</a> {p.player}</li>)}</ul>
+        </details>
+      )}
+    </div>
+  )}
+
+  {m.drafts.length > 1 && (
+    <div class="club-block">
+      <h3 class="club-block__title">Draftové pozice</h3>
+      <ul class="slot-badges">
+        {m.drafts.map((d) => (
+          <li><a href={u(`historie/drafty/${slug(d.season)}/#${teamId}`)}><span>{short(d.season)}</span><strong>#{d.slot}</strong></a></li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {repeatedShown.length > 0 && (
+    <div class="club-block">
+      <h3 class="club-block__title">Opakovaně draftovaní</h3>
+      <ul class="timeline-list">
+        {repeatedShown.map((r) => (
+          <li>
+            <span class="timeline-list__player">{r.name}</span>
+            <span class="timeline-list__picks">{r.entries.map((e, i) => <>{i > 0 && <span class="arrow" aria-hidden="true">→</span>}<a href={pickHref(e.season, e.pick)} title={`Draft ${e.season}`}>#{e.pick}<small>{short(e.season)}</small></a></>)}</span>
+          </li>
+        ))}
+      </ul>
+      {repeatedMore.length > 0 && (
+        <details class="more">
+          <summary>Další opakovaně draftovaní ({repeatedMore.length})</summary>
+          <ul class="timeline-list">
+            {repeatedMore.map((r) => (
+              <li><span class="timeline-list__player">{r.name}</span><span class="timeline-list__picks">{r.entries.map((e, i) => <>{i > 0 && <span class="arrow" aria-hidden="true">→</span>}<a href={pickHref(e.season, e.pick)}>#{e.pick}<small>{short(e.season)}</small></a></>)}</span></li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </div>
+  )}
+
+  {m.opponents.length > 0 && (
+    <div class="club-block">
+      <h3 class="club-block__title">Proti soupeřům <span>základní část</span></h3>
+      <div class="h2h-pair">
+        {bestOpp && <div class="h2h-card"><span class="stats__label">Nejlepší bilance</span><TeamLink id={bestOpp.opp} size="sm" /><span class="h2h-card__rec">{record(bestOpp)}</span></div>}
+        {worstOpp && worstOpp.opp !== bestOpp?.opp && <div class="h2h-card"><span class="stats__label">Nejtěžší soupeř</span><TeamLink id={worstOpp.opp} size="sm" /><span class="h2h-card__rec">{record(worstOpp)}</span></div>}
+      </div>
+      <details class="more">
+        <summary>Bilance proti všem soupeřům ({m.opponents.length})</summary>
+        <div class="h2h-table">
+          {m.opponents.map((o) => (
+            <div class="h2h-row"><TeamLink id={o.opp} size="sm" /><span class="h2h-row__rec">{record(o)}</span><span class="h2h-row__n">{o.n} {o.n >= 5 ? 'zápasů' : 'zápasy'}</span></div>
+          ))}
+        </div>
+        <p class="byline__role" style="margin:8px 0 0">Jen základní část (W–L–remízy). Zápasy play-off jsou na stránkách jednotlivých sezon.</p>
+      </details>
+    </div>
+  )}
+
+  {m.records && (
+    <div class="club-block">
+      <h3 class="club-block__title">Rekordy klubu <span>základní část</span></h3>
+      <ul class="record-list">
+        {m.streakW && (
+          <li><span class="record-list__label">Nejdelší vítězná série</span><span class="record-list__value">{m.streakW.length} výher {isLeagueStreak && <span class="tag tag--outline">zároveň rekord ligy</span>}</span><span class="record-list__meta">{m.streakW.season}, kola {m.streakW.from}–{m.streakW.to}</span></li>
+        )}
+        <li><span class="record-list__label">Nejvyšší skóre · 7denní kolo</span><span class="record-list__value">{formatPoints(m.records.highest.score)} {isLeagueHigh && <span class="tag tag--outline">zároveň rekord ligy (7denní kola)</span>}</span><span class="record-list__meta"><a href={gameHref(m.records.highest.game)}>{m.records.highest.game.season}, kolo {m.records.highest.game.matchup}</a> vs {name(m.records.highest.opp)}</span></li>
+        <li><span class="record-list__label">Nejvyšší výhra · 7denní kolo</span><span class="record-list__value">o {formatPoints(m.records.biggestWin.margin)}</span><span class="record-list__meta"><a href={gameHref(m.records.biggestWin)}>{m.records.biggestWin.season}, kolo {m.records.biggestWin.matchup}</a> vs {name(m.records.biggestWin.teams.find((t: string) => t !== teamId))}</span></li>
+      </ul>
+      <p class="byline__role" style="margin:0">Skóre a výhry počítáme jen ze 7denních kol – nejde o absolutní rekordy všech kol (zkrácené 1. kolo a dvoutýdenní kolo s All-Star přestávkou se nesrovnávají). Série v rámci jedné sezony. Rekord ligy: {m.league.streakW} výher v řadě; {formatPoints(m.league.highest.score)} bodů v 7denním kole.</p>
+    </div>
+  )}
+
+  <p class="club-links"><a class="section-link" href={u('historie/drafty/')}>Archiv draftů<span aria-hidden="true">→</span></a> <a class="section-link" href={u('historie/')}>Historické výsledky<span aria-hidden="true">→</span></a></p>
+</section>
