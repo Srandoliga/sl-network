@@ -6,6 +6,7 @@ import {
 } from './lib/validate.mjs';
 import { validateHistorySeason } from './lib/validate-history.mjs';
 import { validateDraft, validateHistoricalDraft, validatePlayerAliases } from './lib/validate-draft.mjs';
+import { validateMatchSeason } from './lib/validate-matches.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const parseErrors = [];
@@ -79,6 +80,14 @@ const draftResults = drafts.map(({ file, draft }) => {
 const aliasesFile = join(root, 'src/data/hraci-aliasy.json');
 const aliasResult = existsSync(aliasesFile) ? validatePlayerAliases(readJson(aliasesFile) ?? [], drafts.map((d) => d.draft)) : { errors: [], warnings: [] };
 
+// Zápasy základní části: src/data/zapasy/<rrrr-rr>.json, kontrola proti archivu téže sezony.
+const matchesDir = join(root, 'src/data/zapasy');
+const matchFiles = existsSync(matchesDir) ? readdirSync(matchesDir).filter((f) => f.endsWith('.json')) : [];
+const matchResults = matchFiles.map((file) => {
+  const doc = readJson(join(matchesDir, file));
+  return doc === undefined ? { errors: [], warnings: [] } : validateMatchSeason(doc, file, { history: historyOf(doc.season) });
+});
+
 const { errors, warnings } = mergeResults(
   { errors: parseErrors, warnings: [] },
   validateTeams(teams),
@@ -90,6 +99,7 @@ const { errors, warnings } = mergeResults(
   ...historyResults,
   ...draftResults,
   aliasResult,
+  ...matchResults,
 );
 // parseErrors se plní i při čtení týdnů, proto je připojíme znovu bez duplicit.
 const allErrors = [...new Set([...errors, ...parseErrors])];
@@ -100,4 +110,4 @@ if (allErrors.length) {
   console.error(`\nValidace dat selhala (${allErrors.length} chyb). Build zastaven.`);
   process.exit(1);
 }
-console.log(`✅ Data v pořádku: ${teams.length} týmů, ${seasons.length} sezon (${historyFiles.length} v historických výsledcích), ${drafts.length} draftů, ${weekFiles.length} kol${warnings.length ? `, ${warnings.length} varování ke kontrole` : ''}.`);
+console.log(`✅ Data v pořádku: ${teams.length} týmů, ${seasons.length} sezon (${historyFiles.length} v historických výsledcích), ${drafts.length} draftů, ${matchFiles.length} sezon zápasů, ${weekFiles.length} kol${warnings.length ? `, ${warnings.length} varování ke kontrole` : ''}.`);
