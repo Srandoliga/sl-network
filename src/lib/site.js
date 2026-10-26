@@ -20,9 +20,13 @@ export const CATEGORIES = [
   { id: 'draft', label: 'Draft speciál' },
   { id: 'draft-report', label: 'Draft Report' },
   { id: 'matchup-preview', label: 'Matchup Preview' },
+  // Každý Weekly Recap má vlastní titulní grafiku – rubrika proto nemá výchozí obrázek a `image` je povinný.
+  { id: 'weekly-recap', label: 'Weekly Recap', ownImage: true },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
+/** Rubriky bez výchozího obrázku: článek v nich musí mít vlastní `image`. */
+export const OWN_IMAGE_CATEGORY_IDS = CATEGORIES.filter((c) => c.ownImage).map((c) => c.id);
 
 export const categoryLabel = (id) => CATEGORIES.find((c) => c.id === id)?.label ?? id;
 

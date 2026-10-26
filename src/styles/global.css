@@ -366,6 +366,93 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .prose .predictions li { display: grid; gap: 2px; padding: 12px 0; border-bottom: 1px solid var(--border); }
 .predictions__label { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .predictions__teams { font-size: 1.02rem; }
+/* Weekly Recap: výsledková tabule kola (vítěz nahoře, červená linka), souhrn kola pod ní */
+.prose .scoreboard { list-style: none; padding: 0; margin: 1em 0 1.2em; display: grid; gap: 10px; }
+.prose .scoreboard__game { margin: 0; border: 1px solid var(--border); background: var(--surface); }
+.scoreboard__row { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 8px 14px; color: var(--muted); }
+.scoreboard__row + .scoreboard__row { border-top: 1px solid var(--border); }
+.scoreboard__row img { width: 36px; height: 36px; object-fit: contain; }
+.prose .scoreboard__team { color: var(--text-soft); text-decoration: none; line-height: 1.25; }
+.prose .scoreboard__team:hover { text-decoration: underline; }
+.scoreboard__pts { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scoreboard__row.is-winner { box-shadow: inset 3px 0 0 var(--red); color: var(--text); }
+.prose .scoreboard__row.is-winner .scoreboard__team { color: var(--text); font-weight: 700; }
+.scoreboard__row.is-winner .scoreboard__pts { font-weight: 800; color: #fff; }
+.prose .round-facts { list-style: none; padding: 0; margin: 0 0 1.4em; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.prose .round-facts li { display: grid; gap: 2px; margin: 0; padding: 10px 14px; border: 1px solid var(--border); border-top: 2px solid var(--red); line-height: 1.3; }
+.round-facts__label { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.prose .round-facts__value { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: #fff; }
+.round-facts__team { font-size: 0.92rem; color: var(--text-soft); }
+/* Weekly Recap: hlavička rozboru zápasu – konečné skóre místo „vs.“, vítěz vlevo */
+.prose .matchup-head__score { align-self: center; padding-bottom: 1.4em; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 5.5vw, 2rem); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--muted); }
+.prose .matchup-head__score strong { font-weight: 800; color: #fff; }
+.matchup-head__colon { margin: 0 0.2em; color: var(--red); }
+.prose .matchup-head__team.is-loser span { color: var(--text-soft); font-weight: 600; }
+/* Weekly Recap: dvě skupiny čísel vedle sebe (na mobilu pod sebou) */
+.prose .split-stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 1.3em; }
+.split-stat__col { padding: 10px 14px; border: 1px solid var(--border); background: var(--surface); }
+.prose .split-stat p { margin: 0; }
+.prose .split-stat__label { margin-bottom: 6px; font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; line-height: 1.3; text-transform: uppercase; color: var(--muted); }
+.prose .split-stat__row { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--border); padding: 4px 0; }
+.split-stat__row strong { font-variant-numeric: tabular-nums; }
+/* SL Network Awards: každé ocenění samostatný blok; MVP zlatě (zlatá = ocenění) */
+.prose .award { margin: 1.4em 0; padding: 16px 16px 2px; border: 1px solid var(--border); background: var(--surface); }
+.prose .award--mvp { border-color: rgba(224, 180, 76, 0.45); border-top: 3px solid var(--gold); }
+.prose .award__label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.prose .award--mvp .award__label { color: var(--gold); }
+.award__status { padding: 0 7px; border: 1px dashed var(--border-strong); border-radius: var(--radius); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-soft); }
+.prose .award__name { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.35rem, 5vw, 1.7rem); line-height: 1.15; text-transform: uppercase; color: var(--text); }
+.prose .award--mvp .award__name { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+.prose .award__meta { margin: 6px 0 0; font-size: 0.95rem; }
+.prose .award__meta a { display: inline-flex; align-items: center; gap: 8px; color: var(--text-soft); text-decoration: none; }
+.prose .award__meta a:hover { text-decoration: underline; }
+.award__meta img { width: 28px; height: 28px; object-fit: contain; }
+.prose .award__stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 8px 0 12px; font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; line-height: 1.1; color: #fff; }
+.prose .award--mvp .award__stat { font-size: 2.6rem; color: var(--gold); }
+.prose .award__extra { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); }
+.prose .award__sub { margin: 0 0 10px; font-size: 0.92rem; color: var(--text-soft); }
+.award__note { display: block; padding-left: 12px; border-left: 2px solid var(--border-strong); font-size: 0.9rem; line-height: 1.55; color: var(--muted); }
+.prose .first-team { display: table; width: 100%; margin: 0 0 1.1em; }
+.prose .first-team th, .prose .first-team td { padding: 8px 8px 8px 0; white-space: normal; vertical-align: middle; }
+.prose .first-team .first-team__fp { padding-right: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.prose td.first-team__fp { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: #fff; }
+.first-team__pos { display: inline-block; min-width: 2.4em; padding: 1px 4px; border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: var(--font-display); font-weight: 800; text-align: center; color: var(--text); }
+.prose .first-team__player { font-weight: 600; color: var(--text); }
+.prose .first-team__team { display: inline-flex; align-items: center; gap: 6px; color: var(--text-soft); text-decoration: none; line-height: 1.25; }
+.first-team__team img { flex: none; width: 24px; height: 24px; object-fit: contain; }
+.prose .first-team tfoot td { border-bottom: 0; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+/* Benson's Prediction Tracker: průběžná bilance výslovných tipů, upozornění zvlášť (každý týden přidat řádek) */
+.prose .tracker { margin: 1em 0 1.6em; padding: 16px; border: 1px solid var(--border-strong); border-left: 3px solid var(--red); background: var(--surface); }
+.prose .tracker p { margin: 0; }
+.prose .tracker__label { font-family: var(--font-display); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.prose .tracker__label--notes { margin-top: 16px; }
+.prose .tracker__record { font-family: var(--font-display); font-weight: 800; font-size: 3.2rem; line-height: 1; color: var(--text-soft); }
+.prose .tracker__record strong { color: #fff; font-weight: 800; }
+.tracker__of { margin: 0 0.08em; color: var(--red); }
+.prose .tracker__caption { font-size: 0.92rem; color: var(--text-soft); }
+.prose .tracker__list { list-style: none; padding: 0; margin: 10px 0 0; }
+.prose .tracker__item { display: grid; grid-template-columns: 4.5em minmax(0, 1fr) auto; column-gap: 12px; align-items: baseline; margin: 0; padding: 8px 0; border-top: 1px solid var(--border); line-height: 1.4; }
+.tracker__round { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.tracker__tip { font-weight: 600; color: var(--text); }
+.tracker__result { grid-column: 2; font-size: 0.9rem; color: var(--text-soft); }
+.tracker__verdict { grid-column: 3; grid-row: 1 / span 2; align-self: center; font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; color: var(--muted); }
+.tracker__item.is-miss .tracker__verdict { color: var(--red-strong); }
+.tracker__item.is-hit .tracker__verdict { color: var(--text); }
+.tracker__list--notes .tracker__tip { font-weight: 500; color: var(--text-soft); }
+@media (max-width: 420px) {
+  .scoreboard__row { gap: 10px; padding: 8px 10px; }
+  .scoreboard__pts { font-size: 1.25rem; }
+  .prose .matchup-head__team img { width: 44px; height: 44px; }
+  .prose .award { padding: 14px 12px 2px; }
+  .prose .tracker { padding: 14px 12px; }
+  .prose .first-team { font-size: 0.9rem; }
+  .prose .first-team th, .prose .first-team td { padding-right: 6px; }
+  .prose .first-team__team { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .prose .tracker__item { grid-template-columns: minmax(0, 1fr) auto; }
+  .tracker__round { grid-row: auto; grid-column: 1 / -1; }
+  .tracker__result { grid-column: 1; }
+  .tracker__verdict { grid-column: 2; grid-row: 2 / span 2; }
+}
 /* Draft Awards: každé ocenění jako samostatný blok */
 .prose p:has(> .award-title) { margin-top: 2.2em; padding-top: 1.2em; border-top: 1px solid var(--border); }
 .prose h2 + p:has(> .award-title) { margin-top: 0; padding-top: 0; border-top: 0; }

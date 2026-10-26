@@ -36,8 +36,9 @@ const avatarDir = join(root, 'public/obrazky/redakce');
 const avatarIds = existsSync(avatarDir) ? readdirSync(avatarDir).filter((f) => f.endsWith('.webp')).map((f) => basename(f, '.webp')) : [];
 
 // Obrázky rubrik: každý článek bez vlastního obrázku použije public/obrazky/clanky/rubrika-<kategorie>.webp (+ -og.jpg).
-const { CATEGORY_IDS } = await import('../src/lib/site.js');
-const missingCovers = CATEGORY_IDS.flatMap((id) => [`rubrika-${id}.webp`, `rubrika-${id}-og.jpg`])
+// Rubriky s `ownImage` (Weekly Recap) výchozí obrázek nemají – vlastní `image` vynucuje schéma v src/content.config.ts.
+const { CATEGORY_IDS, OWN_IMAGE_CATEGORY_IDS } = await import('../src/lib/site.js');
+const missingCovers = CATEGORY_IDS.filter((id) => !OWN_IMAGE_CATEGORY_IDS.includes(id)).flatMap((id) => [`rubrika-${id}.webp`, `rubrika-${id}-og.jpg`])
   .filter((f) => !existsSync(join(root, 'public/obrazky/clanky', f)))
   .map((f) => `chybí obrázek rubriky public/obrazky/clanky/${f} (vytvořte: npm run obrazek -- <obrázek> ${f.replace(/(-og)?\.(webp|jpg)$/, '')})`);
 parseErrors.push(...missingCovers);

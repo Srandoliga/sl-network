@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import staff from './data/staff.json';
-import { CATEGORY_IDS } from './lib/site.js';
+import { CATEGORY_IDS, OWN_IMAGE_CATEGORY_IDS } from './lib/site.js';
 
 const staffIds = staff.map((s) => s.id) as [string, ...string[]];
 
@@ -28,6 +28,9 @@ const articles = defineCollection({
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
     demo: z.boolean().default(false),
+  }).refine((a) => a.image || !OWN_IMAGE_CATEGORY_IDS.includes(a.category), {
+    message: 'rubrika nemá výchozí obrázek – doplňte vlastní image (npm run obrazek)',
+    path: ['image'],
   }),
 });
 
