@@ -8,7 +8,7 @@ import CopyTeaser from '../../components/CopyTeaser.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import { getArticles } from '../../lib/content';
-import { categoryLabel, EDITORIAL, SITE } from '../../lib/site.js';
+import { categoryLabel, categoryTagClass, EDITORIAL, SITE } from '../../lib/site.js';
 import { staffById } from '../../lib/data.js';
 import { buildTeaser, coverImage, formatDateCs, isoDate, ogImageFor, splitHeadline } from '../../lib/articles.js';
 import { abs, u } from '../../lib/paths';
@@ -47,7 +47,7 @@ const { width: coverWidth = 1536, height: coverHeight = 1024 } = await sharp(joi
     {demo && <p class="notice notice--demo"><strong>DEMO:</strong> článek obsahuje ukázková, neskutečná data.</p>}
     <header class="article__head">
       <div class="article__meta">
-        <a class="tag" href={u(`clanky/kategorie/${category}/`)}>{categoryLabel(category)}</a>
+        <a class={categoryTagClass(category)} href={u(`clanky/kategorie/${category}/`)}>{categoryLabel(category)}</a>
         <time class="byline__role" datetime={isoDate(date)}>{formatDateCs(date)}</time>
       </div>
       {subtitle

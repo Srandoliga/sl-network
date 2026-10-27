@@ -3,14 +3,17 @@
 import ArticleCard from './ArticleCard.astro';
 import EmptyState from './EmptyState.astro';
 import { CATEGORIES } from '../lib/site.js';
+import { listedCategories } from '../lib/articles.js';
+import { getArticles } from '../lib/content';
 import { u } from '../lib/paths';
 interface Props { articles: any[]; current?: string; heading: string }
 const { articles, current, heading } = Astro.props;
+const categories = listedCategories(CATEGORIES, await getArticles());
 ---
 <h1 class="page-title">{heading}</h1>
 <nav class="chips" aria-label="Kategorie">
   <a class="chip" href={u('clanky/')} aria-current={!current ? 'page' : undefined}>Vše</a>
-  {CATEGORIES.map((c) => <a class="chip" href={u(`clanky/kategorie/${c.id}/`)} aria-current={current === c.id ? 'page' : undefined}>{c.label}</a>)}
+  {categories.map((c) => <a class="chip" href={u(`clanky/kategorie/${c.id}/`)} aria-current={current === c.id ? 'page' : undefined}>{c.label}</a>)}
 </nav>
 {articles.length
   ? <ul class="article-list article-list--grid">{articles.map((a) => <li><ArticleCard article={a} /></li>)}</ul>

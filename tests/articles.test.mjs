@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { visibleArticles, sortByDateDesc, pickLeadStory, buildTeaser, formatDateCs } from '../src/lib/articles.js';
+import { visibleArticles, sortByDateDesc, pickLeadStory, buildTeaser, formatDateCs, listedCategories } from '../src/lib/articles.js';
 
 const mk = (id, date, extra = {}) => ({ id, data: { date: new Date(date), title: id, perex: `perex ${id}`, draft: false, featured: false, ...extra } });
 
@@ -57,4 +57,10 @@ test('coverImage použije vlastní obrázek, jinak obrázek rubriky', () => {
 test('ogImageFor najde JPG náhled k WebP, jiné formáty nechá', () => {
   assert.equal(ogImageFor('obrazky/clanky/x.webp'), 'obrazky/clanky/x-og.jpg');
   assert.equal(ogImageFor('obrazky/clanky/x.png'), 'obrazky/clanky/x.png');
+});
+
+test('listedCategories skryje prázdnou rubriku s hideWhenEmpty, ostatní ponechá', () => {
+  const cats = [{ id: 'zpravy' }, { id: 'bts', hideWhenEmpty: true }];
+  assert.deepEqual(listedCategories(cats, [mk('a', '2026-01-01', { category: 'zpravy' })]).map((c) => c.id), ['zpravy']);
+  assert.deepEqual(listedCategories(cats, [mk('a', '2026-01-01', { category: 'bts' })]).map((c) => c.id), ['zpravy', 'bts']);
 });

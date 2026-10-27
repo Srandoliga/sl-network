@@ -9,6 +9,11 @@ export function visibleArticles(articles, showDrafts) {
   return sortByDateDesc(articles.filter((a) => showDrafts || !a.data.draft));
 }
 
+/** Rubriky k zobrazení: s `hideWhenEmpty` jen tehdy, když mají aspoň jeden (viditelný) článek. */
+export function listedCategories(categories, articles) {
+  return categories.filter((c) => !c.hideWhenEmpty || articles.some((a) => a.data.category === c.id));
+}
+
 /** Hlavní zpráva: nejnovější článek s `featured: true`, jinak nejnovější článek. Vstup už seřazený. */
 export function pickLeadStory(sorted) {
   return sorted.find((a) => a.data.featured) ?? sorted[0];

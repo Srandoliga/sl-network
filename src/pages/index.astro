@@ -12,7 +12,7 @@ import { coverImage, pickLeadStory, splitHeadline } from '../lib/articles.js';
 import { seasons, seasonsDesc, rivalries, staffMembers, teamById, currentTeams } from '../lib/data.js';
 import { historyFacts, titleCounts } from '../lib/history.js';
 import { latestWeek } from '../lib/weeks.js';
-import { categoryLabel, SITE } from '../lib/site.js';
+import { categoryLabel, categoryTagClass, SITE } from '../lib/site.js';
 import { u } from '../lib/paths';
 import { asset } from '../lib/assets';
 
@@ -130,7 +130,7 @@ const stats = [
             <li class="panel" style="display:grid;grid-template-columns:72px 1fr;gap:12px;position:relative">
               <span class="card__avatar"><StaffAvatar id={person.avatar} /></span>
               <span>
-                {article && <span class="tag">{categoryLabel(article.data.category)}</span>}
+                {article && <span class={categoryTagClass(article.data.category)}>{categoryLabel(article.data.category)}</span>}
                 <a class="card__title" style="display:block;margin-top:4px;text-decoration:none" href={u(article ? `clanky/${article.id}/` : `redakce/${person.id}/`)}>
                   {article ? article.data.title : person.name}
                 </a>

@@ -22,6 +22,8 @@ export const CATEGORIES = [
   { id: 'matchup-preview', label: 'Matchup Preview' },
   // Každý Weekly Recap má vlastní titulní grafiku – rubrika proto nemá výchozí obrázek a `image` je povinný.
   { id: 'weekly-recap', label: 'Weekly Recap', ownImage: true },
+  // Analytická značka: výrazný štítek (`brand`), na veřejném webu se rubrika ukáže až s prvním publikovaným článkem.
+  { id: 'beyond-the-score', label: 'Beyond the Score', ownImage: true, brand: true, hideWhenEmpty: true },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
@@ -29,6 +31,9 @@ export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
 export const OWN_IMAGE_CATEGORY_IDS = CATEGORIES.filter((c) => c.ownImage).map((c) => c.id);
 
 export const categoryLabel = (id) => CATEGORIES.find((c) => c.id === id)?.label ?? id;
+
+/** Třídy štítku rubriky: značkové rubriky (`brand`) mají vlastní vzhled. */
+export const categoryTagClass = (id) => (CATEGORIES.find((c) => c.id === id)?.brand ? 'tag tag--brand' : 'tag');
 
 export const NAV = [
   { href: '', label: 'Domů' },

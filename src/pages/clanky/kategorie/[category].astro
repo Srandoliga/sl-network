@@ -3,10 +3,11 @@ import Base from '../../../layouts/Base.astro';
 import ArticleIndex from '../../../components/ArticleIndex.astro';
 import { getArticles } from '../../../lib/content';
 import { CATEGORIES } from '../../../lib/site.js';
+import { listedCategories } from '../../../lib/articles.js';
 
 export async function getStaticPaths() {
   const articles = await getArticles();
-  return CATEGORIES.map((c) => ({
+  return listedCategories(CATEGORIES, articles).map((c) => ({
     params: { category: c.id },
     props: { label: c.label, articles: articles.filter((a) => a.data.category === c.id) },
   }));

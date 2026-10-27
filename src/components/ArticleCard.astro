@@ -2,7 +2,7 @@
 // Karta článku s obrázkem (vlastní `image`, jinak obrázek rubriky) a portrétem autora.
 import StaffAvatar from './StaffAvatar.astro';
 import { staffById } from '../lib/data.js';
-import { categoryLabel } from '../lib/site.js';
+import { categoryLabel, categoryTagClass } from '../lib/site.js';
 import { coverImage, formatDateCs, isoDate } from '../lib/articles.js';
 import { u } from '../lib/paths';
 import { asset } from '../lib/assets';
@@ -19,7 +19,7 @@ const cover = coverImage({ image, category });
   <img class="card__image" src={asset(cover)} alt={image ? imageAlt ?? '' : ''} width="1536" height="1024" loading="lazy" decoding="async" />
   <div class="card__body">
     <div class="card__meta">
-      <span class="tag">{categoryLabel(category)}</span>
+      <span class={categoryTagClass(category)}>{categoryLabel(category)}</span>
       {draft && <span class="tag tag--draft">Koncept</span>}
       {demo && <span class="tag tag--demo">DEMO</span>}
     </div>
