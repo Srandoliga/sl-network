@@ -24,7 +24,7 @@ teaser: |
 featured: true
 image: obrazky/clanky/beyond-the-score-inaugurace-2026.webp
 imageAlt: "Titulní grafika SL Network Beyond the Score: historický archiv, Chlumčanský paradox 5–0 v úvodních kolech, prázdný podstavec s nápisem 0 titles a 650 picks, 400 games."
-draft: true
+draft: false
 ---
 
 <div class="brand-band">
