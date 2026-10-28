@@ -1,8 +1,9 @@
 # Build + kontrola při každém pushi. Veřejné nasazení na GitHub Pages je ZATÍM jen ruční
 # (Actions → „Build a nasazení“ → Run workflow) a smí proběhnout až po schválení majitelem.
 # Po schválení lze nasazení zapnout i pro push: v jobu deploy smazat řádek `if:`.
-# Plánované vydání (schválené majitelem): jednorázově 28. 10. 2026 v 7:30 SEČ = 6:30 UTC (Beyond the Score),
-# cíl vydání kolem 8:00 – GitHub plánovač bývá zpožděný (20. 10. o 26 min, 25. 10. o 35 min). Po vydání trigger `schedule` smazat.
+# Plánované vydání (schválené majitelem): jednorázově 28. 10. 2026 v 19:15 SEČ = 18:15 UTC (Beyond the Score).
+# Článek má datum 19:15 a veřejný build ho do té doby vynechá, takže dřívější ruční nasazení ho nezveřejní.
+# GitHub plánovač bývá zpožděný (20. 10. o 26 min, 25. 10. o 35 min). Po vydání trigger `schedule` smazat.
 name: Build a nasazení
 
 on:
@@ -10,7 +11,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '30 6 28 10 *'
+    - cron: '15 18 28 10 *'
 
 permissions:
   contents: read

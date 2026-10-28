@@ -4,9 +4,12 @@ export function sortByDateDesc(articles) {
   return [...articles].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
-/** Publikované články (koncepty jen při showDrafts), od nejnovějšího. */
-export function visibleArticles(articles, showDrafts) {
-  return sortByDateDesc(articles.filter((a) => showDrafts || !a.data.draft));
+/**
+ * Publikované články (koncepty jen při showDrafts), od nejnovějšího.
+ * Článek s datem v budoucnosti se na veřejném webu objeví až v buildu po tomto čase (plánované vydání).
+ */
+export function visibleArticles(articles, showDrafts, now = new Date()) {
+  return sortByDateDesc(articles.filter((a) => showDrafts || (!a.data.draft && a.data.date <= now)));
 }
 
 /** Rubriky k zobrazení: s `hideWhenEmpty` jen tehdy, když mají aspoň jeden (viditelný) článek. */

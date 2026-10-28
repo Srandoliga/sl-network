@@ -3,7 +3,7 @@ title: "650 voleb. 400 zápasů. A historie, která popírá logiku."
 subtitle: "Příběhy, které tabulka nevypráví."
 seoTitle: "Beyond the Score: 650 voleb, 400 zápasů"
 seoDescription: "Chlumčanský paradox 5–0 v úvodních kolech a nula titulů, Jokić jako čtyřnásobná draftová jednička a polovina finalistů se startem 0–1. SL Network otevírá historický archiv."
-date: 2026-10-28T08:00:00+01:00
+date: 2026-10-28T19:15:00+01:00
 author: brooks
 category: beyond-the-score
 perex: "Pět vítězných startů bez jediného titulu. Draftové jedničky na dně tabulky. A polovina historických finalistů, kteří svou sezonu zahájili porážkou. SL Network otevírá nový analytický archiv a přináší první důkazy, že Srandoliga se zdaleka neřídí tak jednoduchými pravidly, jak by se mohlo zdát."

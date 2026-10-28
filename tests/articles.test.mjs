@@ -64,3 +64,10 @@ test('listedCategories skryje prázdnou rubriku s hideWhenEmpty, ostatní ponech
   assert.deepEqual(listedCategories(cats, [mk('a', '2026-01-01', { category: 'zpravy' })]).map((c) => c.id), ['zpravy']);
   assert.deepEqual(listedCategories(cats, [mk('a', '2026-01-01', { category: 'bts' })]).map((c) => c.id), ['zpravy', 'bts']);
 });
+
+test('visibleArticles skryje článek s budoucím datem až do jeho času (jen veřejně)', () => {
+  const list = [mk('a', '2026-10-28T07:00:00Z'), mk('b', '2026-10-28T18:15:00Z')];
+  assert.deepEqual(visibleArticles(list, false, new Date('2026-10-28T12:00:00Z')).map((a) => a.id), ['a']);
+  assert.deepEqual(visibleArticles(list, false, new Date('2026-10-28T18:15:00Z')).map((a) => a.id), ['b', 'a']);
+  assert.deepEqual(visibleArticles(list, true, new Date('2026-10-28T12:00:00Z')).map((a) => a.id), ['b', 'a']);
+});
