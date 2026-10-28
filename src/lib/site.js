@@ -22,8 +22,9 @@ export const CATEGORIES = [
   { id: 'matchup-preview', label: 'Matchup Preview' },
   // Každý Weekly Recap má vlastní titulní grafiku – rubrika proto nemá výchozí obrázek a `image` je povinný.
   { id: 'weekly-recap', label: 'Weekly Recap', ownImage: true },
-  // Analytická značka: výrazný štítek (`brand`), na veřejném webu se rubrika ukáže až s prvním publikovaným článkem.
-  { id: 'beyond-the-score', label: 'Beyond the Score', ownImage: true, brand: true, hideWhenEmpty: true },
+  // Značkové rubriky mají vlastní štítek (`tag` → .tag--<tag>); veřejně se ukážou až s prvním publikovaným článkem.
+  { id: 'beyond-the-score', label: 'Beyond the Score', ownImage: true, tag: 'brand', hideWhenEmpty: true },
+  { id: 'flash', label: 'FLASH', ownImage: true, tag: 'flash', hideWhenEmpty: true },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);
@@ -32,8 +33,11 @@ export const OWN_IMAGE_CATEGORY_IDS = CATEGORIES.filter((c) => c.ownImage).map((
 
 export const categoryLabel = (id) => CATEGORIES.find((c) => c.id === id)?.label ?? id;
 
-/** Třídy štítku rubriky: značkové rubriky (`brand`) mají vlastní vzhled. */
-export const categoryTagClass = (id) => (CATEGORIES.find((c) => c.id === id)?.brand ? 'tag tag--brand' : 'tag');
+/** Třídy štítku rubriky: značkové rubriky (`tag`) mají vlastní vzhled. */
+export const categoryTagClass = (id) => {
+  const tag = CATEGORIES.find((c) => c.id === id)?.tag;
+  return tag ? `tag tag--${tag}` : 'tag';
+};
 
 export const NAV = [
   { href: '', label: 'Domů' },

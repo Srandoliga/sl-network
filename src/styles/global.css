@@ -208,6 +208,9 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .tag--muted { background: var(--surface-2); color: var(--muted); }
 /* Značková rubrika (Beyond the Score): světlý štítek s červenou linkou */
 .tag--brand { background: var(--text); color: var(--bg); box-shadow: inset 3px 0 0 var(--red); padding-left: 10px; }
+/* Rychlé zpravodajství (FLASH): červený štítek s bleskem a světlým vnitřním rámečkem */
+.tag--flash { background: var(--red); font-style: italic; letter-spacing: 0.18em; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55); }
+.tag--flash::before { content: '⚡'; margin-right: 4px; font-style: normal; }
 
 /* Titul / ocenění – jediné místo se zlatou. */
 .title-badge {
@@ -560,6 +563,10 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
   .pick-ledger__pick strong, .pick-ledger__rank strong { font-size: 1.35rem; }
   .prose .ledger { font-size: 0.88rem; }
 }
+/* FLASH: nenápadný zdroj na konci odstavce (odkaz na zprávu NBA/týmu/agentury) */
+.prose .source { display: inline-block; margin-left: 4px; font-size: 0.78rem; line-height: 1.4; color: var(--muted); }
+.prose .source a { color: var(--muted); text-decoration-color: var(--border-strong); white-space: nowrap; }
+.prose .source a:hover { color: var(--text-soft); }
 /* Draft Awards: každé ocenění jako samostatný blok */
 .prose p:has(> .award-title) { margin-top: 2.2em; padding-top: 1.2em; border-top: 1px solid var(--border); }
 .prose h2 + p:has(> .award-title) { margin-top: 0; padding-top: 0; border-top: 0; }
