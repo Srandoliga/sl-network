@@ -456,6 +456,10 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
   .prose .first-team { font-size: 0.9rem; }
   .prose .first-team th, .prose .first-team td { padding-right: 6px; }
   .prose .first-team__team { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .prose .first-team th { letter-spacing: 0.04em; font-size: 0.72rem; }
+  .first-team__pos { min-width: 2em; padding: 1px 2px; }
+  .prose .first-team__player { font-size: 0.8rem; }
+  .first-team__team span { font-size: 0.76rem; }
   .prose .tracker__item { grid-template-columns: minmax(0, 1fr) auto; }
   .tracker__round { grid-row: auto; grid-column: 1 / -1; }
   .tracker__result { grid-column: 1; }
