@@ -25,6 +25,7 @@ export const CATEGORIES = [
   // Značkové rubriky mají vlastní štítek (`tag` → .tag--<tag>); veřejně se ukážou až s prvním publikovaným článkem.
   { id: 'beyond-the-score', label: 'Beyond the Score', ownImage: true, tag: 'brand', hideWhenEmpty: true },
   { id: 'flash', label: 'FLASH', ownImage: true, tag: 'flash', hideWhenEmpty: true },
+  { id: 'power-rankings', label: 'Power Rankings', ownImage: true, hideWhenEmpty: true },
 ];
 
 export const CATEGORY_IDS = CATEGORIES.map((c) => c.id);

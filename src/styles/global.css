@@ -574,6 +574,53 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .prose .source { display: inline-block; margin-left: 4px; font-size: 0.78rem; line-height: 1.4; color: var(--muted); }
 .prose .source a { color: var(--muted); text-decoration-color: var(--border-strong); white-space: nowrap; }
 .prose .source a:hover { color: var(--text-soft); }
+/* Power Rankings: přehledný žebříček a kompaktní hlavička každé organizace (top 3 zlatá/stříbrná/bronzová) */
+.prose .pr-table { display: table; width: 100%; margin: 1.2em 0 1.8em; }
+.prose .pr-table caption { caption-side: top; text-align: left; padding-bottom: 8px; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.1em; line-height: 1.35; text-transform: uppercase; font-size: 0.78rem; color: var(--muted); }
+.prose .pr-table th, .prose .pr-table td { padding: 7px 8px 7px 0; white-space: normal; vertical-align: middle; }
+.prose .pr-table .pr-table__num { padding-right: 0; padding-left: 8px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.prose .pr-table__rank { width: 1.7em; font-family: var(--font-serif); font-weight: 700; font-size: 1.15rem; color: var(--text-soft); }
+.prose .pr-table__row--1 .pr-table__rank { color: var(--gold); }
+.prose .pr-table__row--2 .pr-table__rank { color: #c9ced6; }
+.prose .pr-table__row--3 .pr-table__rank { color: #c98a55; }
+.prose .pr-table__team { display: inline-flex; vertical-align: middle; align-items: center; gap: 8px; color: var(--text); font-weight: 600; line-height: 1.2; text-decoration: none; }
+.prose .pr-table__team:hover span { text-decoration: underline; }
+.pr-table__team img { flex: none; width: 28px; height: 28px; object-fit: contain; }
+.pr-new { display: inline-block; padding: 0 5px; border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: var(--font-display); font-weight: 700; font-size: 0.68rem; letter-spacing: 0.1em; line-height: 1.5; color: var(--muted); }
+@media (max-width: 420px) {
+  .prose .pr-table .pr-new { display: none; }
+}
+.prose .pr-table td > .pr-new { vertical-align: middle; }
+.prose .pr-head { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: 12px; margin: 2.6em 0 0.4em; padding-top: 1.4em; border-top: 1px solid var(--border); }
+.pr-head__rank { min-width: 1.15em; font-family: var(--font-serif); font-weight: 700; font-size: clamp(2.8rem, 11vw, 3.8rem); line-height: 1; text-align: center; color: var(--text-soft); }
+.pr-head--1 .pr-head__rank { color: var(--gold); }
+.pr-head--2 .pr-head__rank { color: #c9ced6; }
+.pr-head--3 .pr-head__rank { color: #c98a55; }
+.prose .pr-head img { width: 44px; height: 44px; object-fit: contain; }
+.prose .pr-head__team { margin: 0; font-size: clamp(1.15rem, 4.8vw, 1.5rem); line-height: 1.1; }
+.prose .pr-head__team a { color: var(--text); text-decoration: none; }
+.prose .pr-head__team a:hover { text-decoration: underline; }
+.prose .pr-head__meta { margin: 3px 0 0; font-size: 0.88rem; line-height: 1.4; color: var(--text-soft); }
+.prose .pr-head + h3 { margin-top: 0.6em; }
+.prose .pr-facts { list-style: none; margin: 0 0 1.2em; padding: 0; border-top: 1px solid var(--border); font-size: 0.95rem; line-height: 1.5; }
+.prose .pr-facts li { display: grid; grid-template-columns: 4.6em minmax(0, 1fr); gap: 8px; margin: 0; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.pr-facts__label { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; line-height: 1.8; text-transform: uppercase; color: var(--muted); }
+.article--power-rankings { max-width: 760px; }
+.prose .pr-head { scroll-margin-top: 16px; }
+/* Bensonův komentář v Power Rankings: výrazný, ale nepřebíjí analýzu */
+.article--power-rankings .prose blockquote { margin-bottom: 0.9em; padding-left: 12px; font-size: 1rem; line-height: 1.55; }
+.article--power-rankings .prose blockquote p { margin-bottom: 0.35em; }
+.article--power-rankings .prose blockquote cite { font-size: 0.78rem; }
+@media (max-width: 420px) {
+  .prose .pr-facts li { grid-template-columns: 1fr; gap: 0; }
+  .pr-facts__label { line-height: 1.5; }
+  .prose .pr-head { gap: 10px; }
+  .prose .pr-table .pr-table__num { padding-left: 8px; font-size: 0.88rem; }
+  .prose .pr-table__team { gap: 6px; }
+}
+.prose .pr-numbers { list-style: none; margin: 1em 0 1.4em; padding: 0; }
+.prose .pr-numbers li { display: grid; grid-template-columns: 6em minmax(0, 1fr); align-items: baseline; gap: 10px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.prose .pr-numbers strong { font-family: var(--font-serif); font-weight: 700; font-size: 1.15rem; color: #fff; }
 /* Draft Awards: každé ocenění jako samostatný blok */
 .prose p:has(> .award-title) { margin-top: 2.2em; padding-top: 1.2em; border-top: 1px solid var(--border); }
 .prose h2 + p:has(> .award-title) { margin-top: 0; padding-top: 0; border-top: 0; }

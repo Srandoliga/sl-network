@@ -42,7 +42,7 @@ const { width: coverWidth = 1536, height: coverHeight = 1024 } = await sharp(joi
 ---
 <Base title={pageTitle} ogTitle={ogTitle} description={seoDescription ?? perex} image={ogImageFor(cover)} imageAlt={imageAlt}
   article={{ published: date, section: categoryLabel(category), author: person?.name ?? author }}>
-  <article class="article">
+  <article class={`article article--${category}`}>
     {draft && <p class="notice notice--draft"><strong>Koncept ke schválení.</strong> Na veřejném webu se zobrazí až po nastavení <code>draft: false</code>.</p>}
     {demo && <p class="notice notice--demo"><strong>DEMO:</strong> článek obsahuje ukázková, neskutečná data.</p>}
     <header class="article__head">
