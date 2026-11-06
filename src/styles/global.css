@@ -621,6 +621,10 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .prose .pr-numbers { list-style: none; margin: 1em 0 1.4em; padding: 0; }
 .prose .pr-numbers li { display: grid; grid-template-columns: 6em minmax(0, 1fr); align-items: baseline; gap: 10px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
 .prose .pr-numbers strong { font-family: var(--font-serif); font-weight: 700; font-size: 1.15rem; color: #fff; }
+/* FLASH Investigation: decentní označení vydání a citace z ligového Messengeru */
+.prose .investigation-label { display: inline-block; margin: 0 0 1.4em; padding: 3px 10px; border: 1px solid var(--red); border-radius: var(--radius); font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red-strong); }
+.prose .messenger-quote { max-width: 34em; margin: 0 0 1.1em; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: 14px 14px 14px 4px; background: var(--surface-2); font-size: 1.02rem; line-height: 1.5; color: var(--text); }
+.messenger-quote__from { display: block; margin-bottom: 2px; font-family: var(--font-display); font-weight: 700; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 /* Draft Awards: každé ocenění jako samostatný blok */
 .prose p:has(> .award-title) { margin-top: 2.2em; padding-top: 1.2em; border-top: 1px solid var(--border); }
 .prose h2 + p:has(> .award-title) { margin-top: 0; padding-top: 0; border-top: 0; }
