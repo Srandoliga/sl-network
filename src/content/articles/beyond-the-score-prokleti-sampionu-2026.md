@@ -343,6 +343,17 @@ Nebo je odpověď ještě někde úplně jinde.
 
 ---
 
+<aside class="coming-next" aria-label="Příště v Beyond the Score">
+  <h3 class="coming-next__label">Příště v Beyond the Score</h3>
+  <p class="coming-next__title">Dvakrát první nasazení. Dvakrát bez medaile.</p>
+  <p class="coming-next__text">AbuKaufí nedokážou projít čtvrtfinále. Jenže existuje organizace, která dokázala dvakrát ovládnout základní část, vstoupit do play-off jako největší favorit – a pokaždé skončit mimo stupně vítězů.</p>
+  <p class="coming-next__text">Náhoda? Další prokletí? Nebo má Srandoliga problém s favority?</p>
+  <p class="coming-next__text"><strong>25. listopadu otevře Eddie Brooks další historický spis.</strong></p>
+  <p class="coming-next__note">Beyond the Score. Příběhy, které tabulka nevypráví.</p>
+</aside>
+
+---
+
 *SL Network | BEYOND THE SCORE*
 
 *Zdroje: ESPN League Schedule a Final Playoff Results sezon 2022/23–2025/26, historický archiv SL Network a výsledky prvních tří kol sezony 2026/27.*

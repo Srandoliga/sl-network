@@ -549,6 +549,8 @@ h1, h2, h3 { line-height: 1.1; margin: 0; }
 .prose .coming-next__label { font-family: var(--font-display); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red-strong); }
 .prose .coming-next__title { margin: 6px 0 8px !important; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.25rem, 5vw, 1.6rem); line-height: 1.15; text-transform: uppercase; color: #fff; }
 .prose .coming-next__note { font-family: var(--font-serif); font-style: italic; color: var(--muted); }
+.prose .coming-next h3.coming-next__label { margin: 0; font-size: 0.82rem; text-transform: uppercase; }
+.prose .coming-next .coming-next__text { margin: 0 0 0.8em; line-height: 1.6; color: var(--text-soft); }
 /* Beyond the Score #2: čtyři dlaždice v řadě, kompaktní výsledek čtvrtfinále, srovnání průměrů (pruhy od nuly) */
 .prose .stat-tiles--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .prose .ledger .ledger__num + .ledger__num { padding-left: 10px; }
