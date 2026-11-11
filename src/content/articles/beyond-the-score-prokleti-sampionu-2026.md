@@ -4,7 +4,7 @@ headline: "Čtyřikrát v play-off. Ani jednou dál."
 subtitle: "Příběhy, které tabulka nevypráví."
 seoTitle: "Beyond the Score: Prokletí šampionů"
 seoDescription: "AbuKaufí VzdejTo: 4 čtvrtfinále, 0 postupů, 3× vyřazení od pozdějšího šampiona. Bodovali jako ostatní čtvrtfinalisté – jejich soupeři ale třikrát zahráli nejlépe z celého kola."
-date: 2026-11-11T19:15:00+01:00
+date: 2026-11-11T08:45:00+01:00
 author: brooks
 category: beyond-the-score
 perex: "Čtyři sezony, čtyři účasti v play-off a čtyři vyřazení v prvním kole. Třikrát přitom AbuKaufí VzdejTo zastavil pozdější šampion Srandoligy. Jenže historická analýza odhalila ještě něco překvapivějšího: jejich soupeři předváděli v rozhodujících týdnech mimořádné výkony. Je to prokletí, nešťastný los, nebo problém ukrytý v manažerských rozhodnutích? Eddie „The Numbers“ Brooks otevřel archiv a hledal odpověď."
