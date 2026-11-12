@@ -59,6 +59,13 @@ Vstup: **skutečné údaje z ESPN H2H Points**, předběžně dodané screenshot
 
 **Nejdříve datový pilot:** vyžádej ukázku **jednoho kompletního matchupu** (výsledné skóre, hráči, fantasy body, aktivní body vs. lavička, pokud jsou dostupné). Ověř, co z ní lze spolehlivě zjistit a kolik screenshotů to vyžaduje. Teprve pak stanov minimalistický sběr podkladů pro všech pět zápasů. Nepředpokládej, že stačí vždy 1–2 fotky na matchup.
 
+### SEASON V – DATA ARCHIVE & SCHEDULE (zadáno 12. 11. 2026; zahájit až po vydání Week 5 a schválení návrhu)
+Cíl: jeden autoritativní zdroj rozpisu a podkladů pro preview, výsledky, kontroly článků a případné zobrazení na webu. **Musí navazovat na stávající historickou databázi** (`src/data/zapasy/`, `src/data/historie/`, ID z `teams.json`) – žádný paralelní, nekompatibilní zdroj.
+
+1. **Rozpis sezony 2026/27 (první etapa)** – návrh samostatného datového souboru: sezona, číslo kola, začátek a konec kola, domácí a hostující organizace přes stabilní franchise ID, typ utkání (základní část / play-off), zdroj a stav ověření. Vstup: redakční databáze 2026/27 a originální screenshoty ESPN League Schedule. Rozpis ověřit; chybějící utkání nevymýšlet, označit jako nedoložená. Redakční databáze používá zkratky týmů – při převodu mapovat na ID z `teams.json`.
+2. **Zdrojový archiv** – návrh struktury pro originální screenshoty ESPN podle sezony, týdne a typu podkladu: Schedule, Matchup Results, FantasyCast / Player Scores, Transactions, Rosters, Standings. Originály ukládat beze změn a mimo git (jako dosud `podklady/originaly/`).
+3. **Týdenní data (druhá etapa)** – formát výsledků, hráčských výkonů, transakcí a dalších dynamických dat zatím neuzavírat. Nejdřív datový pilot (viz výše a `AGENTS.md`): co lze ze screenshotů spolehlivě získat, jak rozlišit průběžné a konečné výsledky, jak evidovat změny soupisek v čase, jak odhalovat chyby, duplicity a nesrovnalosti. Teprve potom definitivní formát (navazuje na bod 11).
+
 ### 11. Týdenní JSON (ke schválení)
 - Identifikátor kola, datum začátku/konce, 5 matchupů, týmy, oficiální H2H skóre; u hráčů jen prokazatelně zjištěné údaje (jméno, NBA tým, majitel, slot, známé způsobilé pozice, týdenní body a pokud možno započtené body vs. lavička).
 - U nejistých údajů pole `needs_review: true` a vysvětlení; nepublikuj neověřené jméno jako fakt.
