@@ -16,6 +16,29 @@ export function formatRoundSpan(start, end) {
 
 const samePair = (g, [x, y]) => g.teams.includes(x) && g.teams.includes(y);
 
+/** Weekly Recap daného kola: `recap.round` sedí a článek vyšel až po posledním dni kola. */
+export const recapFor = (round, end, articles) => articles.find((a) => a.data.category === 'weekly-recap'
+  && a.data.recap?.round === round && a.data.date > new Date(`${end}T23:59:59Z`));
+
+/**
+ * Kola rozehrané sezony, jejichž výsledky smí web zobrazit: vyšel k nim Weekly Recap (`articles` = viditelné články),
+ * nebo je u kola v datech výslovně `publishWithoutRecap: true`. Výsledky se tak zveřejní současně s recapem,
+ * i když se web mezitím nasadí kvůli jinému článku. Data zůstávají jediným zdrojem – filtruje se jen zobrazení.
+ */
+export function releasedRounds(matchSeason, articles = []) {
+  if (!matchSeason) return new Set();
+  return new Set(matchSeason.matchups
+    .filter((m) => m.publishWithoutRecap === true || recapFor(m.matchup, m.end, articles))
+    .map((m) => m.matchup));
+}
+
+/** Zápasy k zobrazení: dokončené sezony beze změny, z rozehrané sezony jen uvolněná kola. */
+export function publicGames(games, matchSeason, articles = []) {
+  if (!matchSeason) return games;
+  const released = releasedRounds(matchSeason, articles);
+  return games.filter((g) => g.season !== matchSeason.season || released.has(g.matchup));
+}
+
 /**
  * Souhrn posledního potvrzeného kola. `recapArticles` = viditelné články seřazené od nejnovějšího.
  * Recap se páruje podle `recap.round` a toho, že vyšel až po posledním dni kola (stejná sezona).
@@ -24,8 +47,7 @@ const samePair = (g, [x, y]) => g.teams.includes(x) && g.teams.includes(y);
 export function weekSummary(games, season, recapArticles = []) {
   const round = season ? latestRound(games, season) : null;
   if (!round) return null;
-  const recap = recapArticles.find((a) => a.data.category === 'weekly-recap' && a.data.recap?.round === round.matchup
-    && a.data.date > new Date(`${round.end}T23:59:59Z`));
+  const recap = recapFor(round.matchup, round.end, recapArticles);
   const awards = recap?.data.recap;
   const chosen = awards?.gameOfWeek ? round.games.find((g) => samePair(g, awards.gameOfWeek.teams)) : undefined;
   // Chybně zadaný Zápas týdne (dvojice v kole nehrála) zastaví build – nesmí se tiše nahradit jiným zápasem.

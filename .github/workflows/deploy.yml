@@ -1,12 +1,16 @@
-# Build + kontrola při každém pushi. Veřejné nasazení na GitHub Pages je ZATÍM jen ruční
-# (Actions → „Build a nasazení“ → Run workflow) a smí proběhnout až po schválení majitelem.
-# Po schválení lze nasazení zapnout i pro push: v jobu deploy smazat řádek `if:`.
+# Trvalý plánovač vydání (schválen majitelem 18. 11. 2026, varianta A: schváleným zdrojem je větev main).
+# Push na main: build + kontrola (nenasazuje). Ruční Run workflow: build + nasazení vždy.
+# Plánovaný běh každých 30 minut: nasadí CELÝ obsah main, ale jen když nastal čas vydání článku
+# (draft: false), který chybí v manifestu posledního úspěšného nasazení (publikovano.json na webu).
 name: Build a nasazení
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Každých 30 minut (UTC). GitHub běh může zpozdit (v listopadu 2026 až o 52 minut) nebo výjimečně vynechat.
+    - cron: '7,37 * * * *'
 
 permissions:
   contents: read
@@ -18,7 +22,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Jen plánovaný běh: je co vydat? Rozhoduje scripts/release-check.mjs (výsledek i v souhrnu běhu).
+  check:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.due.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: pages
+        uses: actions/configure-pages@v5
+      - id: due
+        run: node scripts/release-check.mjs
+        env:
+          MANIFEST_URL: ${{ steps.pages.outputs.base_url }}/publikovano.json
+
   build:
+    needs: check
+    # Push a ruční běh: vždy. Plánovaný běh: jen když check rozhodl „nasadit“.
+    if: always() && (github.event_name != 'schedule' || needs.check.outputs.deploy == 'true')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,12 +60,15 @@ jobs:
         env:
           SITE_URL: ${{ steps.pages.outputs.origin }}
           BASE_PATH: ${{ steps.pages.outputs.base_path || '/' }}
+      # Manifest vydaných článků (dist/publikovano.json); selže, kdyby build obsahoval koncept či budoucí článek.
+      - run: node scripts/write-manifest.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    if: github.event_name == 'workflow_dispatch'
+    # Nasazení: ruční běh, nebo plánovaný běh s úspěšným buildem. Neúspěch nic nezapíše → další běh to zkusí znovu.
+    if: always() && needs.build.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
     needs: build
     runs-on: ubuntu-latest
     environment:

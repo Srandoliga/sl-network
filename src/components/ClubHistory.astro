@@ -3,7 +3,8 @@
 // podrobnosti v <details>. Nováček dostane jen skutečná data svého prvního draftu – žádné nulové bilance.
 import SectionHead from './SectionHead.astro';
 import TeamLink from './TeamLink.astro';
-import { drafts, allGames, liveGames, playerAliases, teamById, historySeasons } from '../lib/data.js';
+import { drafts, allGames, playerAliases, teamById, historySeasons } from '../lib/data.js';
+import { getPublicGames } from '../lib/content';
 import { historySignals } from '../lib/history-signals.js';
 import { teamHistoryModel } from '../lib/team-history.js';
 import { formatPoints } from '../lib/archive.js';
@@ -12,7 +13,7 @@ import { u } from '../lib/paths';
 interface Props { teamId: string }
 const { teamId } = Astro.props;
 const CURRENT = drafts.at(-1).season;
-const m = teamHistoryModel({ teamId, drafts, games: allGames, liveGames, aliases: playerAliases, currentSeason: CURRENT });
+const m = teamHistoryModel({ teamId, drafts, games: allGames, liveGames: await getPublicGames(), aliases: playerAliases, currentSeason: CURRENT });
 const slug = (s: string) => s.replace('/', '-');
 const short = (s: string) => s.replace(/^20(\d\d)\/(\d\d)$/, '$1/$2');
 const record = (o: any) => `${o.w}–${o.l}${o.t ? `–${o.t}` : ''}`;

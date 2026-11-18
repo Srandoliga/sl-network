@@ -88,6 +88,7 @@ function validateInProgress(doc, at, playingTeams) {
     if (next && ISO.test(next.start ?? '') && days(p.end, next.start) !== 2) errors.push(`${where}: další kolo nezačíná den po konci tohoto`);
     if (!ROUND_STATUSES.includes(p.status)) errors.push(`${where}: stav „${p.status}“ – zapisují se jen potvrzená kola (${ROUND_STATUSES.join(', ')})`);
     if (typeof p.source !== 'string' || p.source.length < 5) errors.push(`${where}: chybí zdroj výsledků (source)`);
+    if (p.publishWithoutRecap !== undefined && typeof p.publishWithoutRecap !== 'boolean') errors.push(`${where}: publishWithoutRecap musí být true/false`);
   });
   const games = Array.isArray(doc.games) ? doc.games : [];
   const rounds = new Set(list.map((p) => p?.matchup));

@@ -5,12 +5,12 @@ import TeamIcon from '../../components/TeamIcon.astro';
 import TitleBadge from '../../components/TitleBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import ClubHistory from '../../components/ClubHistory.astro';
-import { publicTeams, seasons, rivalries, teamById, historySeasons, liveGames, currentMatchSeason } from '../../lib/data.js';
+import { publicTeams, seasons, rivalries, teamById, historySeasons, currentMatchSeason } from '../../lib/data.js';
 import { seasonRecord } from '../../lib/matches.js';
 import { resultLabel, teamSeasons, formatRecord, formatPoints } from '../../lib/archive.js';
 import { teamHistory } from '../../lib/history.js';
 import { u } from '../../lib/paths';
-import { getArticles } from '../../lib/content';
+import { getArticles, getPublicGames } from '../../lib/content';
 import { articlesAboutTeam, formatDateCs, isoDate } from '../../lib/articles.js';
 import { categoryLabel } from '../../lib/site.js';
 
@@ -36,7 +36,7 @@ const debut = team.status === 'new' && history.length === 0 && archive.length ==
 // Články o týmu: odkazují v textu na jeho profil (i pod dřívějším ID). Jen viditelné (publikované) články.
 const about = former ? [] : articlesAboutTeam(await getArticles(), [team.id, ...(team.formerIdentities ?? []).map((f) => f.id)]);
 // Aktuální sezona: bilance a body jen z potvrzených kol (src/data/zapasy/<sezona>.json s inProgress).
-const current = former || !currentMatchSeason ? null : seasonRecord(liveGames, currentMatchSeason.season, team.id);
+const current = former || !currentMatchSeason ? null : seasonRecord(await getPublicGames(), currentMatchSeason.season, team.id);
 const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezony V', former: 'Už nehrají – součást historie' }[team.status];
 ---
 {former ? (

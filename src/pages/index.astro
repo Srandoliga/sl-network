@@ -14,7 +14,8 @@ import HomeWeek from '../components/HomeWeek.astro';
 import { weekSummary } from '../lib/home.js';
 import { latestRanking } from '../lib/power-rankings.js';
 import { coverImage, homeLayout, splitHeadline, upcomingIssue } from '../lib/articles.js';
-import { seasons, seasonsDesc, rivalries, staffMembers, teamById, currentTeams, liveGames, currentMatchSeason } from '../lib/data.js';
+import { seasons, seasonsDesc, rivalries, staffMembers, teamById, currentTeams, currentMatchSeason } from '../lib/data.js';
+import { getPublicGames } from '../lib/content';
 import { historyFacts, titleCounts } from '../lib/history.js';
 import { categoryLabel, categoryTagClass, SITE } from '../lib/site.js';
 import { u } from '../lib/paths';
@@ -27,7 +28,7 @@ const nextBeyond = upcomingIssue(lastBeyond);
 // Power Rankings: poslední vydaný redakční žebříček (frontmatter `rankings`), nic se nepřepočítává.
 const ranking = latestRanking(articles);
 // Týden ve Srandolize: poslední potvrzené kolo rozehrané sezony + ocenění z jeho Weekly Recapu.
-const week = weekSummary(liveGames, currentMatchSeason?.season, articles);
+const week = weekSummary(await getPublicGames(), currentMatchSeason?.season, articles);
 const facts = historyFacts(seasons, rivalries.map((r) => r.teams), (id) => teamById(id)?.name ?? id);
 // Zajímavost se mění podle dne buildu (web se přestaví s každým novým obsahem).
 const dayOfYear = Math.floor((Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86400000);

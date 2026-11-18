@@ -182,3 +182,37 @@ test('živá data po 4. kole: kompletní, bilance a body podle redakčního zad�
   assert.equal(w.gameOfWeek.margin, 8);
   assert.equal(w.closest, undefined);
 });
+
+import { releasedRounds, publicGames } from '../src/lib/home.js';
+
+test('výsledky kola se zobrazí až s vydaným Weekly Recapem (jediný zdroj dat, jen filtr zobrazení)', () => {
+  const four = upTo(4);
+  const games = canonicalGames([...completedSeasons, four], history);
+  const recaps = [1, 2, 3].map((n, i) => recap(n, ['2026-10-26', '2026-11-02', '2026-11-09'][i]));
+  // Kolo 4 je v datech, recap #4 ještě nevyšel → kolo 4 se nezobrazí ani na homepage, ani na profilech.
+  assert.deepEqual([...releasedRounds(four, recaps)], [1, 2, 3]);
+  const pub = publicGames(games, four, recaps);
+  assert.equal(weekSummary(pub, '2026/27', recaps).matchup, 3);
+  assert.equal(seasonRecord(pub, '2026/27', 'los-mustachios').games, 3);
+  assert.equal(completedOnly(pub).length, 460, 'dokončené sezony beze změny');
+  // Recap #4 vyšel → kolo 4 se uvolní.
+  const withR4 = [...recaps, recap(4, '2026-11-18T07:00:00+01:00')];
+  assert.equal(weekSummary(publicGames(games, four, withR4), '2026/27', withR4).matchup, 4);
+  // Recap vydaný před koncem kola kolo neuvolní.
+  assert.deepEqual([...releasedRounds(four, [...recaps, recap(4, '2026-11-15T10:00:00+01:00')])], [1, 2, 3]);
+});
+
+test('výslovná výjimka publishWithoutRecap: true zveřejní výsledky i bez recapu', () => {
+  const four = upTo(4);
+  four.matchups[3].publishWithoutRecap = true;
+  assert.deepEqual(validateMatchSeason(four, '2026-27.json', { playingTeams: playing }).errors, []);
+  assert.ok(releasedRounds(four, []).has(4));
+  four.matchups[3].publishWithoutRecap = 'ano';
+  assert.match(validateMatchSeason(four, '2026-27.json', { playingTeams: playing }).errors.join(), /publishWithoutRecap/);
+});
+
+test('živá data: všechna zapsaná kola mají vydaný recap (na webu nic neschovaného)', () => {
+  const dir = new URL('../src/content/articles/', import.meta.url);
+  const rounds = readdirSync(dir).filter((f) => f.startsWith('weekly-recap-')).map((f) => Number(readFileSync(new URL(f, dir), 'utf8').match(/^recap:\n {2}round: (\d+)/m)?.[1]));
+  assert.deepEqual(live.matchups.map((m) => m.matchup).filter((n) => !rounds.includes(n)), []);
+});

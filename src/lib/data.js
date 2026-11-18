@@ -40,7 +40,8 @@ export const matchSeasons = Object.values(matchModules).sort((a, b) => a.season.
 const canonical = canonicalGames(matchSeasons, historySeasons);
 // Dokončené sezony: konečná umístění, tituly, rekordy, rozpis sezon. Beze změny pro všechny stávající výpočty.
 export const allGames = completedOnly(canonical);
-// Průběžná historie: dokončené sezony + potvrzená kola rozehrané sezony (H2H bilance, vítězné série, aktuální sezona).
-export const liveGames = canonical;
+// Průběžná historie: dokončené sezony + VŠECHNA zapsaná kola rozehrané sezony. Pro zobrazení nepoužívat přímo –
+// web bere zápasy přes getPublicGames() (src/lib/content.ts), které skryje kola bez vydaného Weekly Recapu.
+export const allLiveGames = canonical;
 export const currentMatchSeason = matchSeasons.find((m) => m.inProgress);
 export const draftBySlug = (slug) => drafts.find((d) => d.season.replace('/', '-') === slug);

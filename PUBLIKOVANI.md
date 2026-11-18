@@ -92,7 +92,7 @@ Homepage se nikdy needituje ručně. Po buildu a nasazení vybere obsah z publik
 | **Profily týmů** | „Sezona … průběžně“ z dat zápasů, „Články o týmu“ = články s odkazem na profil (`../../tymy/<id>/`) |
 
 Koncepty (`draft: true`) ani články s budoucím `date` se na veřejný web nedostanou. Budoucí článek se objeví až
-v buildu po svém čase vydání (proto je potřeba nové nasazení).
+v buildu po svém čase vydání – nové nasazení zajistí plánované vydání (viz Zveřejnění → Plánované vydání).
 
 **Jeden zdroj každého údaje:** výsledky zápasů jen v `src/data/zapasy/`, redakční ocenění jen ve frontmatteru recapu,
 žebříček jen ve frontmatteru Power Rankings. Stejná čísla se nepíšou na víc míst.
@@ -116,9 +116,14 @@ recap:
   highlight: "Jedna věta z článku pro homepage."               # nepovinné, max. 160 znaků
 ```
 
+**Výsledky se zveřejní současně s recapem:** kolo zapsané v datech se na homepage, profilech ani v H2H nezobrazí,
+dokud nevyjde jeho Weekly Recap (`recap.round` a datum vydání po konci kola). Web tak nic neprozradí, ani když se
+mezitím nasadí kvůli jinému článku. Výjimku (výsledky bez recapu) je nutné povolit výslovně u kola v datech:
+`"publishWithoutRecap": true`.
+
 3. Schválení → build a nasazení. Homepage ukáže nové kolo, MVP, Zápas týdne a odkaz „Celé hodnocení týdne“;
    profily týmů přepočtou bilanci a body. Bez `gameOfWeek` se zobrazí jen statistika „Nejtěsnější zápas“.
-   Jsou-li výsledky zapsané dřív než recap, homepage ukáže výsledky s poznámkou, že hodnocení teprve vyjde.
+   S `publishWithoutRecap: true` ukáže homepage výsledky s poznámkou, že hodnocení teprve vyjde.
 
 **Opravy ESPN:** opravené skóre se zapíše do dat (stav `corrected`, zdroj s datem opravy). Už vydaný článek se
 nepřepisuje – rozdíl se zapíše do `verificationNote` v souboru zápasů. Příklad: kolo 1 sezony 2026/27
@@ -239,6 +244,28 @@ Jednou: nainstalovat [Node.js](https://nodejs.org) 22+ a ve složce projektu spu
 
 Úprava článku na GitHubu v prohlížeči nebo `git add -A && git commit -m "..." && git push` → build → (Run workflow).
 Pokud build selže, v Actions je u červeného křížku vypsané, který soubor a proč.
+
+### Plánované vydání (automaticky každých 30 minut)
+
+Pro vydání stačí schválený článek s `draft: false` a datem a časem vydání (`date: 2026-11-23T07:00:00+01:00`)
+commitnout a v GitHub Desktop udělat **Push origin**. Nic dalšího (ani Run workflow, ani úprava cronu).
+
+- Workflow **Build a nasazení** každých 30 minut ověří, zda nastal čas vydání některého článku s `draft: false`,
+  který na webu ještě není. Pokud ano, sestaví a nasadí **celý obsah `main`** (schválený zdroj).
+- Co je na webu, eviduje manifest `publikovano.json` (zapisuje ho každý build, nasadí se spolu s webem).
+  Neúspěšné nasazení se nepočítá – další běh to zkusí znovu. Bez platného manifestu se automaticky nenasazuje.
+- Koncepty (`draft: true`) a budoucí články zůstávají neveřejné, i když jsou na `main`.
+- Výsledky kola se ukážou až s vydaným Weekly Recapem (viz výše, výjimka `publishWithoutRecap: true`).
+- **GitHub Actions nezaručuje vydání přesně na minutu.** Plánované běhy GitHub zpožďuje (i o desítky minut)
+  a výjimečně vynechá – počítejte s vydáním zhruba 0–60 minut po plánovaném čase. Časově důležité vydání
+  nasaďte po plánovaném čase ručně: Actions → **Build a nasazení** → **Run workflow**.
+- **Ruční Run workflow** nasadí vždy celý `main` – i opravy už vydaných článků (ty plánovač sám nenasadí).
+  Ruční i plánované nasazení čekají ve stejné frontě, nikdy neběží současně.
+- Každý plánovaný běh zapíše do souhrnu v Actions rozhodnutí, poslední úspěšné nasazení a nejbližší plánované
+  články. Chyba = červený běh a e-mail od GitHubu. Článek, který build opakovaně vynechá („uvízlý“), nespustí
+  nekonečné nasazování – běh skončí chybou a je potřeba zkontrolovat jeho hlavičku.
+- Na `main` patří jen schválené změny: s nejbližším nasazením odejde všechno, co tam je.
+- Po 60 dnech bez commitu GitHub plánované běhy u veřejného repozitáře vypne (stačí je v Actions znovu zapnout).
 
 ## Limity
 
