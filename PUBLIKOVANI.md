@@ -23,6 +23,7 @@ teaser: "Vlastní text upoutávky (nepovinné)."
 image: obrazky/clanky/nazev.webp  # nepovinné – obrázek článku (karta, Hlavní příběh, náhled v Messengeru)
 imageAlt: "Popis obrázku"    # nepovinné
 featured: true               # nepovinné – článek se ukáže jako Hlavní příběh
+relatedTeams: [los-mustachios, acl-rokycany]  # nepovinné – 1–4 organizace, o kterých článek hlavně JE
 draft: true                  # koncept: na veřejném webu se NEzobrazí
 ---
 ```
@@ -164,6 +165,19 @@ nextIssue:
 
 Ohlášení se na homepage zobrazuje do data dalšího dílu. Když je díl Beyond the Score hlavním příběhem,
 velká karta se pod ním neopakuje – zůstane jen ohlášení.
+
+### Propojení článků (automaticky)
+
+- **Konec článku:** u Weekly Recapu, Matchup Preview, Power Rankings a Beyond the Score předchozí a další vydání
+  rubriky (další se objeví samo po zveřejnění) a nejvýš dva **související** články. Souvislost = společné hlavní
+  organizace (`relatedTeams`), přímý odkaz mezi články, odkaz zaměřeného článku na profil, společná sezona
+  (odkazy na `historie/<sezona>/`). Když nic nesouvisí, blok se nezobrazí – nic se nedoplňuje „nejnovějšími“.
+- **Profil týmu – Články o týmu:** nejdřív tematické články s týmem v `relatedTeams` (Beyond the Score, FLASH…),
+  pak ligové souhrny s týmem v `relatedTeams`, pak ostatní odkazy na profil; tři viditelné, zbytek v „Další zmínky“.
+- **Stránka sezony – Články o sezoně:** nejvýš tři články, které na stránku sezony skutečně odkazují (víc odkazů = vyšší
+  váha). Letopočet v textu ani odkaz do archivu draftů nestačí.
+- `relatedTeams` vyplňujte jen hlavními organizacemi (ne výčtem všech zmíněných týmů). Ligové souhrny bez něj
+  fungují dál – na profilech se jen ukážou jako zmínky.
 
 ## 2. Upoutávka do Messengeru
 

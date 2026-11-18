@@ -5,8 +5,7 @@ import { join } from 'node:path';
 import Base from '../../layouts/Base.astro';
 import Byline from '../../components/Byline.astro';
 import CopyTeaser from '../../components/CopyTeaser.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
-import SectionHead from '../../components/SectionHead.astro';
+import ArticleNav from '../../components/ArticleNav.astro';
 import { getArticles } from '../../lib/content';
 import { categoryLabel, categoryTagClass, EDITORIAL, SITE } from '../../lib/site.js';
 import { staffById } from '../../lib/data.js';
@@ -16,16 +15,28 @@ import { asset } from '../../lib/assets';
 import { embedDraftBlocks } from '../../lib/draft-embed.mjs';
 import { RANKINGS_MARKER, rankingFor, rankingsTableHtml } from '../../lib/power-rankings.js';
 import { teamById, teamLogo } from '../../lib/data.js';
+import { endRelated, missingPreferred, seriesNav } from '../../lib/related.js';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const articles = await getArticles();
-  return articles.map((article) => ({
-    params: { slug: article.id },
-    props: { article, articles, more: articles.filter((a) => a.id !== article.id).slice(0, 2) },
-  }));
+  // Preferované související články musí existovat (i jako koncept) – překlep v ID zastaví build.
+  const allIds = (await getCollection('articles')).map((a) => a.id);
+  for (const a of articles) {
+    const missing = missingPreferred(a, allIds);
+    if (missing.length) throw new Error(`${a.id}: relatedArticles odkazuje na neexistující článek ${missing.join(', ')}`);
+  }
+  // Jen publikované články (getArticles): navigace ani související odkazy nikdy nevedou na koncept či budoucí článek.
+  return articles.map((article) => {
+    const { prev, next } = seriesNav(articles, article);
+    return {
+      params: { slug: article.id },
+      props: { article, articles, prev, next, related: endRelated(articles, article, { exclude: [prev, next] }) },
+    };
+  });
 }
 
-const { article, articles, more } = Astro.props;
+const { article, articles, prev, next, related } = Astro.props;
 const { Content } = await render(article);
 // Články se značkou <!-- draft-order: … --> / <!-- snake-rounds: … --> dostanou bloky vygenerované z dat.
 const rawHtml = article.rendered?.html ?? '';
@@ -69,10 +80,9 @@ const { width: coverWidth = 1536, height: coverHeight = 1024 } = await sharp(joi
     {embedded ? <div class="prose" set:html={embedded} /> : <div class="prose"><Content /></div>}
     {EDITORIAL && <CopyTeaser text={buildTeaser({ title: fullTitle, perex, teaser }, url)} />}
   </article>
-  {more.length > 0 && (
-    <section class="stack" style="margin-top:40px">
-      <SectionHead title="Další" accent="články" href="clanky/" linkLabel="Všechny" />
-      <ul class="article-list article-list--grid">{more.map((a) => <li><ArticleCard article={a} /></li>)}</ul>
-    </section>
+  {(prev || next || related.length > 0) && (
+    <div class="stack article-end" style="margin-top:40px">
+      <ArticleNav prev={prev} next={next} related={related} category={article.data.category} />
+    </div>
   )}
 </Base>

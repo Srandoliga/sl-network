@@ -34,6 +34,7 @@ recap:
 image: obrazky/clanky/weekly-recap-2-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #2: hráč MC Rising Stars v modro-oranžovém dresu s míčem, vedle něj padá zlatá koruna z rozbitého podstavce před fialovými prapory ACL Rokycany."
 draft: false
+relatedTeams: [mc-rising-stars, acl-rokycany, pilsen-beers]
 ---
 
 Minulý týden jsme vítali nováčky.

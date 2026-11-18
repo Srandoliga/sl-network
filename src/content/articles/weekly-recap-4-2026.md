@@ -33,6 +33,8 @@ recap:
 image: obrazky/clanky/weekly-recap-4-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #4, Knír vládne lize: korunovaný kníratý král Los Mustachios s bilancí 4–0, poražený rytíř ACL Rokycany s rozbitým štítem, hráč MC Rising Stars s 288 FP, traktor, veselý pivní půllitr a tlačítko RESET."
 draft: false
+relatedTeams: [los-mustachios, acl-rokycany, pilsen-beers, mc-rising-stars]
+relatedArticles: [week-5-preview-2026, power-rankings-1-2026]
 ---
 
 Před týdnem jsme měli dva neporažené a dva týmy bez vítězství.

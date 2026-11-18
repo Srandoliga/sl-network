@@ -37,6 +37,7 @@ recap:
 image: obrazky/clanky/weekly-recap-1-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #1: hráči Little Barns Fireballs v plamenech prorážejí zeď, skóre 1320 : 1084 a rozdíl 236 bodů."
 draft: false
+relatedTeams: [little-barns-fireballs, tachovsky-gadzo, acl-rokycany]
 ---
 
 Pátá sezona Srandoligy je oficiálně zahájena.

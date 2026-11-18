@@ -25,6 +25,7 @@ featured: true
 image: obrazky/clanky/opening-week-2026.webp
 imageAlt: "Grafika SL Network Opening Week, Season V 2026/27: hlavní zápas ACL Rokycany proti Pilsen Beers a čtyři další duely úvodního kola."
 draft: false
+relatedTeams: [acl-rokycany, pilsen-beers, litice-hoopers, little-barns-fireballs]
 ---
 
 ## Nula vítězství. Nula porážek. Neomezené ambice.

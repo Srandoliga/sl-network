@@ -26,6 +26,7 @@ featured: true
 image: obrazky/clanky/week-5-preview-2026.webp
 imageAlt: "Grafika SL Network Week 5 Matchup Preview, Alien vs. Galácticos: hráč v dresu MC Rising Stars proti hvězdám Tachovského Gadža, pod nimi Battle of the Dynasties ACL Rokycany × Little Barns Fireballs se čtyřmi trofejemi a tři další zápasy kola."
 draft: false
+relatedTeams: [mc-rising-stars, tachovsky-gadzo, acl-rokycany, little-barns-fireballs]
 ---
 
 ## První měsíc. První odpovědi.

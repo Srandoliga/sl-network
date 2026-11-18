@@ -10,6 +10,7 @@ featured: false
 image: obrazky/clanky/ctyri-sezony-dva-sampioni.webp
 imageAlt: "Dva basketbalisté zezadu ve fialovém a bílém dresu, mezi nimi zlatý pohár"
 draft: false
+relatedTeams: [little-barns-fireballs, acl-rokycany]
 ---
 
 Podle dvou nezávislých zdrojů začíná pátá sezona Srandoligy. Prvním zdrojem je kalendář. Druhým jsem já. Oba se shodují.

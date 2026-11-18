@@ -10,6 +10,7 @@ featured: true
 image: obrazky/clanky/dva-novacci-dva-kmotri.webp
 imageAlt: "Investigativní nástěnka „Akce Bílý kůň?“: červené nitě vedou od Little Barns Fireballs k Litice Hoopers a od Pilsen Beers k Michal’s Balls of Fire"
 draft: false
+relatedTeams: [litice-hoopers, mc-rising-stars, little-barns-fireballs, pilsen-beers]
 ---
 
 <aside class="notice article-update" aria-label="Aktualizace redakce">

@@ -29,6 +29,7 @@ featured: true
 image: obrazky/clanky/week-2-preview-2026.webp
 imageAlt: "Grafika SL Network Superteam Showdown, Week 2: Los Mustachios proti Tachovskému Gadžovi a čtyři další duely druhého kola."
 draft: false
+relatedTeams: [los-mustachios, tachovsky-gadzo, mc-rising-stars, acl-rokycany]
 ---
 
 ## První dojmy jsou za námi. Teď přicházejí první velké zkoušky.

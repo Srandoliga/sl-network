@@ -1,0 +1,32 @@
+---
+// Kompaktní seznam odkazů na články (rubrika · datum + titulek). Prvních `visible` je vidět,
+// zbytek je v rozbalovacím bloku s popiskem `moreLabel`.
+import { categoryLabel } from '../lib/site.js';
+import { formatDateCs, isoDate } from '../lib/articles.js';
+import { u } from '../lib/paths';
+interface Props { articles: any[]; visible?: number; moreLabel?: string }
+const { articles, visible = 3, moreLabel = 'Další zmínky' } = Astro.props;
+const shown = articles.slice(0, visible);
+const rest = articles.slice(visible);
+---
+<ul class="team-articles">
+  {shown.map((a) => (
+    <li><a href={u(`clanky/${a.id}/`)}>
+      <span class="team-articles__meta">{categoryLabel(a.data.category)} · <time datetime={isoDate(a.data.date)}>{formatDateCs(a.data.date)}</time></span>
+      <span class="team-articles__title">{a.data.title}</span>
+    </a></li>
+  ))}
+</ul>
+{rest.length > 0 && (
+  <details class="team-articles-more">
+    <summary>{moreLabel} ({rest.length})</summary>
+    <ul class="team-articles">
+      {rest.map((a) => (
+        <li><a href={u(`clanky/${a.id}/`)}>
+          <span class="team-articles__meta">{categoryLabel(a.data.category)} · <time datetime={isoDate(a.data.date)}>{formatDateCs(a.data.date)}</time></span>
+          <span class="team-articles__title">{a.data.title}</span>
+        </a></li>
+      ))}
+    </ul>
+  </details>
+)}

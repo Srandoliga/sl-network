@@ -26,6 +26,7 @@ featured: true
 image: obrazky/clanky/week-4-preview-2026.webp
 imageAlt: "Grafika SL Network Week 4 Preview, The Future vs. The Past: modré logo Litice Hoopers proti tyrkysovému logu Kutlak’s Amateurs s basketbalovou myší, uprostřed míč a VS, prapory New Organization a 2022/23 Finalist."
 draft: false
+relatedTeams: [litice-hoopers, kutlaks-amateurs, acl-rokycany, los-mustachios]
 ---
 
 ## První hrdinové. První krize.

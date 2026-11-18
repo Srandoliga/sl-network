@@ -28,6 +28,7 @@ featured: false
 image: obrazky/clanky/waivergate-mitchell-2026.webp
 imageAlt: "Grafika SL Network Flash Investigation, Waivergate – The Mitchell Files: vyšetřovací nástěnka s Tachovským Gadžem, ACL Rokycany, Little Barns Fireballs a MC Rising Stars propojenými červenými provázky, obálka s pečetí, kapr a neověřený seznam waiver priorit."
 draft: false
+relatedTeams: [tachovsky-gadzo, acl-rokycany]
 ---
 
 <p class="investigation-label">🔎 Flash Investigation · The Mitchell Files</p>

@@ -41,6 +41,7 @@ rankings:
 image: obrazky/clanky/power-rankings-1-2026.webp
 imageAlt: "Titulní grafika SL Network Power Rankings #1, Season V, The Table Is Lying: Little Barns Fireballs na zlatém pódiu, Pilsen Beers s bilancí 0–2 na stříbrném, Chlumčany JZD s bilancí 2–0 na bronzovém a ACL Rokycany #6 na samostatném fialovém podstavci."
 draft: false
+relatedTeams: [pilsen-beers, acl-rokycany, little-barns-fireballs]
 ---
 
 Little Barns Fireballs dominují, Pilsen Beers stále čekají na první vítězství a obhájkyně titulu ACL Rokycany zatím nepůsobí tak neohroženě jako v minulých sezonách.

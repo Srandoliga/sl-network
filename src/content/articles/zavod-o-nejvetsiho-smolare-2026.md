@@ -27,6 +27,7 @@ teaser: |
 image: obrazky/clanky/zavod-o-nejvetsiho-smolare-2026.webp
 imageAlt: "Grafika SL Network FLASH: zlatá trofej The Unluckiest GM Award 2026 a zoufalí manažeři nad rozpadlými draftovými plány. Ve VIP lóži Tachovský Gadžo zděšeně čte zprávu „Kawhi Leonard OUT“, Kutlak’s Amateurs zatím v klidu."
 draft: false
+relatedTeams: [acl-rokycany, los-mustachios]
 ---
 
 ## Obhájci titulu vstupují do hry

@@ -24,6 +24,7 @@ featured: false
 image: obrazky/clanky/week-3-preview-2026.webp
 imageAlt: "Grafika SL Network Week 3 Preview: Chlumčany JZD v modrém proti ACL Rokycany ve fialovém, heslo Two Defeats. One More Chance. a výsledky obou play-off střetnutí 1373 : 1304 a 1739 : 1476."
 draft: false
+relatedTeams: [chlumcany-jzd, acl-rokycany, litice-hoopers, tachovsky-gadzo]
 ---
 
 ## První vítězství jsou rozdána. Staré účty zůstávají.

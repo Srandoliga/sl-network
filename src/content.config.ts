@@ -8,6 +8,8 @@ import { CATEGORY_IDS, OWN_IMAGE_CATEGORY_IDS } from './lib/site.js';
 const staffIds = staff.map((s) => s.id) as [string, ...string[]];
 const currentTeamIds = teams.filter((t) => t.status !== 'former').map((t) => t.id) as [string, ...string[]];
 const RECORD = /^\d+–\d+(–\d+)?$/;
+// Všechna ID organizací včetně bývalých (historické články) – pro relatedTeams.
+const allTeamIds = teams.map((t) => t.id) as [string, ...string[]];
 
 // Power Rankings: jeden zdroj pro tabulku článku i homepage. Pořadí = pořadí položek (1. položka = PR #1).
 // Jde o redakční hodnocení – nic se nepřepočítává podle tabulky ESPN.
@@ -65,6 +67,14 @@ const articles = defineCollection({
       title: z.string().min(3),
       teaser: z.string().min(3).optional(),
     }).optional(),
+    // Hlavní organizace článku (1–4), o kterých článek skutečně je – ne výčet všech zmíněných týmů.
+    // Určuje „Související články“ a pořadí „Článků o týmu“ na profilu.
+    relatedTeams: z.array(z.enum(allTeamIds)).min(1).max(4)
+      .refine((ids) => new Set(ids).size === ids.length, { message: 'tým je v relatedTeams dvakrát' }).optional(),
+    // Preferované související články (nejvýš 2, ID = název souboru bez .md). Existenci ověří build;
+    // na webu se ukážou jen už vydané, chybějící místo doplní automatický výběr.
+    relatedArticles: z.array(z.string().regex(/^[a-z0-9-]+$/, 'ID článku = název souboru bez .md')).min(1).max(2)
+      .refine((ids) => new Set(ids).size === ids.length, { message: 'článek je v relatedArticles dvakrát' }).optional(),
     rankings: rankings.optional(),
     recap: recap.optional(),
     featured: z.boolean().default(false),

@@ -11,8 +11,8 @@ import { resultLabel, teamSeasons, formatRecord, formatPoints } from '../../lib/
 import { teamHistory } from '../../lib/history.js';
 import { u } from '../../lib/paths';
 import { getArticles, getPublicGames } from '../../lib/content';
-import { articlesAboutTeam, formatDateCs, isoDate } from '../../lib/articles.js';
-import { categoryLabel } from '../../lib/site.js';
+import ArticleLinks from '../../components/ArticleLinks.astro';
+import { teamArticles } from '../../lib/related.js';
 
 export function getStaticPaths() {
   const profiles = publicTeams.map((team) => ({ params: { id: team.id }, props: { team } }));
@@ -34,7 +34,8 @@ const totals = archive.reduce((a, r) => ({
 }), { w: 0, l: 0, t: 0, playoffs: 0, finals: 0, titles: 0 });
 const debut = team.status === 'new' && history.length === 0 && archive.length === 0;
 // Články o týmu: odkazují v textu na jeho profil (i pod dřívějším ID). Jen viditelné (publikované) články.
-const about = former ? [] : articlesAboutTeam(await getArticles(), [team.id, ...(team.formerIdentities ?? []).map((f) => f.id)]);
+// Nejdřív tematické články o týmu, pak ligové souhrny s týmem jako hlavní organizací, pak ostatní zmínky (odkaz na profil).
+const about = former ? [] : teamArticles(await getArticles(), [team.id, ...(team.formerIdentities ?? []).map((f) => f.id)]).map((x) => x.article);
 // Aktuální sezona: bilance a body jen z potvrzených kol (src/data/zapasy/<sezona>.json s inProgress).
 const current = former || !currentMatchSeason ? null : seasonRecord(await getPublicGames(), currentMatchSeason.season, team.id);
 const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezony V', former: 'Už nehrají – součást historie' }[team.status];
@@ -82,14 +83,7 @@ const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezon
     {about.length > 0 && (
       <section class="stack" id="clanky-o-tymu">
         <SectionHead title="Články o" accent="týmu" href="clanky/" linkLabel="Všechny články" />
-        <ul class="team-articles">
-          {about.map((a) => (
-            <li><a href={u(`clanky/${a.id}/`)}>
-              <span class="team-articles__meta">{categoryLabel(a.data.category)} · <time datetime={isoDate(a.data.date)}>{formatDateCs(a.data.date)}</time></span>
-              <span class="team-articles__title">{a.data.title}</span>
-            </a></li>
-          ))}
-        </ul>
+        <ArticleLinks articles={about} visible={3} moreLabel="Další zmínky" />
       </section>
     )}
 

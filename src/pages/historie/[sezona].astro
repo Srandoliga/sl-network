@@ -8,6 +8,9 @@ import SeasonMatches from '../../components/SeasonMatches.astro';
 import { historySeasons } from '../../lib/data.js';
 import { bracketOf, formatPoints, formatRecord, seasonSlug } from '../../lib/archive.js';
 import { u } from '../../lib/paths';
+import ArticleLinks from '../../components/ArticleLinks.astro';
+import { getArticles } from '../../lib/content';
+import { seasonArticles } from '../../lib/related.js';
 
 export function getStaticPaths() {
   return historySeasons.map((season, i) => ({
@@ -24,6 +27,8 @@ const roundNames = ['Čtvrtfinále', 'Semifinále', 'Finále'];
 const podium = standings.slice(0, 3);
 const ninth = standings.find((t) => t.finalRank === 9);
 const placementTitle = (g: any) => `O umístění 5.–8. · ${dates[g.round]}`;
+// Články o sezoně: jen publikované a jen ty, které na stránky sezony skutečně odkazují (víc odkazů = vyšší váha).
+const aboutSeason = seasonArticles(await getArticles(), seasonSlug(season.season), 3);
 ---
 <Base title={`Sezona ${season.season}`} description={`Konečná tabulka a play-off Srandoligy v sezoně ${season.season}.`}>
   <p style="margin:0 0 10px"><a class="section-link" href={u('historie/')}>← Historické výsledky</a></p>
@@ -41,6 +46,12 @@ const placementTitle = (g: any) => `O umístění 5.–8. · ${dates[g.round]}`;
   </ol>
 
   <div class="stack" style="margin-top:28px">
+    {aboutSeason.length > 0 && (
+      <section class="stack" id="clanky-o-sezone">
+        <SectionHead title="Články o" accent="sezoně" href="clanky/" linkLabel="Všechny články" />
+        <ArticleLinks articles={aboutSeason} visible={3} />
+      </section>
+    )}
     <section class="stack">
       <SectionHead title="Konečná" accent="tabulka" />
       <p class="byline__role" style="margin:0">

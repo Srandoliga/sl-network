@@ -32,6 +32,7 @@ nextIssue:
 image: obrazky/clanky/beyond-the-score-prokleti-sampionu-2026.webp
 imageAlt: "Titulní grafika SL Network Beyond the Score: Prokletí šampionů. Postava s logem AbuKaufí VzdejTo na zádech hledí na čtyři brány – tři zlaté s trofejemi a jednu rozbitou. Nápisy 4 čtvrtfinále, 0 postupů a 3× ho vyřadil budoucí šampion."
 draft: false
+relatedTeams: [abukuafi-vzdejto]
 ---
 
 <div class="brand-band">

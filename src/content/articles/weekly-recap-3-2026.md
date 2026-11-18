@@ -32,6 +32,7 @@ recap:
 image: obrazky/clanky/weekly-recap-3-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #3: ohnivý fénix Little Barns Fireballs a kníratý šampion Los Mustachios s bilancí 3–0, mezi nimi zlatá trofej, smutný pivní půllitr a rozbité tlačítko RESET."
 draft: false
+relatedTeams: [little-barns-fireballs, los-mustachios, mc-rising-stars, pilsen-beers]
 ---
 
 Tři kola. Dva neporažení. Dva týmy bez jediného vítězství.
