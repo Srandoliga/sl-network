@@ -155,6 +155,30 @@ test('skutečné Weekly Recapy: zvolené Zápasy týdne v daném kole opravdu hr
     checked += 1;
   }
   assert.equal(checked, recaps.filter((t) => /^recap:/m.test(t)).length);
-  assert.ok(checked >= 3);
+  assert.ok(checked >= 4);
 });
 
+test('živá data po 4. kole: kompletní, bilance a body podle redakčního zadání Recapu #4', () => {
+  assert.deepEqual(validateMatchSeason(live, '2026-27.json', { playingTeams: playing }), { errors: [], warnings: [] });
+  const rec = (t) => { const r = seasonRecord(liveAll, '2026/27', t); return `${r.w}-${r.l}`; };
+  assert.deepEqual(Object.fromEntries(playing.map((t) => [t, rec(t)])), {
+    'acl-rokycany': '2-2', 'little-barns-fireballs': '3-1', 'pilsen-beers': '1-3', 'chlumcany-jzd': '3-1', 'los-mustachios': '4-0',
+    'kutlaks-amateurs': '0-4', 'abukuafi-vzdejto': '2-2', 'tachovsky-gadzo': '2-2', 'litice-hoopers': '2-2', 'mc-rising-stars': '1-3',
+  });
+  // Definitivní skóre 4. kola podle ESPN screenshotu z 18. 11. 2026 (shodné s Weekly Recapem #4).
+  assert.equal(seasonRecord(liveAll, '2026/27', 'little-barns-fireballs').pf, 5666);
+  assert.equal(seasonRecord(liveAll, '2026/27', 'los-mustachios').pf, 5447);
+  const r4scores = Object.fromEntries(liveAll.filter((g) => g.season === '2026/27' && g.matchup === 4).map((g) => [g.teams.join(' @ '), g.scores.join(':')]));
+  assert.deepEqual(r4scores, {
+    'los-mustachios @ acl-rokycany': '1493:1439', 'pilsen-beers @ mc-rising-stars': '1442:1355', 'abukuafi-vzdejto @ tachovsky-gadzo': '1204:1196',
+    'chlumcany-jzd @ little-barns-fireballs': '1407:1375', 'kutlaks-amateurs @ litice-hoopers': '1149:1344',
+  });
+  // Hosté/domácí podle ESPN rozpisu: ACL, MC Rising Stars, Gadžo, Fireballs a Litice hráli doma.
+  const r4 = liveAll.filter((g) => g.season === '2026/27' && g.matchup === 4);
+  assert.deepEqual(r4.map((g) => g.teams[1]).sort(), ['acl-rokycany', 'litice-hoopers', 'little-barns-fireballs', 'mc-rising-stars', 'tachovsky-gadzo']);
+  const w = weekSummary(liveAll, '2026/27', [recap(4, '2026-11-18T08:00:00+01:00', { gameOfWeek: { teams: ['abukuafi-vzdejto', 'tachovsky-gadzo'] } })]);
+  assert.equal(w.matchup, 4);
+  assert.equal(w.span, '9.–15. listopadu 2026');
+  assert.equal(w.gameOfWeek.margin, 8);
+  assert.equal(w.closest, undefined);
+});
