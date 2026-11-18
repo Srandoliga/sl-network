@@ -1,0 +1,43 @@
+---
+// Homepage: posledně vydané redakční Power Rankings (prvních pět). Data z frontmatteru `rankings` daného vydání,
+// pohyb proti předchozímu vydání. Bez vydání zůstává původní prázdný stav.
+import SectionHead from './SectionHead.astro';
+import EmptyState from './EmptyState.astro';
+import TeamIcon from './TeamIcon.astro';
+import { teamById } from '../lib/data.js';
+import { moveLabel } from '../lib/power-rankings.js';
+import { formatDateCs, isoDate } from '../lib/articles.js';
+import { u } from '../lib/paths';
+interface Props { ranking?: any; top?: number }
+const { ranking, top = 5 } = Astro.props;
+const rows = ranking?.entries.slice(0, top) ?? [];
+const hasPrevious = Boolean(ranking?.previous);
+---
+<section class="panel home-pr">
+  <SectionHead title="Power" accent="Rankings" href={ranking ? `clanky/${ranking.article.id}/` : undefined} linkLabel="Kompletní Power Rankings" />
+  <p class="byline__role home-pr__note">Redakční žebříček – názor redakce, ne oficiální pořadí ESPN.</p>
+  {ranking ? (
+    <>
+      <p class="home-pr__edition">
+        <strong>Power Rankings #{ranking.edition}</strong>
+        <span>· <time datetime={isoDate(ranking.article.data.date)}>{formatDateCs(ranking.article.data.date)}</time> · po {ranking.afterRound}. kole</span>
+      </p>
+      <ol class="home-pr__list">
+        {rows.map((e: any) => {
+          const team = teamById(e.team);
+          const m = moveLabel(e, hasPrevious);
+          return (
+            <li class:list={['home-pr__row', `home-pr__row--${e.rank}`]}>
+              <span class="home-pr__rank">{e.rank}</span>
+              <a class="home-pr__team" href={u(`tymy/${team.id}/`)}><span class="home-pr__logo"><TeamIcon team={team} /></span><span>{team.name}</span></a>
+              <span class="home-pr__record" title="Bilance k vydání žebříčku">{e.record}</span>
+              {m && <span class:list={['pr-move', `pr-move--${m.kind}`]}><span aria-hidden="true">{m.mark}</span><span class="visually-hidden">{m.text}</span></span>}
+            </li>
+          );
+        })}
+      </ol>
+    </>
+  ) : (
+    <EmptyState title="Redakce čeká na první kolo" text="Eddie odmítá cokoli seřadit bez dat. Řekl to suše." icon="📈" />
+  )}
+</section>

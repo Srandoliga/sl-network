@@ -22,6 +22,13 @@ teaser: |
 
   👉 https://srandoliga.github.io/sl-network/clanky/weekly-recap-3-2026/
 featured: true
+recap:
+  round: 3
+  mvp: { player: "Victor Wembanyama", team: mc-rising-stars, points: 258 }
+  performance: { player: "Kyshawn George", team: los-mustachios, points: 195 }
+  surprise: { player: "Darius Acuff Jr.", team: litice-hoopers, points: 179 }
+  gameOfWeek: { teams: [little-barns-fireballs, mc-rising-stars] }
+  highlight: "Little Barns Fireballs a Los Mustachios zůstávají jedinými neporaženými organizacemi Srandoligy."
 image: obrazky/clanky/weekly-recap-3-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #3: ohnivý fénix Little Barns Fireballs a kníratý šampion Los Mustachios s bilancí 3–0, mezi nimi zlatá trofej, smutný pivní půllitr a rozbité tlačítko RESET."
 draft: false

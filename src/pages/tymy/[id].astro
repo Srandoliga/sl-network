@@ -5,10 +5,14 @@ import TeamIcon from '../../components/TeamIcon.astro';
 import TitleBadge from '../../components/TitleBadge.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import ClubHistory from '../../components/ClubHistory.astro';
-import { publicTeams, seasons, rivalries, teamById, historySeasons } from '../../lib/data.js';
+import { publicTeams, seasons, rivalries, teamById, historySeasons, liveGames, currentMatchSeason } from '../../lib/data.js';
+import { seasonRecord } from '../../lib/matches.js';
 import { resultLabel, teamSeasons, formatRecord, formatPoints } from '../../lib/archive.js';
 import { teamHistory } from '../../lib/history.js';
 import { u } from '../../lib/paths';
+import { getArticles } from '../../lib/content';
+import { articlesAboutTeam, formatDateCs, isoDate } from '../../lib/articles.js';
+import { categoryLabel } from '../../lib/site.js';
 
 export function getStaticPaths() {
   const profiles = publicTeams.map((team) => ({ params: { id: team.id }, props: { team } }));
@@ -29,6 +33,10 @@ const totals = archive.reduce((a, r) => ({
   titles: a.titles + (r.stage === 'champion' ? 1 : 0),
 }), { w: 0, l: 0, t: 0, playoffs: 0, finals: 0, titles: 0 });
 const debut = team.status === 'new' && history.length === 0 && archive.length === 0;
+// Články o týmu: odkazují v textu na jeho profil (i pod dřívějším ID). Jen viditelné (publikované) články.
+const about = former ? [] : articlesAboutTeam(await getArticles(), [team.id, ...(team.formerIdentities ?? []).map((f) => f.id)]);
+// Aktuální sezona: bilance a body jen z potvrzených kol (src/data/zapasy/<sezona>.json s inProgress).
+const current = former || !currentMatchSeason ? null : seasonRecord(liveGames, currentMatchSeason.season, team.id);
 const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezony V', former: 'Už nehrají – součást historie' }[team.status];
 ---
 {former ? (
@@ -58,6 +66,32 @@ const statusLabel = { active: 'Pokračující franšíza', new: 'Nováček Sezon
       <p class="kicker" style="margin:0 0 6px">Mediální příběh</p>
       <p style="margin:0;font-family:var(--font-serif);font-size:1.15rem">{team.story}</p>
     </section>
+
+    {current && (
+      <section class="stack" id="aktualni-sezona">
+        <SectionHead title={`Sezona ${currentMatchSeason.season}`} accent="průběžně" />
+        <div class="team-totals team-totals--current">
+          <div><span class="stat">{formatRecord(current)}</span><span class="stats__label">Bilance</span></div>
+          <div><span class="stat">{formatPoints(current.pf)}</span><span class="stats__label">Fantasy body</span></div>
+          <div><span class="stat">{formatPoints(Math.round(current.avg))}</span><span class="stats__label">Průměr na kolo</span></div>
+        </div>
+        <p class="byline__role" style="margin:0">Po {current.lastRound}. kole, jen potvrzené výsledky základní části.{current.shortRounds.length > 0 && ` Průměr zahrnuje i ${current.shortRounds.map((r: any) => `${r.matchup}. kolo (${r.days} dní)`).join(', ')}.`}</p>
+      </section>
+    )}
+
+    {about.length > 0 && (
+      <section class="stack" id="clanky-o-tymu">
+        <SectionHead title="Články o" accent="týmu" href="clanky/" linkLabel="Všechny články" />
+        <ul class="team-articles">
+          {about.map((a) => (
+            <li><a href={u(`clanky/${a.id}/`)}>
+              <span class="team-articles__meta">{categoryLabel(a.data.category)} · <time datetime={isoDate(a.data.date)}>{formatDateCs(a.data.date)}</time></span>
+              <span class="team-articles__title">{a.data.title}</span>
+            </a></li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     {/* Nováček bez odehrané sezony: prázdné bloky nahrazuje „První sezona“ v Historii klubu. */}
     {!debut && (

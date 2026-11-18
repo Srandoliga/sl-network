@@ -14,20 +14,27 @@ import { buildTeaser, coverImage, formatDateCs, isoDate, ogImageFor, splitHeadli
 import { abs, u } from '../../lib/paths';
 import { asset } from '../../lib/assets';
 import { embedDraftBlocks } from '../../lib/draft-embed.mjs';
+import { RANKINGS_MARKER, rankingFor, rankingsTableHtml } from '../../lib/power-rankings.js';
+import { teamById, teamLogo } from '../../lib/data.js';
 
 export async function getStaticPaths() {
   const articles = await getArticles();
   return articles.map((article) => ({
     params: { slug: article.id },
-    props: { article, more: articles.filter((a) => a.id !== article.id).slice(0, 2) },
+    props: { article, articles, more: articles.filter((a) => a.id !== article.id).slice(0, 2) },
   }));
 }
 
-const { article, more } = Astro.props;
+const { article, articles, more } = Astro.props;
 const { Content } = await render(article);
 // Články se značkou <!-- draft-order: … --> / <!-- snake-rounds: … --> dostanou bloky vygenerované z dat.
 const rawHtml = article.rendered?.html ?? '';
-const embedded = /<!--\s*(draft-order|snake-rounds):/.test(rawHtml) ? embedDraftBlocks(rawHtml, { base: import.meta.env.BASE_URL }) : undefined;
+const withDraft = /<!--\s*(draft-order|snake-rounds):/.test(rawHtml) ? embedDraftBlocks(rawHtml, { base: import.meta.env.BASE_URL }) : undefined;
+// Power Rankings: značka <!-- power-rankings --> se nahradí tabulkou z frontmatteru `rankings` (s pohybem proti minulému vydání).
+const rankingHtml = (html: string) => (article.data.rankings && RANKINGS_MARKER.test(html)
+  ? html.replace(RANKINGS_MARKER, rankingsTableHtml(rankingFor(article, articles), { teamName: (id: string) => teamById(id)?.name ?? id, hasLogo: (id: string) => Boolean(teamLogo(id)), html }))
+  : undefined);
+const embedded = rankingHtml(withDraft ?? rawHtml) ?? withDraft;
 const { title, subtitle, seoTitle, seoDescription, perex, author, category, date, image, imageAlt, teaser, draft, demo } = article.data;
 const url = abs(`clanky/${article.id}/`, Astro.site);
 const person = staffById(author);

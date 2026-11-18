@@ -1,0 +1,38 @@
+---
+// Homepage: poslední Beyond the Score jako kompaktní vodorovný blok s identitou rubriky.
+// Když je speciál právě hlavním příběhem, karta se nezobrazí znovu – zůstane jen ohlášení dalšího dílu (pokud je).
+import { coverImage, formatDateCs, isoDate } from '../lib/articles.js';
+import { u } from '../lib/paths';
+import { asset } from '../lib/assets';
+interface Props {
+  article?: { id: string; data: { title: string; headline?: string; perex: string; date: Date; image?: string; imageAlt?: string; category: string } };
+  next?: { date: Date; title: string; teaser?: string };
+}
+const { article, next } = Astro.props;
+---
+{(article || next) && (
+  <section class:list={['bts-home', { 'bts-home--next-only': !article }]} aria-labelledby="bts-home-title">
+    <div class="bts-home__brand">
+      <p class="bts-home__mark" id="bts-home-title">Beyond the Score</p>
+      <p class="bts-home__motto">Příběhy, které tabulka nevypráví.</p>
+    </div>
+    {article && (
+      <a class="bts-home__story" href={u(`clanky/${article.id}/`)}>
+        <img class="bts-home__image" src={asset(coverImage(article.data))} alt={article.data.imageAlt ?? ''} width="1600" height="900" loading="lazy" decoding="async" />
+        <span class="bts-home__text">
+          <time class="bts-home__date" datetime={isoDate(article.data.date)}>{formatDateCs(article.data.date)}</time>
+          <span class="bts-home__title">{article.data.title}</span>
+          <span class="bts-home__perex">{article.data.perex}</span>
+          <span class="bts-home__go">Otevřít spis <span aria-hidden="true">→</span></span>
+        </span>
+      </a>
+    )}
+    {next && (
+      <p class="bts-home__next">
+        <span class="bts-home__next-label">Příště · <time datetime={isoDate(next.date)}>{formatDateCs(next.date)}</time></span>
+        <span class="bts-home__next-title">{next.title}</span>
+        {next.teaser && <span class="bts-home__next-teaser">{next.teaser}</span>}
+      </p>
+    )}
+  </section>
+)}

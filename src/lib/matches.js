@@ -11,7 +11,10 @@ const slug = (season) => season.replace('/', '-');
 /** ID zápasu play-off: sezona, kolo, soutěž a dvojice hosté–domácí (pořadí `teams` v archivu = ESPN). */
 export const playoffGameId = (season, round, competition, [away, home]) => `${slug(season)}-po${round}-${competition}-${away}--${home}`;
 
-/** Kanonické zápasy: 100 základní části + 15 play-off na sezonu, s vítězem, nasazením a délkou kola. */
+/**
+ * Kanonické zápasy: 100 základní části + 15 play-off na dokončenou sezonu, s vítězem, nasazením a délkou kola.
+ * Zápasy rozehrané sezony (`inProgress` v souboru) nesou příznak `inProgress: true`.
+ */
 export function canonicalGames(matchSeasons, historySeasons) {
   const history = new Map(historySeasons.map((h) => [h.season, h]));
   return [...matchSeasons].sort((a, b) => a.season.localeCompare(b.season)).flatMap((ms) => {
@@ -25,7 +28,7 @@ export function canonicalGames(matchSeasons, historySeasons) {
     const regular = ms.games.map((g) => {
       const p = period('regular', g.matchup);
       return make({ id: gameId(ms.season, g.matchup, g.teams), season: ms.season, competition: 'regular', matchup: g.matchup, round: null,
-        teams: g.teams, scores: g.scores, seeds: null, start: p.start, end: p.end, days: p.days });
+        teams: g.teams, scores: g.scores, seeds: null, start: p.start, end: p.end, days: p.days, ...(ms.inProgress ? { inProgress: true } : {}) });
     });
     const playoff = (h?.games ?? []).map((g) => {
       const competition = BRACKET[g.bracket];
@@ -120,3 +123,28 @@ export const formatSpan = (start, end) => {
   const d = (iso) => { const [, m, day] = iso.split('-').map(Number); return `${day}. ${m}.`; };
   return `${d(start)}–${d(end)} ${end.slice(0, 4)}`;
 };
+
+/** Zápasy jen dokončených sezon – pro konečná umístění, tituly a rekordy (rozehraná sezona je nezkresluje). */
+export const completedOnly = (games) => games.filter((g) => !g.inProgress);
+
+/** Bilance, body a průměr týmu v zápasech jedné sezony (z potvrzených výsledků). Null, pokud tým nehrál. */
+export function seasonRecord(games, season, team) {
+  const mine = games.filter((g) => g.season === season && g.competition === 'regular' && involves(team)(g));
+  if (!mine.length) return null;
+  const pf = mine.reduce((s, g) => s + g.scores[side(g, team)], 0);
+  const pa = mine.reduce((s, g) => s + g.scores[1 - side(g, team)], 0);
+  const count = (r) => mine.filter((g) => resultFor(g, team) === r).length;
+  return { games: mine.length, w: count('w'), l: count('l'), t: count('t'), pf, pa, avg: pf / mine.length,
+    lastRound: Math.max(...mine.map((g) => g.matchup)), shortRounds: mine.filter((g) => g.days !== STANDARD_DAYS).map((g) => ({ matchup: g.matchup, days: g.days })) };
+}
+
+/** Poslední kompletní kolo sezony (všech pět zápasů) – nebo null. */
+export function latestRound(games, season) {
+  const regular = games.filter((g) => g.season === season && g.competition === 'regular');
+  const rounds = [...new Set(regular.map((g) => g.matchup))].sort((a, b) => b - a);
+  const n = rounds.find((r) => regular.filter((g) => g.matchup === r).length === 5);
+  if (n === undefined) return null;
+  const list = regular.filter((g) => g.matchup === n);
+  return { season, matchup: n, start: list[0].start, end: list[0].end, days: list[0].days, games: list,
+    closest: [...list].sort((x, y) => x.margin - y.margin || x.id.localeCompare(y.id))[0] };
+}

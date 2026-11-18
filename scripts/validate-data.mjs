@@ -86,10 +86,15 @@ const matchesDir = join(root, 'src/data/zapasy');
 const matchFiles = existsSync(matchesDir) ? readdirSync(matchesDir).filter((f) => f.endsWith('.json')) : [];
 const matchResults = matchFiles.map((file) => {
   const doc = readJson(join(matchesDir, file));
-  return doc === undefined ? { errors: [], warnings: [] } : validateMatchSeason(doc, file, { history: historyOf(doc.season) });
+  return doc === undefined ? { errors: [], warnings: [] } : validateMatchSeason(doc, file, { history: historyOf(doc.season), playingTeams: [...playingIds] });
 });
 
+// Rozehraná může být nejvýš jedna sezona (homepage i profily berou „aktuální sezonu“ z ní).
+const inProgressFiles = matchFiles.filter((file) => readJson(join(matchesDir, file))?.inProgress === true);
+const inProgressResult = { errors: inProgressFiles.length > 1 ? [`src/data/zapasy: rozehraná může být jen jedna sezona (${inProgressFiles.join(', ')})`] : [], warnings: [] };
+
 const { errors, warnings } = mergeResults(
+  inProgressResult,
   { errors: parseErrors, warnings: [] },
   validateTeams(teams),
   validateSeasons(seasons, teamIds),

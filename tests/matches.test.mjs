@@ -10,7 +10,8 @@ const json = (p) => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
 const list = (dir) => readdirSync(new URL(dir, root)).map((f) => json(`${dir}/${f}`)).sort((a, b) => a.season.localeCompare(b.season));
 const history = list('historie');
 const drafts = list('draft');
-const games = canonicalGames(list('zapasy'), history);
+// Historický archiv = dokončené sezony; rozehraná sezona (inProgress) má vlastní testy.
+const games = canonicalGames(list('zapasy').filter((s) => !s.inProgress), history);
 const model = (teamId) => teamHistoryModel({ teamId, drafts, games, aliases: aliasMap(json('hraci-aliasy.json')), currentSeason: '2026/27' });
 
 test('kanonické zápasy: 460, jedinečná ID, soutěže odděleně', () => {

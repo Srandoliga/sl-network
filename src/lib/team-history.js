@@ -2,6 +2,19 @@
 import { teamDraftHistory, teamRepeatedPlayers, playerKey } from './draft-history.js';
 import { opponents, streaks, scoringRecords } from './matches.js';
 
+/** Soutěže po základní části (hlavní pavouk, o umístění, útěcha) – v H2H souhrnně jako „play-off“. */
+export const POSTSEASON = ['championship', 'placement', 'consolation'];
+const ALL = ['regular', ...POSTSEASON];
+const zero = { n: 0, w: 0, l: 0, t: 0 };
+const slim = (o) => (o ? { n: o.n, w: o.w, l: o.l, t: o.t } : zero);
+
+/** Vzájemné bilance se soupeři: celkem, základní část a play-off. Seřazené jako `opponents` (počet zápasů, rozdíl výher). */
+export function headToHeadSplit(games, teamId) {
+  const reg = new Map(opponents(games, teamId).map((o) => [o.opp, o]));
+  const post = new Map(opponents(games, teamId, POSTSEASON).map((o) => [o.opp, o]));
+  return opponents(games, teamId, ALL).map((o) => ({ opp: o.opp, total: slim(o), regular: slim(reg.get(o.opp)), postseason: slim(post.get(o.opp)) }));
+}
+
 /** Ligové rekordy pro srovnání s rekordy klubu: nejdelší vítězná série (ZČ) a nejvyšší skóre v 7denním kole. */
 export function leagueRecords(games) {
   const ids = [...new Set(games.flatMap((g) => g.teams))];
@@ -20,13 +33,17 @@ export function draftReturns(drafts, teamId, season, aliases) {
   return { season, total: picks.length, count: back.length, inTop3: back.filter((p) => p.round <= 3).length, picks: back };
 }
 
-export function teamHistoryModel({ teamId, drafts, games, aliases, currentSeason }) {
-  const league = leagueRecords(games);
+/**
+ * `games` = jen dokončené sezony (rekordy skóre, počet odehraných sezon). `liveGames` = navíc potvrzené zápasy
+ * rozehrané sezony – použijí se jen pro průběžnou historii: bilance proti soupeřům (H2H) a vítězné/porážkové série.
+ */
+export function teamHistoryModel({ teamId, drafts, games, liveGames = games, aliases, currentSeason }) {
+  const league = { ...leagueRecords(games), streakW: leagueRecords(liveGames).streakW };
   const draftsOf = teamDraftHistory(drafts, teamId);
   const current = draftsOf.find((d) => d.season === currentSeason) ?? null;
   const played = [...new Set(games.filter((g) => g.teams.includes(teamId)).map((g) => g.season))];
-  const opp = opponents(games, teamId);
-  const best = streaks(games, teamId);
+  const opp = opponents(liveGames, teamId);
+  const best = streaks(liveGames, teamId);
   const pick = (kind) => [...best.filter((s) => s.kind === kind)].sort((a, b) => b.length - a.length || b.season.localeCompare(a.season))[0] ?? null;
   return {
     firstSeason: draftsOf[0]?.season ?? null,
@@ -38,6 +55,7 @@ export function teamHistoryModel({ teamId, drafts, games, aliases, currentSeason
     returns: current ? draftReturns(drafts, teamId, currentSeason, aliases) : null,
     repeated: teamRepeatedPlayers(drafts, teamId, aliases),
     opponents: opp,
+    h2h: headToHeadSplit(liveGames, teamId),
     streakW: pick('w'),
     streakL: pick('l'),
     records: played.length ? scoringRecords(games, { team: teamId, standardOnly: true }) : null,

@@ -76,6 +76,90 @@ Bez vlastního obrázku dostane článek automaticky obrázek své rubriky (`rub
 
 Když v hlavičce něco chybí nebo je chybně (neznámý autor, kategorie…), build selže a řekne proč.
 
+## 1b. Homepage se aktualizuje sama – co musí obsahovat který článek
+
+Homepage se nikdy needituje ručně. Po buildu a nasazení vybere obsah z publikovaných článků a dat:
+
+| Blok homepage | Odkud bere data |
+|---|---|
+| **Breaking News** | nejnovější publikovaný článek (text i odkaz) |
+| **Hlavní příběh** | nejnovější publikovaný článek s `featured: true` (jinak nejnovější článek) |
+| **Z redakčního stolu** | 4 nejnovější články, bez hlavního příběhu a bez bloku Beyond the Score |
+| **Týden ve Srandolize** | poslední kompletní kolo v `src/data/zapasy/<sezona>.json` + ocenění z frontmatteru `recap` Weekly Recapu toho kola |
+| **Power Rankings** | poslední publikovaný článek rubriky Power Rankings s frontmatterem `rankings` |
+| **Beyond the Score** | poslední díl rubriky (když není hlavním příběhem) + `nextIssue` do data dalšího dílu |
+| **Názory expertů** | nejnovější článek každého redaktora, který ještě na homepage není |
+| **Profily týmů** | „Sezona … průběžně“ z dat zápasů, „Články o týmu“ = články s odkazem na profil (`../../tymy/<id>/`) |
+
+Koncepty (`draft: true`) ani články s budoucím `date` se na veřejný web nedostanou. Budoucí článek se objeví až
+v buildu po svém čase vydání (proto je potřeba nové nasazení).
+
+**Jeden zdroj každého údaje:** výsledky zápasů jen v `src/data/zapasy/`, redakční ocenění jen ve frontmatteru recapu,
+žebříček jen ve frontmatteru Power Rankings. Stejná čísla se nepíšou na víc míst.
+
+### Weekly Recap – postup
+
+1. **Výsledky kola** doplnit do `src/data/zapasy/2026-27.json` (až jsou konečné a potvrzené):
+   - do `matchups` nové kolo: `{ "matchup": 4, "kind": "regular", "espnLabel": "Matchup 4", "start": "2026-11-09", "end": "2026-11-15", "days": 7, "status": "final", "source": "ESPN FantasyCast 16. 11. 2026" }`
+   - do `games` všech pět zápasů: `{ "matchup": 4, "teams": ["<hosté>", "<domácí>"], "scores": [<hosté>, <domácí>] }`
+   - `status`: `final` (konečné skóre) nebo `corrected` (po opravě statistik ESPN). Průběžná skóre se nezapisují.
+   - Build zkontroluje kompletní kolo (všech 10 týmů právě jednou), existující týmy, čísla, navazující data a zdroj.
+2. **Článek** s frontmatterem ocenění (jen to, co redakce skutečně vyhlásila; nic se nedopočítává):
+
+```yaml
+recap:
+  round: 4
+  mvp: { player: "Jméno Hráče", team: <id-tymu>, points: 210 }
+  performance: { player: "…", team: <id-tymu>, points: 190 }   # nepovinné – Výkon týdne
+  surprise: { player: "…", team: <id-tymu>, points: 150 }      # nepovinné – Překvapení týdne
+  gameOfWeek: { teams: [<id-tymu>, <id-tymu>] }                # nepovinné – redakční Zápas týdne
+  highlight: "Jedna věta z článku pro homepage."               # nepovinné, max. 160 znaků
+```
+
+3. Schválení → build a nasazení. Homepage ukáže nové kolo, MVP, Zápas týdne a odkaz „Celé hodnocení týdne“;
+   profily týmů přepočtou bilanci a body. Bez `gameOfWeek` se zobrazí jen statistika „Nejtěsnější zápas“.
+   Jsou-li výsledky zapsané dřív než recap, homepage ukáže výsledky s poznámkou, že hodnocení teprve vyjde.
+
+**Opravy ESPN:** opravené skóre se zapíše do dat (stav `corrected`, zdroj s datem opravy). Už vydaný článek se
+nepřepisuje – rozdíl se zapíše do `verificationNote` v souboru zápasů. Příklad: kolo 1 sezony 2026/27
+(opravená skóre ESPN z 30. 10. 2026; Weekly Recap #1 z 26. 10. uvádí původní hodnoty).
+
+**Historie:** rozehraná sezona (`"inProgress": true`) se započítává do průběžných H2H bilancí a sérií na profilech,
+ne do konečných umístění, titulů a rekordů skóre. Po skončení sezony přibude `src/data/historie/<sezona>.json`,
+z `zapasy` se odstraní `inProgress` a build začne sezonu kontrolovat jako dokončenou.
+
+### Power Rankings – postup
+
+1. Článek rubriky `power-rankings` s frontmatterem žebříčku (pořadí = pořadí položek, všech 10 týmů):
+
+```yaml
+rankings:
+  edition: 2
+  afterRound: 4
+  entries:
+    - { team: los-mustachios, record: "4–0", points: 5480 }   # points nepovinné (pak bez sloupce FP)
+    - { team: little-barns-fireballs, record: "3–1" }
+    # … všech 10 týmů
+```
+
+2. Do textu na místo tabulky vložit samostatný řádek `<!-- power-rankings -->` – tabulka se vygeneruje z dat
+   (logo, bilance, pohyb ▲/▼ proti minulému vydání). Odkaz týmu vede na sekci `id="tym-<id>"` v článku, jinak na profil.
+3. Schválení → build a nasazení. Homepage přepne na nové vydání (číslo, datum, prvních pět, pohyb, odkaz).
+   Žebříček je redakční hodnocení – nic se nepřepočítává podle tabulky ESPN. (Power Rankings #1 má tabulku
+   psanou ručně a k ní stejná data ve frontmatteru.)
+
+### Beyond the Score – ohlášení dalšího dílu
+
+```yaml
+nextIssue:
+  date: 2026-11-25
+  title: "Titulek dalšího dílu"
+  teaser: "Krátká věta z ohlášení."   # nepovinné
+```
+
+Ohlášení se na homepage zobrazuje do data dalšího dílu. Když je díl Beyond the Score hlavním příběhem,
+velká karta se pod ním neopakuje – zůstane jen ohlášení.
+
 ## 2. Upoutávka do Messengeru
 
 Upoutávky a šablony jsou jen v **redakčním režimu** na vašem počítači (žlutá lišta nahoře) – čtenáři je neuvidí.

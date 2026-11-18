@@ -12,7 +12,8 @@ const teams = json('teams.json');
 const name = (id) => teams.find((t) => t.id === id).name;
 const history = list('historie');
 const drafts = list('draft');
-const games = canonicalGames(list('zapasy'), history);
+// Historický archiv = dokončené sezony; rozehraná sezona (inProgress) má vlastní testy.
+const games = canonicalGames(list('zapasy').filter((s) => !s.inProgress), history);
 const ctx = { drafts, games, aliases: aliasMap(json('hraci-aliasy.json')), history, currentSeason: '2026/27', name };
 const all = historySignals(ctx);
 const byId = (id) => all.find((s) => s.id === id);

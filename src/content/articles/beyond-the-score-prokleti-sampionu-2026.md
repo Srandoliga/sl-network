@@ -25,6 +25,10 @@ teaser: |
 
   👉 https://srandoliga.github.io/sl-network/clanky/beyond-the-score-prokleti-sampionu-2026/
 featured: true
+nextIssue:
+  date: 2026-11-25
+  title: "Dvakrát první nasazení. Dvakrát bez medaile."
+  teaser: "Náhoda? Další prokletí? Nebo má Srandoliga problém s favority?"
 image: obrazky/clanky/beyond-the-score-prokleti-sampionu-2026.webp
 imageAlt: "Titulní grafika SL Network Beyond the Score: Prokletí šampionů. Postava s logem AbuKaufí VzdejTo na zádech hledí na čtyři brány – tři zlaté s trofejemi a jednu rozbitou. Nápisy 4 čtvrtfinále, 0 postupů a 3× ho vyřadil budoucí šampion."
 draft: false

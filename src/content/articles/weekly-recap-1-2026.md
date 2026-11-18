@@ -28,6 +28,12 @@ teaser: |
 
   👉 https://srandoliga.github.io/sl-network/clanky/weekly-recap-1-2026/
 featured: true
+recap:
+  round: 1
+  mvp: { player: "Tyrese Maxey", team: little-barns-fireballs, points: 200 }
+  surprise: { player: "Ty Jerome", team: little-barns-fireballs, points: 165 }
+  gameOfWeek: { teams: [acl-rokycany, pilsen-beers] }
+  highlight: "Dva nováčci, pět vítězů a jeden dvousetbodový příspěvek."
 image: obrazky/clanky/weekly-recap-1-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #1: hráči Little Barns Fireballs v plamenech prorážejí zeď, skóre 1320 : 1084 a rozdíl 236 bodů."
 draft: false

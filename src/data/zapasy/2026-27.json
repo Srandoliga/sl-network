@@ -1,0 +1,207 @@
+{
+  "season": "2026/27",
+  "espnSeason": 2027,
+  "inProgress": true,
+  "source": "Redakční databáze Srandoliga_2026-27_databaze.json (ESPN League Schedule, Scoreboard a FantasyCast; originály v podklady/originaly/) a ESPN FantasyCast 9. 11. 2026 pro 3. kolo.",
+  "verification": "partial",
+  "verificationNote": "Rozehraná sezona: jen dokončená a redakčně potvrzená kola (stav u každého kola). Pořadí v `teams` a `scores` = hosté, domácí (jako v historických sezonách). Kolo 1 trvalo 6 dní. Kolo 1 = opravená skóre ESPN z 30. 10. 2026, potvrzená redakcí 12. 11. 2026 (včetně MC Rising Stars × Chlumčany JZD 1 027 : 1 116). Weekly Recap #1 (26. 10.) uvádí původní hodnoty (Fireballs × Litice 1 320 : 1 084, MC Rising Stars × Chlumčany 1 032 : 1 118, Gadžo × Kutlak’s 1 263 : 1 067, ACL × Pilsen 1 138 : 1 078, Los Mustachios × AbuKaufí 1 161 : 1 046) a vědomě se nemění. Kolo 3 = skóre z ESPN FantasyCast 9. 11. 2026 (podklad Weekly Recapu #3), ponechané redakcí 12. 11. 2026; případné pozdější korekce ESPN se ověří při přípravě Weekly Recapu #4.",
+  "matchups": [
+    {
+      "matchup": 1,
+      "kind": "regular",
+      "espnLabel": "Matchup 1",
+      "start": "2026-10-20",
+      "end": "2026-10-25",
+      "days": 6,
+      "status": "corrected",
+      "source": "ESPN – redakční korekce statistik z 30. 10. 2026 (redakční databáze 2026/27), potvrzeno redakcí 12. 11. 2026."
+    },
+    {
+      "matchup": 2,
+      "kind": "regular",
+      "espnLabel": "Matchup 2",
+      "start": "2026-10-26",
+      "end": "2026-11-01",
+      "days": 7,
+      "status": "final",
+      "source": "ESPN FantasyCast po 2. kole (redakční databáze 2026/27); shodné s Weekly Recapem #2."
+    },
+    {
+      "matchup": 3,
+      "kind": "regular",
+      "espnLabel": "Matchup 3",
+      "start": "2026-11-02",
+      "end": "2026-11-08",
+      "days": 7,
+      "status": "final",
+      "source": "ESPN FantasyCast 9. 11. 2026 7:00, po skončení kola (podklad Weekly Recapu #3); vítězové potvrzeni tabulkou ESPN 12. 11. 2026; ponecháno redakcí 12. 11. 2026, korekce ověřit při Recapu #4."
+    }
+  ],
+  "games": [
+    {
+      "matchup": 1,
+      "teams": [
+        "litice-hoopers",
+        "little-barns-fireballs"
+      ],
+      "scores": [
+        1076,
+        1316
+      ]
+    },
+    {
+      "matchup": 1,
+      "teams": [
+        "chlumcany-jzd",
+        "mc-rising-stars"
+      ],
+      "scores": [
+        1116,
+        1027
+      ]
+    },
+    {
+      "matchup": 1,
+      "teams": [
+        "kutlaks-amateurs",
+        "tachovsky-gadzo"
+      ],
+      "scores": [
+        1068,
+        1266
+      ]
+    },
+    {
+      "matchup": 1,
+      "teams": [
+        "pilsen-beers",
+        "acl-rokycany"
+      ],
+      "scores": [
+        1082,
+        1138
+      ]
+    },
+    {
+      "matchup": 1,
+      "teams": [
+        "abukuafi-vzdejto",
+        "los-mustachios"
+      ],
+      "scores": [
+        1052,
+        1162
+      ]
+    },
+    {
+      "matchup": 2,
+      "teams": [
+        "tachovsky-gadzo",
+        "los-mustachios"
+      ],
+      "scores": [
+        1117,
+        1348
+      ]
+    },
+    {
+      "matchup": 2,
+      "teams": [
+        "kutlaks-amateurs",
+        "chlumcany-jzd"
+      ],
+      "scores": [
+        1108,
+        1388
+      ]
+    },
+    {
+      "matchup": 2,
+      "teams": [
+        "little-barns-fireballs",
+        "pilsen-beers"
+      ],
+      "scores": [
+        1546,
+        1436
+      ]
+    },
+    {
+      "matchup": 2,
+      "teams": [
+        "litice-hoopers",
+        "abukuafi-vzdejto"
+      ],
+      "scores": [
+        1223,
+        1159
+      ]
+    },
+    {
+      "matchup": 2,
+      "teams": [
+        "mc-rising-stars",
+        "acl-rokycany"
+      ],
+      "scores": [
+        1391,
+        1352
+      ]
+    },
+    {
+      "matchup": 3,
+      "teams": [
+        "tachovsky-gadzo",
+        "litice-hoopers"
+      ],
+      "scores": [
+        1413,
+        1339
+      ]
+    },
+    {
+      "matchup": 3,
+      "teams": [
+        "acl-rokycany",
+        "chlumcany-jzd"
+      ],
+      "scores": [
+        1386,
+        1304
+      ]
+    },
+    {
+      "matchup": 3,
+      "teams": [
+        "los-mustachios",
+        "kutlaks-amateurs"
+      ],
+      "scores": [
+        1444,
+        1172
+      ]
+    },
+    {
+      "matchup": 3,
+      "teams": [
+        "mc-rising-stars",
+        "little-barns-fireballs"
+      ],
+      "scores": [
+        1396,
+        1429
+      ]
+    },
+    {
+      "matchup": 3,
+      "teams": [
+        "abukuafi-vzdejto",
+        "pilsen-beers"
+      ],
+      "scores": [
+        1296,
+        1147
+      ]
+    }
+  ]
+}

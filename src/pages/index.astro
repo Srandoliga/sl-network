@@ -8,22 +8,30 @@ import TeamIcon from '../components/TeamIcon.astro';
 import Trophy from '../components/Trophy.astro';
 import StaffAvatar from '../components/StaffAvatar.astro';
 import { getArticles } from '../lib/content';
-import { coverImage, pickLeadStory, splitHeadline } from '../lib/articles.js';
-import { seasons, seasonsDesc, rivalries, staffMembers, teamById, currentTeams } from '../lib/data.js';
+import HomeBeyond from '../components/HomeBeyond.astro';
+import HomeRankings from '../components/HomeRankings.astro';
+import HomeWeek from '../components/HomeWeek.astro';
+import { weekSummary } from '../lib/home.js';
+import { latestRanking } from '../lib/power-rankings.js';
+import { coverImage, homeLayout, splitHeadline, upcomingIssue } from '../lib/articles.js';
+import { seasons, seasonsDesc, rivalries, staffMembers, teamById, currentTeams, liveGames, currentMatchSeason } from '../lib/data.js';
 import { historyFacts, titleCounts } from '../lib/history.js';
-import { latestWeek } from '../lib/weeks.js';
 import { categoryLabel, categoryTagClass, SITE } from '../lib/site.js';
 import { u } from '../lib/paths';
 import { asset } from '../lib/assets';
 
 const articles = await getArticles();
-const lead = pickLeadStory(articles);
-const latest = articles.filter((a) => a.id !== lead?.id).slice(0, 4);
+// Hlavní příběh, ticker, Beyond the Score, nejnovější články i redaktoři z jednoho výběru – bez opakování článků.
+const { lead, ticker, beyond, lastBeyond, latest, experts } = homeLayout(articles, staffMembers.map((p) => p.id));
+const nextBeyond = upcomingIssue(lastBeyond);
+// Power Rankings: poslední vydaný redakční žebříček (frontmatter `rankings`), nic se nepřepočítává.
+const ranking = latestRanking(articles);
+// Týden ve Srandolize: poslední potvrzené kolo rozehrané sezony + ocenění z jeho Weekly Recapu.
+const week = weekSummary(liveGames, currentMatchSeason?.season, articles);
 const facts = historyFacts(seasons, rivalries.map((r) => r.teams), (id) => teamById(id)?.name ?? id);
 // Zajímavost se mění podle dne buildu (web se přestaví s každým novým obsahem).
 const dayOfYear = Math.floor((Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86400000);
 const fact = facts.length ? facts[dayOfYear % facts.length] : undefined;
-const latestByAuthor = (id: string) => articles.find((a) => a.data.author === id);
 const newTeams = currentTeams.filter((t) => t.status === 'new');
 const newcomers = newTeams.length;
 // Potvrzení nováčci jménem, dokud nejsou všichni potvrzeni, jen obecná poznámka.
@@ -40,10 +48,10 @@ const stats = [
 <Base>
   <h1 class="visually-hidden">{SITE.name} – zpravodajství {SITE.league}</h1>
 
-  {lead && (
-    <a class="ticker" href={u(`clanky/${lead.id}/`)}>
+  {ticker && (
+    <a class="ticker" href={u(`clanky/${ticker.id}/`)}>
       <span class="ticker__label">Breaking News</span>
-      <span class="ticker__text">{articles[0].data.title}</span>
+      <span class="ticker__text">{ticker.data.title}</span>
       <span class="ticker__arrow" aria-hidden="true">→</span>
     </a>
   )}
@@ -98,34 +106,17 @@ const stats = [
     </section>
 
     <div class="grid grid--2">
-      <section class="panel">
-        <SectionHead title="Power" accent="Rankings" />
-        <p class="byline__role" style="margin:10px 0 12px">Redakční žebříček – názor redakce, ne oficiální pořadí ESPN.</p>
-        <EmptyState title="Redakce čeká na první kolo" text="Eddie odmítá cokoli seřadit bez dat. Řekl to suše." icon="📈" />
-      </section>
-
-      <section class="panel">
-        <SectionHead title="Síň" accent="slávy" gold href="sin-slavy/" linkLabel="Všichni šampioni" />
-        <ul style="list-style:none;margin:0;padding:0">
-          {seasonsDesc.map((s) => {
-            const team = teamById(s.champion);
-            return (
-              <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
-                <span style="width:24px"><Trophy /></span>
-                <span style="width:34px"><TeamIcon team={team} /></span>
-                <span><span class="title-badge" style="font-size:.85rem">{s.season}</span><br /><a href={u(`tymy/${team.id}/`)} style="text-decoration:none;font-weight:600">{team.name}</a></span>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      <HomeWeek week={week} />
+      <HomeRankings ranking={ranking} />
     </div>
+
+    <HomeBeyond article={beyond} next={nextBeyond} />
 
     <section class="stack">
       <SectionHead title="Názory" accent="expertů" href="redakce/" linkLabel="Redakce" />
       <ul class="grid grid--3" style="list-style:none;margin:0;padding:0">
         {staffMembers.map((person) => {
-          const article = latestByAuthor(person.id);
+          const article = experts[person.id];
           return (
             <li class="panel" style="display:grid;grid-template-columns:72px 1fr;gap:12px;position:relative">
               <span class="card__avatar"><StaffAvatar id={person.avatar} /></span>
@@ -142,20 +133,28 @@ const stats = [
       </ul>
     </section>
 
-
     <div class="grid grid--2">
-      <section class="panel">
-        <SectionHead title="Týden ve" accent="Srandolize" />
-        {latestWeek
-          ? <p style="margin:12px 0 0">Kolo {latestWeek.number}{latestWeek.demo && <span class="tag tag--demo" style="margin-left:8px">DEMO</span>}</p>
-          : <div style="margin-top:12px"><EmptyState title="Redakce čeká na první kolo" text="Výsledky, MVP a All-Fantasy tým přijdou po draftu." /></div>}
-      </section>
       {fact && (
         <section class="panel">
           <SectionHead title="Zajímavost z" accent="historie" href="sin-slavy/" linkLabel="Síň slávy" />
           <p style="margin:14px 0 0;font-family:var(--font-serif);font-size:1.25rem">{fact}</p>
         </section>
       )}
+      <section class="panel">
+        <SectionHead title="Síň" accent="slávy" gold href="sin-slavy/" linkLabel="Všichni šampioni" />
+        <ul style="list-style:none;margin:0;padding:0">
+          {seasonsDesc.map((s) => {
+            const team = teamById(s.champion);
+            return (
+              <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+                <span style="width:24px"><Trophy /></span>
+                <span style="width:34px"><TeamIcon team={team} /></span>
+                <span><span class="title-badge" style="font-size:.85rem">{s.season}</span><br /><a href={u(`tymy/${team.id}/`)} style="text-decoration:none;font-weight:600">{team.name}</a></span>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
     </div>
   </div>
 </Base>

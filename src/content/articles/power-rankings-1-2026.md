@@ -24,6 +24,20 @@ teaser: |
 
   👉 https://srandoliga.github.io/sl-network/clanky/power-rankings-1-2026/
 featured: true
+rankings:
+  edition: 1
+  afterRound: 2
+  entries:
+    - { team: little-barns-fireballs, record: "2–0", points: 2862 }
+    - { team: pilsen-beers, record: "0–2", points: 2518 }
+    - { team: chlumcany-jzd, record: "2–0", points: 2504 }
+    - { team: los-mustachios, record: "2–0", points: 2510 }
+    - { team: mc-rising-stars, record: "1–1", points: 2418 }
+    - { team: acl-rokycany, record: "1–1", points: 2490 }
+    - { team: litice-hoopers, record: "1–1", points: 2299 }
+    - { team: tachovsky-gadzo, record: "1–1", points: 2383 }
+    - { team: abukuafi-vzdejto, record: "0–2", points: 2211 }
+    - { team: kutlaks-amateurs, record: "0–2", points: 2176 }
 image: obrazky/clanky/power-rankings-1-2026.webp
 imageAlt: "Titulní grafika SL Network Power Rankings #1, Season V, The Table Is Lying: Little Barns Fireballs na zlatém pódiu, Pilsen Beers s bilancí 0–2 na stříbrném, Chlumčany JZD s bilancí 2–0 na bronzovém a ACL Rokycany #6 na samostatném fialovém podstavci."
 draft: false

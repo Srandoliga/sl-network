@@ -24,6 +24,13 @@ teaser: |
 
   👉 https://srandoliga.github.io/sl-network/clanky/weekly-recap-2-2026/
 featured: true
+recap:
+  round: 2
+  mvp: { player: "Victor Wembanyama", team: mc-rising-stars, points: 245 }
+  performance: { player: "Luka Dončić", team: chlumcany-jzd, points: 223 }
+  surprise: { player: "Darius Acuff Jr.", team: litice-hoopers, points: 143 }
+  gameOfWeek: { teams: [mc-rising-stars, acl-rokycany] }
+  highlight: "První vítězství obou nováčků."
 image: obrazky/clanky/weekly-recap-2-2026.webp
 imageAlt: "Titulní grafika SL Network Weekly Recap #2: hráč MC Rising Stars v modro-oranžovém dresu s míčem, vedle něj padá zlatá koruna z rozbitého podstavce před fialovými prapory ACL Rokycany."
 draft: false

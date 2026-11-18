@@ -1,0 +1,63 @@
+---
+// Homepage: „Týden ve Srandolize“ – poslední dokončené a potvrzené kolo (výsledky z dat, ocenění z Weekly Recapu).
+// Bez potvrzeného kola zůstává původní prázdný stav.
+import SectionHead from './SectionHead.astro';
+import EmptyState from './EmptyState.astro';
+import TeamIcon from './TeamIcon.astro';
+import { teamById } from '../lib/data.js';
+import { formatPoints } from '../lib/archive.js';
+import { u } from '../lib/paths';
+interface Props { week?: any }
+const { week } = Astro.props;
+const team = (id: string) => teamById(id);
+// Dvojice i skóre vždy od vítěze (stejné pořadí jako „1 429 : 1 396“).
+const byScore = (g: any) => [0, 1].sort((i, j) => g.scores[j] - g.scores[i]);
+const pair = (g: any) => byScore(g).map((i) => team(g.teams[i]).name).join(' × ');
+const score = (g: any) => byScore(g).map((i) => formatPoints(g.scores[i])).join('\u00a0:\u00a0');
+---
+<section class="panel home-week">
+  <SectionHead title="Týden ve" accent="Srandolize" href={week?.recap ? `clanky/${week.recap.id}/` : undefined} linkLabel="Celé hodnocení týdne" />
+  {week ? (
+    <>
+      <p class="home-week__round"><strong>Week {week.matchup}</strong><span>{week.span}</span></p>
+      <ul class="home-week__games">
+        {week.games.map((g: any) => {
+          const win = g.winner;
+          // Vítěz nahoře, jako na výsledkové tabuli Weekly Recapu.
+          const order = win === g.teams[1] ? [1, 0] : [0, 1];
+          return (
+            <li class="home-week__game">
+              {order.map((i) => {
+                const t = team(g.teams[i]);
+                return (
+                  <a class:list={['home-week__row', { 'is-winner': win === t.id }]} href={u(`tymy/${t.id}/`)}>
+                    <span class="home-week__logo"><TeamIcon team={t} /></span>
+                    <span class="home-week__team">{win === t.id && <span class="visually-hidden">vítěz, </span>}{t.name}</span>
+                    <span class="home-week__pts">{formatPoints(g.scores[i])}</span>
+                  </a>
+                );
+              })}
+            </li>
+          );
+        })}
+      </ul>
+      <dl class="home-week__facts">
+        {week.mvp && (
+          <div class="home-week__fact home-week__fact--mvp"><dt>👑 MVP týdne</dt><dd><strong>{week.mvp.player}</strong> · {formatPoints(week.mvp.points)} FP <span>{team(week.mvp.team)?.name}</span></dd></div>
+        )}
+        {week.gameOfWeek && (
+          <div class="home-week__fact"><dt>🥊 Zápas týdne</dt><dd><strong>{pair(week.gameOfWeek)}</strong> · {score(week.gameOfWeek)} <span>rozdíl {formatPoints(week.gameOfWeek.margin)} FP</span></dd></div>
+        )}
+        {week.closest && (
+          <div class="home-week__fact"><dt>⚖️ Nejtěsnější zápas</dt><dd><strong>{pair(week.closest)}</strong> <span>rozdíl {formatPoints(week.closest.margin)} FP</span></dd></div>
+        )}
+        {week.highlight && (
+          <div class="home-week__fact"><dt>📌 Zajímavost kola</dt><dd>{week.highlight}</dd></div>
+        )}
+      </dl>
+      {!week.recap && <p class="byline__role home-week__note">Výsledky jsou potvrzené, redakční hodnocení kola teprve vyjde.</p>}
+    </>
+  ) : (
+    <div style="margin-top:12px"><EmptyState title="Redakce čeká na první kolo" text="Výsledky, MVP a All-Fantasy tým přijdou po draftu." /></div>
+  )}
+</section>

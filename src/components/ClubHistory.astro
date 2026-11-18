@@ -3,7 +3,7 @@
 // podrobnosti v <details>. Nováček dostane jen skutečná data svého prvního draftu – žádné nulové bilance.
 import SectionHead from './SectionHead.astro';
 import TeamLink from './TeamLink.astro';
-import { drafts, allGames, playerAliases, teamById, historySeasons } from '../lib/data.js';
+import { drafts, allGames, liveGames, playerAliases, teamById, historySeasons } from '../lib/data.js';
 import { historySignals } from '../lib/history-signals.js';
 import { teamHistoryModel } from '../lib/team-history.js';
 import { formatPoints } from '../lib/archive.js';
@@ -12,7 +12,7 @@ import { u } from '../lib/paths';
 interface Props { teamId: string }
 const { teamId } = Astro.props;
 const CURRENT = drafts.at(-1).season;
-const m = teamHistoryModel({ teamId, drafts, games: allGames, aliases: playerAliases, currentSeason: CURRENT });
+const m = teamHistoryModel({ teamId, drafts, games: allGames, liveGames, aliases: playerAliases, currentSeason: CURRENT });
 const slug = (s: string) => s.replace('/', '-');
 const short = (s: string) => s.replace(/^20(\d\d)\/(\d\d)$/, '$1/$2');
 const record = (o: any) => `${o.w}–${o.l}${o.t ? `–${o.t}` : ''}`;
@@ -26,7 +26,9 @@ const isLeagueHigh = m.records && m.records.highest.game.id === m.league.highest
 const top3 = m.current?.picks.slice(0, 3) ?? [];
 const repeatedShown = m.repeated.slice(0, 3);
 const repeatedMore = m.repeated.slice(3);
-const sortedOpp = [...m.opponents].filter((o) => o.n >= 4);
+// Nejlepší a nejtěžší soupeř podle celkové vzájemné bilance (všechny zápasy, včetně potvrzených kol rozehrané sezony).
+const sortedOpp = m.h2h.map((h: any) => ({ opp: h.opp, ...h.total })).filter((o: any) => o.n >= 4);
+const split = (h: any) => [h.regular.n ? `ZČ ${record(h.regular)}` : null, h.postseason.n ? `play-off ${record(h.postseason)}` : null].filter(Boolean).join(' · ');
 const bestOpp = [...sortedOpp].sort((a, b) => (b.w - b.l) - (a.w - a.l) || b.n - a.n)[0];
 const worstOpp = [...sortedOpp].sort((a, b) => (a.w - a.l) - (b.w - b.l) || b.n - a.n)[0];
 const name = (id: string) => teamById(id)?.name ?? id;
@@ -44,7 +46,7 @@ const fact = historySignals({ drafts, games: allGames, aliases: playerAliases, h
     <div class="club-debut">
       <p class="kicker" style="margin:0">První sezona</p>
       <p class="club-debut__title">Historie se teprve píše.</p>
-      <p class="club-debut__text">{name(teamId)} vstupují do ligy v sezoně {CURRENT}. Bilance, soupeři a rekordy přibudou s prvními odehranými zápasy.</p>
+      <p class="club-debut__text">{name(teamId)} vstupují do ligy v sezoně {CURRENT}. Letošní bilance je v přehledu sezony; historické rekordy přibudou po první dokončené sezoně.</p>
     </div>
   ) : null}
 
@@ -110,21 +112,21 @@ const fact = historySignals({ drafts, games: allGames, aliases: playerAliases, h
     </div>
   )}
 
-  {m.opponents.length > 0 && (
+  {m.h2h.length > 0 && (
     <div class="club-block">
-      <h3 class="club-block__title">Proti soupeřům <span>základní část</span></h3>
+      <h3 class="club-block__title">Proti soupeřům <span>všechny zápasy</span></h3>
       <div class="h2h-pair">
         {bestOpp && <div class="h2h-card"><span class="stats__label">Nejlepší bilance</span><TeamLink id={bestOpp.opp} size="sm" /><span class="h2h-card__rec">{record(bestOpp)}</span></div>}
         {worstOpp && worstOpp.opp !== bestOpp?.opp && <div class="h2h-card"><span class="stats__label">Nejtěžší soupeř</span><TeamLink id={worstOpp.opp} size="sm" /><span class="h2h-card__rec">{record(worstOpp)}</span></div>}
       </div>
       <details class="more">
-        <summary>Bilance proti všem soupeřům ({m.opponents.length})</summary>
+        <summary>Bilance proti všem soupeřům ({m.h2h.length})</summary>
         <div class="h2h-table">
-          {m.opponents.map((o) => (
-            <div class="h2h-row"><TeamLink id={o.opp} size="sm" /><span class="h2h-row__rec">{record(o)}</span><span class="h2h-row__n">{o.n} {o.n >= 5 ? 'zápasů' : 'zápasy'}</span></div>
+          {m.h2h.map((h: any) => (
+            <div class="h2h-row"><TeamLink id={h.opp} size="sm" /><span class="h2h-row__rec">{record(h.total)}</span><span class="h2h-row__n">{h.total.n} {h.total.n >= 5 ? 'zápasů' : h.total.n === 1 ? 'zápas' : 'zápasy'}</span>{h.postseason.n > 0 && <span class="h2h-row__split">{split(h)}</span>}</div>
           ))}
         </div>
-        <p class="byline__role" style="margin:8px 0 0">Jen základní část (W–L–remízy). Zápasy play-off jsou na stránkách jednotlivých sezon.</p>
+        <p class="byline__role" style="margin:8px 0 0">Celková bilance (výhry–prohry–remízy) ze všech zápasů včetně potvrzených kol rozehrané sezony; u soupeřů z play-off rozpad na základní část (ZČ) a play-off. Play-off = všechny zápasy po základní části (hlavní pavouk, o umístění, útěcha), podrobně na stránkách sezon.</p>
       </details>
     </div>
   )}

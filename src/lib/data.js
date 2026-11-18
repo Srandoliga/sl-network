@@ -31,11 +31,16 @@ export const historySeasons = Object.values(historyModules).sort((a, b) => a.sea
 // Drafty (src/data/draft/*.json), aliasy hráčů a zápasy základní části (src/data/zapasy/*.json).
 import aliasesRaw from '../data/hraci-aliasy.json';
 import { aliasMap, sortDrafts } from './draft-history.js';
-import { canonicalGames } from './matches.js';
+import { canonicalGames, completedOnly } from './matches.js';
 const draftModules = import.meta.glob('../data/draft/*.json', { eager: true, import: 'default' });
 export const drafts = sortDrafts(Object.values(draftModules));
 export const playerAliases = aliasMap(aliasesRaw);
 const matchModules = import.meta.glob('../data/zapasy/*.json', { eager: true, import: 'default' });
 export const matchSeasons = Object.values(matchModules).sort((a, b) => a.season.localeCompare(b.season));
-export const allGames = canonicalGames(matchSeasons, historySeasons);
+const canonical = canonicalGames(matchSeasons, historySeasons);
+// Dokončené sezony: konečná umístění, tituly, rekordy, rozpis sezon. Beze změny pro všechny stávající výpočty.
+export const allGames = completedOnly(canonical);
+// Průběžná historie: dokončené sezony + potvrzená kola rozehrané sezony (H2H bilance, vítězné série, aktuální sezona).
+export const liveGames = canonical;
+export const currentMatchSeason = matchSeasons.find((m) => m.inProgress);
 export const draftBySlug = (slug) => drafts.find((d) => d.season.replace('/', '-') === slug);
