@@ -158,16 +158,20 @@ test('skutečné Weekly Recapy: zvolené Zápasy týdne v daném kole opravdu hr
   assert.ok(checked >= 4);
 });
 
+// Stav po 4. kole se počítá jen z kol 1–4 (pozdější kola ho nesmí změnit).
+const liveUpTo = (n) => liveAll.filter((g) => g.season !== '2026/27' || g.matchup <= n);
+
 test('živá data po 4. kole: kompletní, bilance a body podle redakčního zadání Recapu #4', () => {
   assert.deepEqual(validateMatchSeason(live, '2026-27.json', { playingTeams: playing }), { errors: [], warnings: [] });
-  const rec = (t) => { const r = seasonRecord(liveAll, '2026/27', t); return `${r.w}-${r.l}`; };
+  const upTo4 = liveUpTo(4);
+  const rec = (t) => { const r = seasonRecord(upTo4, '2026/27', t); return `${r.w}-${r.l}`; };
   assert.deepEqual(Object.fromEntries(playing.map((t) => [t, rec(t)])), {
     'acl-rokycany': '2-2', 'little-barns-fireballs': '3-1', 'pilsen-beers': '1-3', 'chlumcany-jzd': '3-1', 'los-mustachios': '4-0',
     'kutlaks-amateurs': '0-4', 'abukuafi-vzdejto': '2-2', 'tachovsky-gadzo': '2-2', 'litice-hoopers': '2-2', 'mc-rising-stars': '1-3',
   });
   // Definitivní skóre 4. kola podle ESPN screenshotu z 18. 11. 2026 (shodné s Weekly Recapem #4).
-  assert.equal(seasonRecord(liveAll, '2026/27', 'little-barns-fireballs').pf, 5666);
-  assert.equal(seasonRecord(liveAll, '2026/27', 'los-mustachios').pf, 5447);
+  assert.equal(seasonRecord(upTo4, '2026/27', 'little-barns-fireballs').pf, 5666);
+  assert.equal(seasonRecord(upTo4, '2026/27', 'los-mustachios').pf, 5447);
   const r4scores = Object.fromEntries(liveAll.filter((g) => g.season === '2026/27' && g.matchup === 4).map((g) => [g.teams.join(' @ '), g.scores.join(':')]));
   assert.deepEqual(r4scores, {
     'los-mustachios @ acl-rokycany': '1493:1439', 'pilsen-beers @ mc-rising-stars': '1442:1355', 'abukuafi-vzdejto @ tachovsky-gadzo': '1204:1196',
@@ -176,11 +180,28 @@ test('živá data po 4. kole: kompletní, bilance a body podle redakčního zad�
   // Hosté/domácí podle ESPN rozpisu: ACL, MC Rising Stars, Gadžo, Fireballs a Litice hráli doma.
   const r4 = liveAll.filter((g) => g.season === '2026/27' && g.matchup === 4);
   assert.deepEqual(r4.map((g) => g.teams[1]).sort(), ['acl-rokycany', 'litice-hoopers', 'little-barns-fireballs', 'mc-rising-stars', 'tachovsky-gadzo']);
-  const w = weekSummary(liveAll, '2026/27', [recap(4, '2026-11-18T08:00:00+01:00', { gameOfWeek: { teams: ['abukuafi-vzdejto', 'tachovsky-gadzo'] } })]);
+  const w = weekSummary(upTo4, '2026/27', [recap(4, '2026-11-18T08:00:00+01:00', { gameOfWeek: { teams: ['abukuafi-vzdejto', 'tachovsky-gadzo'] } })]);
   assert.equal(w.matchup, 4);
   assert.equal(w.span, '9.–15. listopadu 2026');
   assert.equal(w.gameOfWeek.margin, 8);
   assert.equal(w.closest, undefined);
+});
+
+test('živá data po 5. kole: skóre, hosté/domácí podle ESPN rozpisu a bilance podle Recapu #5', () => {
+  const r5 = liveAll.filter((g) => g.season === '2026/27' && g.matchup === 5);
+  assert.deepEqual(Object.fromEntries(r5.map((g) => [g.teams.join(' @ '), g.scores.join(':')])), {
+    'little-barns-fireballs @ acl-rokycany': '1409:1158', 'tachovsky-gadzo @ mc-rising-stars': '1196:1390',
+    'kutlaks-amateurs @ abukuafi-vzdejto': '1312:1165', 'chlumcany-jzd @ pilsen-beers': '1244:1538', 'litice-hoopers @ los-mustachios': '1603:1423',
+  });
+  const rec = (t) => { const r = seasonRecord(liveUpTo(5), '2026/27', t); return `${r.w}-${r.l}`; };
+  assert.deepEqual(Object.fromEntries(playing.map((t) => [t, rec(t)])), {
+    'acl-rokycany': '2-3', 'little-barns-fireballs': '4-1', 'pilsen-beers': '2-3', 'chlumcany-jzd': '3-2', 'los-mustachios': '4-1',
+    'kutlaks-amateurs': '1-4', 'abukuafi-vzdejto': '2-3', 'tachovsky-gadzo': '2-3', 'litice-hoopers': '3-2', 'mc-rising-stars': '2-3',
+  });
+  const w = weekSummary(liveUpTo(5), '2026/27', [recap(5,'2026-11-23T12:00:00+01:00', { gameOfWeek: { teams: ['litice-hoopers', 'los-mustachios'] } })]);
+  assert.equal(w.matchup, 5);
+  assert.equal(w.span, '16.–22. listopadu 2026');
+  assert.equal(w.gameOfWeek.margin, 180);
 });
 
 import { releasedRounds, publicGames } from '../src/lib/home.js';

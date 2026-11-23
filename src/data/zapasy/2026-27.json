@@ -4,7 +4,7 @@
   "inProgress": true,
   "source": "Redakční databáze Srandoliga_2026-27_databaze.json (ESPN League Schedule, Scoreboard a FantasyCast; originály v podklady/originaly/) a ESPN FantasyCast 9. 11. 2026 pro 3. kolo.",
   "verification": "partial",
-  "verificationNote": "Rozehraná sezona: jen dokončená a redakčně potvrzená kola (stav u každého kola). Pořadí v `teams` a `scores` = hosté, domácí (jako v historických sezonách). Kolo 1 trvalo 6 dní. Kolo 1 = opravená skóre ESPN z 30. 10. 2026, potvrzená redakcí 12. 11. 2026 (včetně MC Rising Stars × Chlumčany JZD 1 027 : 1 116). Weekly Recap #1 (26. 10.) uvádí původní hodnoty (Fireballs × Litice 1 320 : 1 084, MC Rising Stars × Chlumčany 1 032 : 1 118, Gadžo × Kutlak’s 1 263 : 1 067, ACL × Pilsen 1 138 : 1 078, Los Mustachios × AbuKaufí 1 161 : 1 046) a vědomě se nemění. Kolo 3 = skóre z ESPN FantasyCast 9. 11. 2026 (podklad Weekly Recapu #3), ponechané redakcí 12. 11. 2026; případné pozdější korekce ESPN se ověří při přípravě Weekly Recapu #4. Kolo 4 = konečné skóre podle ESPN screenshotu z 18. 11. 2026 (shodné s Weekly Recapem #4).",
+  "verificationNote": "Rozehraná sezona: jen dokončená a redakčně potvrzená kola (stav u každého kola). Pořadí v `teams` a `scores` = hosté, domácí (jako v historických sezonách). Kolo 1 trvalo 6 dní. Kolo 1 = opravená skóre ESPN z 30. 10. 2026, potvrzená redakcí 12. 11. 2026 (včetně MC Rising Stars × Chlumčany JZD 1 027 : 1 116). Weekly Recap #1 (26. 10.) uvádí původní hodnoty (Fireballs × Litice 1 320 : 1 084, MC Rising Stars × Chlumčany 1 032 : 1 118, Gadžo × Kutlak’s 1 263 : 1 067, ACL × Pilsen 1 138 : 1 078, Los Mustachios × AbuKaufí 1 161 : 1 046) a vědomě se nemění. Kolo 3 = skóre z ESPN FantasyCast 9. 11. 2026 (podklad Weekly Recapu #3), ponechané redakcí 12. 11. 2026; případné pozdější korekce ESPN se ověří při přípravě Weekly Recapu #4. Kolo 4 = konečné skóre podle ESPN screenshotu z 18. 11. 2026 (shodné s Weekly Recapem #4). Kolo 5 = konečné skóre z redakčního zadání Weekly Recapu #5 (23. 11. 2026).",
   "matchups": [
     {
       "matchup": 1,
@@ -45,6 +45,16 @@
       "days": 7,
       "status": "final",
       "source": "ESPN screenshot z 18. 11. 2026 – konečné skóre 4. kola, potvrzeno redakcí 18. 11. 2026 (definitivní; starší hodnoty z redakčního zadání jsou překonané). Hosté/domácí podle ESPN League Schedule (redakční databáze 2026/27)."
+    },
+    {
+      "matchup": 5,
+      "kind": "regular",
+      "espnLabel": "Matchup 5",
+      "start": "2026-11-16",
+      "end": "2026-11-22",
+      "days": 7,
+      "status": "final",
+      "source": "Konečné skóre 5. kola podle redakčního zadání Weekly Recapu #5 z 23. 11. 2026 (ESPN Box Scores 16.–22. 11. 2026). Hosté/domácí podle ESPN League Schedule (redakční databáze 2026/27)."
     }
   ],
   "games": [
@@ -266,6 +276,61 @@
       "scores": [
         1149,
         1344
+      ]
+    },
+    {
+      "matchup": 5,
+      "teams": [
+        "little-barns-fireballs",
+        "acl-rokycany"
+      ],
+      "scores": [
+        1409,
+        1158
+      ]
+    },
+    {
+      "matchup": 5,
+      "teams": [
+        "tachovsky-gadzo",
+        "mc-rising-stars"
+      ],
+      "scores": [
+        1196,
+        1390
+      ]
+    },
+    {
+      "matchup": 5,
+      "teams": [
+        "kutlaks-amateurs",
+        "abukuafi-vzdejto"
+      ],
+      "scores": [
+        1312,
+        1165
+      ]
+    },
+    {
+      "matchup": 5,
+      "teams": [
+        "chlumcany-jzd",
+        "pilsen-beers"
+      ],
+      "scores": [
+        1244,
+        1538
+      ]
+    },
+    {
+      "matchup": 5,
+      "teams": [
+        "litice-hoopers",
+        "los-mustachios"
+      ],
+      "scores": [
+        1603,
+        1423
       ]
     }
   ]
